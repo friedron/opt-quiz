@@ -1,0 +1,991 @@
+<!DOCTYPE html>
+
+<html lang="hu">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Optometria Kvíz</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap');
+
+:root {
+–bg: #0d1117;
+–surface: #161b22;
+–surface2: #1c2333;
+–border: #30363d;
+–accent: #58a6ff;
+–accent2: #3fb950;
+–warn: #f85149;
+–gold: #e3b341;
+–text: #e6edf3;
+–muted: #7d8590;
+–radius: 14px;
+}
+
+- { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+
+body {
+font-family: ‘DM Sans’, sans-serif;
+background: var(–bg);
+color: var(–text);
+min-height: 100vh;
+display: flex;
+flex-direction: column;
+align-items: center;
+padding: 0;
+}
+
+/* ── SCREENS ── */
+.screen { display: none; width: 100%; max-width: 480px; min-height: 100vh; padding: 24px 16px 40px; flex-direction: column; }
+.screen.active { display: flex; }
+
+/* ── HOME ── */
+#home { align-items: center; justify-content: center; gap: 0; }
+.logo-area { text-align: center; margin-bottom: 40px; }
+.eye-icon { font-size: 56px; display: block; margin-bottom: 12px; animation: pulse 3s ease-in-out infinite; }
+@keyframes pulse { 0%,100%{transform:scale(1)} 50%{transform:scale(1.08)} }
+.logo-area h1 { font-family: ‘DM Serif Display’, serif; font-size: 32px; color: var(–text); letter-spacing: -0.5px; }
+.logo-area p { color: var(–muted); font-size: 14px; margin-top: 6px; font-weight: 300; }
+
+.section-label { font-size: 11px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; color: var(–muted); margin-bottom: 12px; }
+
+.count-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; width: 100%; margin-bottom: 28px; }
+.count-btn {
+background: var(–surface);
+border: 2px solid var(–border);
+color: var(–text);
+border-radius: var(–radius);
+padding: 18px 12px;
+font-family: ‘DM Serif Display’, serif;
+font-size: 28px;
+cursor: pointer;
+transition: all 0.2s;
+display: flex; flex-direction: column; align-items: center; gap: 4px;
+}
+.count-btn span { font-family: ‘DM Sans’, sans-serif; font-size: 11px; color: var(–muted); font-weight: 400; }
+.count-btn:hover, .count-btn.selected { border-color: var(–accent); background: rgba(88,166,255,0.08); }
+.count-btn.selected { color: var(–accent); }
+
+.start-btn {
+width: 100%;
+background: var(–accent);
+color: #0d1117;
+border: none;
+border-radius: var(–radius);
+padding: 18px;
+font-size: 16px;
+font-weight: 600;
+cursor: pointer;
+transition: all 0.2s;
+letter-spacing: 0.3px;
+}
+.start-btn:hover { background: #79beff; }
+.start-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+/* ── QUIZ ── */
+#quiz { gap: 0; }
+
+.quiz-header { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; }
+.quit-btn { background: none; border: none; color: var(–muted); font-size: 20px; cursor: pointer; padding: 4px; }
+.progress-wrap { flex: 1; }
+.progress-bar-bg { height: 6px; background: var(–border); border-radius: 99px; overflow: hidden; }
+.progress-bar { height: 100%; background: linear-gradient(90deg, var(–accent), #a371f7); border-radius: 99px; transition: width 0.4s ease; }
+.progress-text { font-size: 12px; color: var(–muted); margin-top: 5px; text-align: right; }
+.score-chip { background: var(–surface2); border: 1px solid var(–border); border-radius: 99px; padding: 4px 12px; font-size: 13px; color: var(–gold); font-weight: 600; white-space: nowrap; }
+
+.question-card { background: var(–surface); border: 1px solid var(–border); border-radius: 18px; padding: 20px 18px; margin-bottom: 16px; flex: 1; display: flex; flex-direction: column; }
+.question-type-badge { display: inline-block; font-size: 10px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; padding: 3px 9px; border-radius: 99px; margin-bottom: 14px; }
+.badge-single { background: rgba(88,166,255,0.15); color: var(–accent); }
+.badge-multi { background: rgba(163,113,247,0.15); color: #a371f7; }
+.badge-truefalse { background: rgba(63,185,80,0.15); color: var(–accent2); }
+.badge-analysis { background: rgba(227,179,65,0.15); color: var(–gold); }
+
+.question-num { font-size: 11px; color: var(–muted); margin-bottom: 8px; }
+.question-text { font-size: 16px; line-height: 1.55; color: var(–text); font-weight: 400; flex: 1; }
+
+/* ── OPTIONS ── */
+.options-wrap { display: flex; flex-direction: column; gap: 10px; margin-bottom: 16px; }
+
+.option-btn {
+background: var(–surface2);
+border: 2px solid var(–border);
+border-radius: 12px;
+padding: 14px 16px;
+color: var(–text);
+font-family: ‘DM Sans’, sans-serif;
+font-size: 14px;
+text-align: left;
+cursor: pointer;
+transition: all 0.18s;
+display: flex; align-items: center; gap: 12px;
+line-height: 1.4;
+}
+.option-btn .opt-marker { width: 22px; height: 22px; border-radius: 50%; border: 2px solid var(–border); flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 600; transition: all 0.18s; }
+.option-btn.checkbox .opt-marker { border-radius: 6px; }
+.option-btn:hover:not(:disabled) { border-color: var(–accent); background: rgba(88,166,255,0.06); }
+.option-btn.selected { border-color: var(–accent); background: rgba(88,166,255,0.1); }
+.option-btn.selected .opt-marker { background: var(–accent); border-color: var(–accent); color: #0d1117; }
+.option-btn.correct { border-color: var(–accent2) !important; background: rgba(63,185,80,0.1) !important; }
+.option-btn.correct .opt-marker { background: var(–accent2) !important; border-color: var(–accent2) !important; color: #0d1117 !important; }
+.option-btn.wrong { border-color: var(–warn) !important; background: rgba(248,81,73,0.08) !important; }
+.option-btn.wrong .opt-marker { background: var(–warn) !important; border-color: var(–warn) !important; color: #fff !important; }
+.option-btn:disabled { cursor: default; }
+
+/* ── TRUE/FALSE per statement ── */
+.tf-statement { background: var(–surface2); border: 2px solid var(–border); border-radius: 12px; padding: 14px 16px; margin-bottom: 10px; }
+.tf-statement p { font-size: 14px; line-height: 1.45; margin-bottom: 10px; color: var(–text); }
+.tf-btns { display: flex; gap: 8px; }
+.tf-btn {
+flex: 1; padding: 9px; border: 2px solid var(–border); border-radius: 8px;
+background: var(–surface); color: var(–muted); font-family: ‘DM Sans’, sans-serif;
+font-size: 13px; font-weight: 600; cursor: pointer; transition: all 0.18s;
+}
+.tf-btn:hover:not(:disabled) { border-color: var(–accent); color: var(–text); }
+.tf-btn.selected-true { border-color: var(–accent2); background: rgba(63,185,80,0.12); color: var(–accent2); }
+.tf-btn.selected-false { border-color: #f85149; background: rgba(248,81,73,0.08); color: #f85149; }
+.tf-btn.correct-true { border-color: var(–accent2) !important; background: rgba(63,185,80,0.2) !important; color: var(–accent2) !important; }
+.tf-btn.correct-false { border-color: var(–accent2) !important; background: rgba(63,185,80,0.2) !important; color: var(–accent2) !important; }
+.tf-btn.wrong-answer { border-color: var(–warn) !important; background: rgba(248,81,73,0.15) !important; color: var(–warn) !important; }
+.tf-btn:disabled { cursor: default; }
+
+/* ── ANALYSIS (A/B/C/D/E) ── */
+.analysis-statements { margin-bottom: 14px; }
+.analysis-stmt { background: var(–surface2); border-left: 3px solid var(–border); padding: 10px 14px; border-radius: 0 8px 8px 0; margin-bottom: 8px; font-size: 14px; line-height: 1.45; color: var(–text); }
+.analysis-stmt.first { border-left-color: var(–accent); }
+.analysis-stmt.second { border-left-color: #a371f7; }
+.analysis-grid { display: flex; flex-direction: column; gap: 8px; }
+.analysis-option {
+display: flex; align-items: flex-start; gap: 12px;
+background: var(–surface2); border: 2px solid var(–border); border-radius: 12px;
+padding: 12px 14px; cursor: pointer; transition: all 0.18s; font-family: ‘DM Sans’, sans-serif;
+}
+.analysis-option .opt-key { font-size: 15px; font-weight: 700; color: var(–gold); flex-shrink: 0; width: 20px; }
+.analysis-option .opt-desc { font-size: 13px; color: var(–muted); line-height: 1.4; }
+.analysis-option:hover:not(:disabled) { border-color: var(–gold); background: rgba(227,179,65,0.06); }
+.analysis-option.selected { border-color: var(–gold); background: rgba(227,179,65,0.1); }
+.analysis-option.correct { border-color: var(–accent2) !important; background: rgba(63,185,80,0.1) !important; }
+.analysis-option.correct .opt-key { color: var(–accent2) !important; }
+.analysis-option.wrong { border-color: var(–warn) !important; background: rgba(248,81,73,0.08) !important; }
+.analysis-option.wrong .opt-key { color: var(–warn) !important; }
+.analysis-option:disabled { cursor: default; }
+
+/* ── FEEDBACK ── */
+.feedback-bar { border-radius: 12px; padding: 12px 16px; margin-bottom: 12px; font-size: 14px; font-weight: 500; display: none; align-items: center; gap: 10px; }
+.feedback-bar.show { display: flex; }
+.feedback-bar.correct-fb { background: rgba(63,185,80,0.12); border: 1px solid rgba(63,185,80,0.3); color: var(–accent2); }
+.feedback-bar.wrong-fb { background: rgba(248,81,73,0.08); border: 1px solid rgba(248,81,73,0.25); color: var(–warn); }
+.feedback-bar .fb-icon { font-size: 20px; flex-shrink: 0; }
+
+/* ── NEXT BTN ── */
+.action-wrap { margin-top: auto; padding-top: 8px; }
+.next-btn {
+width: 100%; background: var(–surface2); border: 2px solid var(–border);
+color: var(–text); border-radius: var(–radius); padding: 16px;
+font-size: 15px; font-weight: 600; cursor: pointer; transition: all 0.2s;
+font-family: ‘DM Sans’, sans-serif;
+}
+.next-btn:hover:not(:disabled) { border-color: var(–accent); }
+.next-btn:disabled { opacity: 0.35; cursor: not-allowed; }
+.next-btn.ready { border-color: var(–accent); color: var(–accent); background: rgba(88,166,255,0.08); }
+
+/* ── RESULTS ── */
+#results { align-items: center; justify-content: center; gap: 0; text-align: center; }
+.result-ring { position: relative; width: 160px; height: 160px; margin: 0 auto 28px; }
+.result-ring svg { transform: rotate(-90deg); }
+.result-ring-text { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+.result-pct { font-family: ‘DM Serif Display’, serif; font-size: 42px; color: var(–text); }
+.result-pct-label { font-size: 12px; color: var(–muted); }
+#results h2 { font-family: ‘DM Serif Display’, serif; font-size: 26px; margin-bottom: 8px; }
+#results .result-sub { color: var(–muted); font-size: 14px; margin-bottom: 32px; }
+.stats-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; width: 100%; margin-bottom: 32px; }
+.stat-box { background: var(–surface); border: 1px solid var(–border); border-radius: 12px; padding: 16px 10px; }
+.stat-box .stat-val { font-family: ‘DM Serif Display’, serif; font-size: 26px; }
+.stat-box .stat-lbl { font-size: 11px; color: var(–muted); margin-top: 2px; }
+.stat-box.green .stat-val { color: var(–accent2); }
+.stat-box.red .stat-val { color: var(–warn); }
+.stat-box.blue .stat-val { color: var(–accent); }
+.restart-btn {
+width: 100%; background: var(–accent); color: #0d1117;
+border: none; border-radius: var(–radius); padding: 18px;
+font-size: 16px; font-weight: 600; cursor: pointer; transition: all 0.2s;
+font-family: ‘DM Sans’, sans-serif; margin-bottom: 12px;
+}
+.restart-btn:hover { background: #79beff; }
+.home-btn {
+width: 100%; background: none; border: 2px solid var(–border);
+color: var(–muted); border-radius: var(–radius); padding: 16px;
+font-size: 15px; font-weight: 500; cursor: pointer; transition: all 0.2s;
+font-family: ‘DM Sans’, sans-serif;
+}
+.home-btn:hover { border-color: var(–text); color: var(–text); }
+
+.medal { font-size: 52px; margin-bottom: 12px; display: block; animation: bounceIn 0.5s ease; }
+@keyframes bounceIn { 0%{transform:scale(0)} 70%{transform:scale(1.15)} 100%{transform:scale(1)} }
+</style>
+
+</head>
+<body>
+
+<!-- HOME -->
+
+<div id="home" class="screen active">
+  <div class="logo-area">
+    <span class="eye-icon">👁</span>
+    <h1>Optometria Kvíz</h1>
+    <p>Záróvizsga felkészítő tesztkérdések</p>
+  </div>
+  <div class="section-label">Kérdések száma</div>
+  <div class="count-grid">
+    <button class="count-btn" onclick="selectCount(30)">30<span>kérdés</span></button>
+    <button class="count-btn" onclick="selectCount(100)">100<span>kérdés</span></button>
+  </div>
+  <button class="start-btn" id="startBtn" onclick="startQuiz()" disabled>Kezdés →</button>
+</div>
+
+<!-- QUIZ -->
+
+<div id="quiz" class="screen">
+  <div class="quiz-header">
+    <button class="quit-btn" onclick="goHome()" title="Kilépés">✕</button>
+    <div class="progress-wrap">
+      <div class="progress-bar-bg"><div class="progress-bar" id="progressBar"></div></div>
+      <div class="progress-text" id="progressText"></div>
+    </div>
+    <div class="score-chip" id="scoreChip">0 pt</div>
+  </div>
+
+  <div class="question-card" id="questionCard">
+    <div class="question-type-badge" id="typeBadge"></div>
+    <div class="question-num" id="questionNum"></div>
+    <div class="question-text" id="questionText"></div>
+  </div>
+
+  <div id="answersArea"></div>
+  <div class="feedback-bar" id="feedbackBar"><span class="fb-icon" id="fbIcon"></span><span id="fbMsg"></span></div>
+
+  <div class="action-wrap">
+    <button class="next-btn" id="nextBtn" onclick="nextQuestion()" disabled>Válassz egy választ</button>
+  </div>
+</div>
+
+<!-- RESULTS -->
+
+<div id="results" class="screen">
+  <span class="medal" id="medal"></span>
+  <div class="result-ring">
+    <svg width="160" height="160" viewBox="0 0 160 160">
+      <circle cx="80" cy="80" r="68" fill="none" stroke="#30363d" stroke-width="12"/>
+      <circle cx="80" cy="80" r="68" fill="none" stroke="url(#grad)" stroke-width="12"
+        stroke-linecap="round" stroke-dasharray="427" id="resultCircle" stroke-dashoffset="427"/>
+      <defs><linearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="0%">
+        <stop offset="0%" stop-color="#58a6ff"/>
+        <stop offset="100%" stop-color="#3fb950"/>
+      </linearGradient></defs>
+    </svg>
+    <div class="result-ring-text"><div class="result-pct" id="resultPct">0%</div><div class="result-pct-label">helyes</div></div>
+  </div>
+  <h2 id="resultTitle"></h2>
+  <p class="result-sub" id="resultSub"></p>
+  <div class="stats-grid">
+    <div class="stat-box green"><div class="stat-val" id="statCorrect">0</div><div class="stat-lbl">helyes</div></div>
+    <div class="stat-box red"><div class="stat-val" id="statWrong">0</div><div class="stat-lbl">hibás</div></div>
+    <div class="stat-box blue"><div class="stat-val" id="statTotal">0</div><div class="stat-lbl">kérdés</div></div>
+  </div>
+  <button class="restart-btn" onclick="restartQuiz()">Újra játszás</button>
+  <button class="home-btn" onclick="goHome()">← Főmenü</button>
+</div>
+
+<script>
+// ═══════════════════════════════════════════════════════════════
+// QUESTION DATA
+// ═══════════════════════════════════════════════════════════════
+// Types:
+//  'single'    - one correct answer from options
+//  'multi'     - multiple correct answers (checkboxes)
+//  'truefalse' - each sub-statement is I (igaz/true) or H (hamis/false)
+//  'analysis'  - A/B/C/D/E based on truth and relation of two statements
+
+const QUESTIONS = [
+// ── SINGLE CHOICE (1–363) ──
+{id:1,type:'single',q:'Az orvostechnikai eszközöknél csak a bekövetkezett baleseteket kell jelenteni a hatóságnak?',opts:['Igen.','Nem, azt is jelenteni kell, ha bekövetkezhetett volna.','Ez csak a kórházra tartozik.'],ans:1},
+{id:2,type:'single',q:'Egy orvostechnikai eszköz hibás működése, kalibrálatlansága, pontatlansága veszélyes helyzetnek tekinthető-e?',opts:['Nem.','Igen.','Ezt az alkalmazó mérlegeli.'],ans:1},
+{id:3,type:'single',q:'Használható-e az orvostechnikai eszköz a használati útmutatótól eltérően?',opts:['Igen.','Nem.','Ez a felhasználó szakmai mérlegelési joga.'],ans:1},
+{id:4,type:'single',q:'Ki dönti el, mire használható egy orvostechnikai eszköz?',opts:['A szakorvos.','A hatóság.','A gyártó.'],ans:2},
+{id:5,type:'single',q:'Kinek kell jelenteni az orvostechnikai eszközzel bekövetkezett balesetet vagy ha bekövetkezhetett volna?',opts:['Nem kell jelenteni, de a minőségügyi rendszert felül kell vizsgálni.','A hatóságnak a jogszabályban előírt nyomtatványon.','A helyi munkavédelmi felelősnek, ha van.'],ans:1},
+{id:6,type:'single',q:'Kötelező-e a magyar nyelvű használati útmutató orvostechnikai eszközhöz?',opts:['Igen.','Nem.','Igen, ha kéri a felhasználó.'],ans:0},
+{id:7,type:'single',q:'Kötelező-e az orvostechnikai eszköz hatékonyságát bizonyítani?',opts:['Nem.','Igen.','Ezt az alkalmazó mérlegeli.'],ans:1},
+{id:8,type:'single',q:'Kötelezőek-e az EU orvostechnikai eszköz szabályai Magyarországon?',opts:['Nem, csak ajánlás.','A felhasználó mérlegeli.','Igen.'],ans:2},
+{id:9,type:'single',q:'Milyen módszerre kell visszavezethetőnek lennie a hatékonyság bizonyításának?',opts:['Irodalomkutatás.','Dokumentált klinikai kísérlet.','Egyedi próbák.'],ans:1},
+{id:10,type:'single',q:'Mit jelent a CE jelölés az orvostechnikai eszközön?',opts:['Minőségügyi jel.','Megfelelés az uniós direktívának.','A centrális elektromos kiegyenlítés jele.'],ans:1},
+{id:11,type:'single',q:'Hány féle orvostechnikai eszköz időszakos felülvizsgálatát írja elő miniszteri rendelet?',opts:['Egyet sem, ez a kórház döntésén múlik.','21.','Mindegyikét.'],ans:1},
+{id:12,type:'single',q:'Mekkora pontatlanság terheli általában orvostechnikai eszközöket?',opts:['1%.','5%.','20%.'],ans:1},
+{id:13,type:'single',q:'Mi a következménye a felülvizsgálat elmaradásának?',opts:['Az eszköz használatának felfüggesztése.','Pénzbüntetés.','Munkaügyi elmarasztalás.'],ans:0},
+{id:14,type:'single',q:'Min múlik leginkább a mérések pontossága?',opts:['A műszer saját pontatlanságán.','A használó ismeretein.','A gyártás minőségügyi rendszerén.'],ans:1},
+{id:15,type:'single',q:'Mit jelent a piros színű jelzés aktiválódása az orvostechnikai eszközökön?',opts:['A készülék üzemen kívül van.','A készülék veszélyhelyzetet érzékelt.','A készülék veszélyes feszültséggel üzemel.'],ans:1},
+{id:16,type:'single',q:'Mit jelent a sárga színű jelzés aktiválódása az orvostechnikai eszközökön?',opts:['A készülék üzemen kívül van.','A készülék figyelmeztet.','A készülék valamely üzemmódja bekapcsolásának visszajelzése.'],ans:1},
+{id:21,type:'single',q:'Mit jelent a farmakodinámia kifejezés?',opts:['gyógyszer alkalmazás','gyógyszer mellékhatás','gyógyszer hatás a szervezetre','gyógyszerek ellenjavallat'],ans:2},
+{id:22,type:'single',q:'Az alábbiak közül melyik ér vesz részt az agy vérellátásában?',opts:['arteria carotis externa','arteria vertebralis','arteria iliaca externa','truncus coeliacus'],ans:1},
+{id:23,type:'single',q:'Hogyan nevezzük az os temporale sziklacsonti részét?',opts:['pars squamosa','pars petrosa','pars tympanica','pars descendens'],ans:1},
+{id:24,type:'single',q:'Melyik agyideg lép át a canalis opticuson?',opts:['nervus oculomotorius','nervus ophthalmicus','nervus opticus','nervus hypoglossus'],ans:2},
+{id:25,type:'single',q:'Mennyi az erythrocyták száma mikroliterenként?',opts:['4.5-5 millió','1-2 millió','3-4 millió','6.5-7 millió'],ans:0},
+{id:26,type:'single',q:'A Lang teszttel mit vizsgálhatunk?',opts:['A szemmozgásokat vizsgáljuk','A közeli harmadfokú binokuláris látást, azaz a szterolátást vizsgáljuk ezzel','A színlátást vizsgáljuk','A bénulást tudjuk kimutatni'],ans:1},
+{id:27,type:'single',q:'A távoli Maddox vizsgálathoz kell:',opts:['Szemtükör','Pupilla lámpa','Vörös zöld szemüveg','Maddox kereszt és Maddox cilinder'],ans:3},
+{id:28,type:'single',q:'A verzió sebessége, a vergenciához hasonlítva:',opts:['gyorsabb','lassabb','ugyan olyan sebességű','nem lehet összehasonlítani'],ans:0},
+{id:29,type:'single',q:'Az alábbi állítások közül melyik a helyes?',opts:['Embernél a látóidegrostok 50%-a kereszteződik','Embernél a látóidegrostok temporális fele kereszteződik','Embernél a látóidegrostok a corpus geniculatum lateraléban kereszteződnek','A látókéregben csak monokuláris sejtek vannak'],ans:0},
+{id:30,type:'single',q:'Az alábbiak közül hova tartozik a mozgásparallaxis?',opts:['Látási jelzőmozzanatok: monokuláris','Látási jelzőmozzanatok: binokuláris','Szemmozgásos jelzőmozzanatok','Látási jelzőmozzanatok: monokuláris, statikus, perspektíva'],ans:0},
+{id:31,type:'single',q:'Az alábbiak közül melyik a másodfokú binokularitás szinonimája?',opts:['fúzió','fuzionalitás','funkció','torzió'],ans:0},
+{id:32,type:'single',q:'Divergencia matematikai értelemben:',opts:['negatív előjelű','pozitív előjelű','nincs előjele','mindkettő'],ans:0},
+{id:33,type:'single',q:'Iseiconia jelentése:',opts:['Azonos fénytörés a két szemen','Azonos képnagyság a két szemben','Azonos méretű a két szem','Azonos fokú a két szem konvergenciája'],ans:1},
+{id:38,type:'single',q:'Melyik statikus jelzőmozzanat győzheti le a retinális diszparitást?',opts:['méret','takarás','perspektíva','árnyékolás'],ans:1},
+{id:39,type:'single',q:'Mi az elsőfokú binokuláris látás?',opts:['Amikor két szem látóterének 120º-os átmérőjű területe fedi egymást','Amikor a két szemet külön érő különböző fény- vagy színingert egyszerre fogjunk fel','Amikor a két szem korrespondáló pontjain keletkezett kép tudatunkban egybeolvad','Amikor két szem együttműködésének köszönhetően a tárgyakat három dimenzióban érzékeljük'],ans:1},
+{id:40,type:'single',q:'Mi az incyclo-vergentina helyzet?',opts:['a szemek befelé térülése','divergentia fellépése a szemek lefelé térülésekor','mindkét szem vertikális meridiánja „A" helyzetet vesz fel','a szemek közelre nézésekor fellépő összetérülése'],ans:2},
+{id:41,type:'single',q:'Mikor jön létre zavaró diplopia?',opts:['Amikor egy térbeli pont képe a két szem retinájának nem identikus pontjaira esik','Amikor két szem foveola centralisa egymásnak nem identikus pontjaként szerepel','Amikor az egyik szem foveola centralisában keletkezett kép a másik szem pseudofoveolájával jön fusioba.','Amikor az egyik szem foveolájában keletkezett kép mérete lényeges eltér a másik szem foveolájában keletkezett kép méretétől'],ans:2},
+{id:43,type:'single',q:'Milyen pontokból szerkesztett pontsor a horopter-kör?',opts:['A retina peripheria ún. disparat pontjainak összességéből szerkesztett sor','A két szem által fixált pont körül azon pontokból szerkesztett pontsor, melyeknek vetülete a retina nem identikus pontjaira estik.','A két szem által fixált pont körüli azon pontokból szerkesztett pontsor, melyeknek vetülete mindkét retina identikus pontjaira esik'],ans:2},
+{id:44,type:'single',q:'Mire alkalmas a synoptophor?',opts:['A refrakció meghatározására','A közeli visus vizsgálatára','Szemnyomás mérésére','A binokuláris látás vizsgálatára'],ans:3},
+{id:45,type:'single',q:'Mit jelent a „strabismus concomittans" kifejezés?',opts:['kísérő kancsalság','bénulásos kancsalság','konvergens kancsalság','divergens kancsalság'],ans:0},
+{id:46,type:'single',q:'Mit jelent az, ha a fusiót kizárva végzett takarásos próbával beállító mozgást találunk?',opts:['amblyopiát','orthphoriát','heterophoriát','nincs vezérszeme a betegnek'],ans:2},
+{id:47,type:'single',q:'Mit jelent az, ha csak egy bizonyos tekintési irányban találunk kettős látást?',opts:['csak kisfokú ametropia okozza a kancsalságot','valószínűleg rosszul végeztük a vizsgálatot','bénulásos kancsalságról van szó','heterophoriával állunk szemben'],ans:2},
+{id:48,type:'single',q:'Mit jelent az, hogy sensomotoros egyensúlyban vannak a szemek?',opts:['A fúzió megtartott','Nincs refraciós hiba','A binokuláris látás szenzoros és motoros feltételei jók','Mindkét szem azonos mértékben kancsalit kifelé és befelé is'],ans:2},
+{id:49,type:'single',q:'Mit nevezünk Panum-mezőnek?',opts:['a retina peripheriájának identikus mezőit','a két szem látóterének egymással fedésben lévő területét','a két szem centrumának identikus pontjait','a szemészetben nincs ilyen fogalom'],ans:1},
+{id:51,type:'single',q:'Verzió mindkét szem:',opts:['azonos nagyságú, de ellentétes irányú elmozdulása','azonos nagyságú, és azonos irányú elmozdulása','eltérő nagyságú, és ellentétes irányú elmozdulása','eltérő nagyságú, de azonos irányú elmozdulása'],ans:1},
+{id:52,type:'single',q:'A fehérjék másodlagos szerkezetét adja:',opts:['az aminosavak sorrendje','az a-hélix és a b-redő','a nukleinsavak sorrendje','a két poliamidláncból álló kettős hélix'],ans:1},
+{id:53,type:'single',q:'A lipidek csoportjába tartozó valamennyi anyagra jellemző:',opts:['zsíroldékonyak','micellákat képeznek','kettős kötéseik miatt színesek','észterek'],ans:0},
+{id:54,type:'single',q:'Az állati/emberi sejtekben raktározott poliszaharid:',opts:['Keményítő','Cellulóz','Kitin','Glikogén'],ans:3},
+{id:56,type:'single',q:'Ha valakinek a szemszín génjéből két egyforma allélja van, akkor erre a tulajdonságra nézve:',opts:['Heterozigóta','Hemizigóta','Homozigóta','Monoszómiás'],ans:2},
+{id:57,type:'single',q:'Mikor keletkezett bolygónk, a Föld?',opts:['15 milliárd évvel ezelőtt','4.6 milliárd évvel ezelőtt','10 millió évvel ezelőtt','3.8 milliárd évvel ezelőtt'],ans:1},
+{id:58,type:'single',q:'A véralvadási faktorok közé tartozik:',opts:['heparin','fibrinogén','szerotonin','fibrinolizin'],ans:1},
+{id:59,type:'single',q:'Hyperthyreosis esetén:',opts:['a mozgás és a beszéd lelassul','mixödéma keletkezik','a beteg jelentősen meghízik','a beteg pulzusa szapora, vérnyomása emelkedik'],ans:3},
+{id:60,type:'single',q:'Melyik a neuromuscularis szinapszis ingerületátvivő anyaga?',opts:['noradrenalin','dopamin','acetilkolin','szerotonin'],ans:2},
+{id:61,type:'single',q:'Mit bont le a nyál, és milyen termékek keletkeznek?',opts:['cellulózt maltózra és oligoszacharidokra','fehérjéket aminosavakra és kisebb peptidekre','keményítőt maltózra és oligoszacharidokra','keményítőt szacharózra és maltózra'],ans:2},
+{id:62,type:'single',q:'Neutrofil granulocyták feladata:',opts:['sejttörmelékek fagocitálása','baktériumok fagocitálása','antigénprezentáció','hisztamin termelése'],ans:1},
+{id:63,type:'single',q:'A felsoroltak közül melyik esetén közeledik a szem közelpontja a távolpont térbeli helyéhez?',opts:['astigmia','myopia','hypermetropia','presbyopia'],ans:1},
+{id:64,type:'single',q:'A felsoroltak közül melyik nem jellemző a fényforrásokra?',opts:['fényerősség','fényáram','megvilágítási erősség','felületi világosság'],ans:2},
+{id:65,type:'single',q:'A felsoroltak közül melyiknek van két valódi fókuszpontja?',opts:['gyűjtőlencse','szórólencse','homorú tükör','domború tükör'],ans:2},
+{id:66,type:'single',q:'A felsoroltak közül melyikre jellemző, hogy a tárgypontból kiinduló fénysugarakat úgy kell a szemüveggel módosítani, mintha azok a szem közelpontjából jönnének?',opts:['astigmia','myopia','hypermetropia','presbyopia'],ans:3},
+{id:67,type:'single',q:'A fénytörési hibák közül melyiknél valódi mindig a közelpont és a távolpont?',opts:['astigmia','myopia','hypermetropia','presbyopia'],ans:1},
+{id:70,type:'single',q:'A törőközegek közül melyik adja a szem törőerejének 2/3-át?',opts:['szaruhártya','csarnokvíz','szemlencse','üvegtest'],ans:0},
+{id:71,type:'single',q:'Az anizotróp anyagokon áthaladó fénysugarak melyik jelenséget hozzák létre?',opts:['interferencia','polarizáció','elnyelés','elhajlás'],ans:1},
+{id:72,type:'single',q:'Az emberi szem esetén melyik leképezési hibát korrigálhatja a pupilla?',opts:['sphaericus aberratio','astigmatismus','képmezőhajlás','kromatikus aberratio'],ans:0},
+{id:80,type:'single',q:'Mely fénytörési hiba esetén jellemezhetjük az ametropia fokát 2 értékkel?',opts:['astigmia','myopia','hypermetropia','presbyopia'],ans:0},
+{id:81,type:'single',q:'Mely fénytörési hiba esetén virtuális mindig a szem távolpontja?',opts:['astigmia','myopia','hypermetropia','presbyopia'],ans:2},
+{id:82,type:'single',q:'Mely jelenség alapul a fény részecske természetén?',opts:['interferencia','polarizáció','elnyelés','elhajlás'],ans:2},
+{id:83,type:'single',q:'Mely jelenség hatására jön létre a Poisson-féle folt?',opts:['interferencia','polarizáció','elnyelés','elhajlás'],ans:3},
+{id:86,type:'single',q:'Mely közegnek a törésmutatója a legnagyobb az emberi szemben?',opts:['szaruhártya','csarnokvíz','szemlencse','üvegtest'],ans:2},
+{id:87,type:'single',q:'Mely törőközeg törésmutatója változik az életkor előrehaladtával?',opts:['szaruhártya','csarnokvíz','szemlencse','üvegtest'],ans:2},
+{id:88,type:'single',q:'Melyik az a közeg, amelyik levegőben nagyobb törőerejű, mint a szemben?',opts:['szaruhártya','csarnokvíz','szemlencse','üvegtest'],ans:0},
+{id:91,type:'single',q:'Melyik az az eszköz, amelyik a tárgyoldalon hoz létre nagyított látszólagos képet?',opts:['gyűjtőlencse','szórólencse','homorú tükör','domború tükör'],ans:0},
+{id:92,type:'single',q:'Melyik az az eszköz, mely mindig látszólagos képet hoz létre a tárgy felőli oldalon?',opts:['gyűjtőlencse','szórólencse','homorú tükör','domború tükör'],ans:1},
+{id:93,type:'single',q:'Melyik az az optikai eszköz, melynek feladata a fénysugár elforgatása?',opts:['síkpárhuzamos lemez','síktükör','prizma','lencse'],ans:2},
+{id:99,type:'single',q:'Melyik fénytörési hiba esetén negatív mindig az ametropia foka?',opts:['astigmia','myopia','hypermetropia','presbyopia'],ans:1},
+{id:100,type:'single',q:'Melyik fénytörési hiba esetén pozitív mindig az ametropia foka?',opts:['astigmia','myopia','hypermetropia','presbyopia'],ans:2},
+{id:101,type:'single',q:'Melyik fénytörési hiba hozza létre a Sturm-féle konoidot?',opts:['astigmia','myopia','hypermetropia','presbyopia'],ans:0},
+{id:103,type:'single',q:'Melyik fénytörési hiba osztható fel fakultatív, relatív és abszolút csoportra?',opts:['astigmia','myopia','hypermetropia','presbyopia'],ans:2},
+{id:104,type:'single',q:'Melyik fénytörési hiba osztható fel reguláris és irreguláris csoportra?',opts:['astigmia','myopia','hypermetropia','presbyopia'],ans:0},
+{id:110,type:'single',q:'Melyik jellemző alapegysége azonos körülbelül egy gyertya fényességével?',opts:['fényerősség','fényáram','megvilágítási erősség','felületi világosság'],ans:0},
+{id:114,type:'single',q:'Melyik jellemző értékét adjuk meg luxban?',opts:['fényerősség','fényáram','megvilágítási erősség','felületi világosság'],ans:2},
+{id:117,type:'single',q:'Melyik jellemzőből származtathatjuk a másik hármat?',opts:['fényerősség','fényáram','megvilágítási erősség','felületi világosság'],ans:0},
+{id:120,type:'single',q:'Melyik közeg törésmutatója nem állandó a teljes közegben?',opts:['szaruhártya','csarnokvíz','szemlencse','üvegtest'],ans:2},
+{id:123,type:'single',q:'Melyik leképezési hiba korrigálható egy koronaüvegből és egy flintüvegből álló lencserendszerrel?',opts:['sphaericus aberratio','astigmatismus','képmezőhajlás','kromatikus aberratio'],ans:3},
+{id:126,type:'single',q:'Melyik leképezési hiba nem jellemző a tükrökre?',opts:['sphaericus aberratio','astigmatismus','képmezőhajlás','kromatikus aberratio'],ans:3},
+{id:130,type:'single',q:'Melyik optikai eszköznél alkalmazzuk a gyakorlatban a teljes visszaverődés jelenségét?',opts:['síkpárhuzamos lemez','síktükör','prizma','lencse'],ans:2},
+{id:137,type:'single',q:'Melyik törőközeg törésmutatóját használja a Gullstrand féle szemmodell a szem átlagos törésmutatójának?',opts:['szaruhártya','csarnokvíz','szemlencse','üvegtest'],ans:1},
+{id:138,type:'single',q:'Milyen irányba tolja el az alkalmazkodás a fénytörést?',opts:['astigmia','myopia','hypermetropia','presbyopia'],ans:1},
+{id:139,type:'single',q:'A vírusokra jellemző:',opts:['Csak fénymikroszkóppal láthatók','Mikrométer méretűek','Nanométer méretűek','Csak vegetatív formában fordul elő'],ans:2},
+{id:141,type:'single',q:'Mi az inkubációs idő?',opts:['a kórokozó ürülésének kezdetéig eltelő idő','a kórokozóhordozás ideje','a kórokozó elszaporodásához szükséges idő','a fertőzés és a klinikai tünetek megjelenése között eltelő idő'],ans:3},
+{id:142,type:'single',q:'Milyen irányba tolja el az aphakia a fénytörési hibát?',opts:['astigmia','myopia','hypermetropia','presbyopia'],ans:2},
+{id:143,type:'single',q:'Mely hatóanyagot használják a glaukóma kezelésében?',opts:['timolol (Arutimol)','atropin','neomycin','ciprofloxacin','tropicamid'],ans:0},
+{id:144,type:'single',q:'Mit nevezünk generikus gyógyszernek?',opts:['új hatóanyagot tartalmazó készítményeket','termékszabadalommal védett gyógyszereket','általános, széles körben használt gyógyszereket','genetikai hatású készítményeket','szabadalommal nem védett meglévő hatóanyagú készítményeket'],ans:4},
+{id:145,type:'single',q:'Melyik nem tágítja a pupillát?',opts:['atropin','tropicamid','cylopentolat','pilocarpin','fenilefrin'],ans:3},
+{id:150,type:'single',q:'A felsorolt alapanyagok közül melyik igényli a legkevésbé a fehérjetisztítást?',opts:['Hagyományos magasabb víztartalmú hidrogél','RGP','Hagyományos alacsonyabb víztartalmú hidrogél'],ans:1},
+{id:151,type:'single',q:'A lágy kontaktlencse illesztését szorosnak találja. Hogyan változtat rajta?',opts:['az új próbalencsénél növeli a lencse alapgörbületi sugarának értéket','az új próbalencsénél csökkenti a lencse alapgörbületi sugarának értéket','az új próbalencsénél növeli a lencse átmérőjét'],ans:0},
+{id:152,type:'single',q:'A praecornealis könnyfilm mely rétege akadályozza meg a könny elpárolgását?',opts:['vizes fázis','lipidfázis','mucinréteg','a fentiek mindegyike','egyik sem a fentiek közül'],ans:1},
+{id:153,type:'single',q:'A szaruhártya legvastagabb rétege:',opts:['epithelium','Bowman membran','stroma','Descemet membran','endothelium'],ans:2},
+{id:154,type:'single',q:'A szaruhártya mely rétege áll egy sejtsorból?',opts:['epithelium','Bowman membran','stroma','Descemet membran','endothelium'],ans:4},
+{id:155,type:'single',q:'A szaruhártya mely rétege képes a teljes regenerálódásra?',opts:['stroma','endothelium','Descemet-hártya','epithelium','Bowman-hártya'],ans:3},
+{id:159,type:'single',q:'Mennyi a könny pH-értéke?',opts:['pH 4,8-5.2','pH 6.4-6.8','pH 7.0-7.4','pH 7.4-7.8','pH 8.2-8.6'],ans:3},
+{id:161,type:'single',q:'Milyen kórokozóra gondolunk, ha egy keratitises beteg kórtörténetében kontaktlencse viselés és uszodavízzel való érintkezés is szerepel?',opts:['Staphylococcus','Streptococcus','Pseudomonas','Acanthamoeba'],ans:3},
+{id:162,type:'single',q:'Milyen vizsgálattal tudja a legnagyobb biztonsággal megállapítani a keratoconust?',opts:['réslámpával','keratométerrel','komputer topográffal','szemtükörrel'],ans:2},
+{id:163,type:'single',q:'Mire gondolunk, ha egy páciensnél a szaruhártya felszíne irregulárissá válik, és kisebb alapgörbületi sugárértékek lesznek mérhetők?',opts:['myopizálódás','presbyopia','keratoconus','iridocyclitis'],ans:2},
+{id:171,type:'single',q:'Szilikon-hidrogél alapanyagú kontaktlencséken a leggyakoribb felrakódás:',opts:['protein','lipid','kalcium'],ans:1},
+{id:173,type:'single',q:'A helyesen beállított polarizációs szűrő:',opts:['gyengíti a vízszintes síkban visszavert fénysugarakat','gyengíti a függőleges síkban visszavert fénysugarakat','mind a vízszintes, mind a függőleges síkban visszavert fénysugarakat gyengíti','egyik síkban sem befolyásolja a fényvisszaverődést'],ans:0},
+{id:174,type:'single',q:'A photochromaticus lencse kivilágosodása:',opts:['gyorsabb, mint a besötétedése','kb. azonos ideig tart, mint a besötétedése','lassabb, mint a besötétedése'],ans:2},
+{id:175,type:'single',q:'A polikarbonát karcállósága nagyjából:',opts:['fele a CR 39-ének','harmada a CR 39-ének','azonos a CR 39 karcállóságával','kétszerese a CR 39-ének'],ans:1},
+{id:182,type:'single',q:'5/5 Snellen látóélesség mivel azonos?',opts:['a szem maximális teljesítőképességével','1,0 decimális értékekkel','0,5 decimális értékekkel','a lehető legjobb látással'],ans:1},
+{id:192,type:'single',q:'A musculus sphincter pupillae beidegzése:',opts:['akaratlagos','parasympathicus','sympathicus'],ans:1},
+{id:193,type:'single',q:'A nervus opticus kilépési helye az orbitából:',opts:['foramen opticum','fissura orbitalis superior','fissura orbitalis inferior','foramen infraorbitale'],ans:0},
+{id:200,type:'single',q:'A szaruhártya rétegeinek száma szövettani vizsgálat alapján:',opts:['2','3','4','5'],ans:3},
+{id:203,type:'single',q:'Az ép pupilla átmérője közepes megvilágítással:',opts:['5-8 mm','4-6 mm','2-5 mm','1-3 mm'],ans:2},
+{id:219,type:'single',q:'Mennyi a szaruhártya görbületi sugarának középértéke?',opts:['7,0 mm','7,8 mm','8,1 mm','8,6 mm'],ans:1},
+{id:220,type:'single',q:'Mennyi Európában a férfiak körében a színtévesztők aránya?',opts:['0,01','0,08','0,13','0,25'],ans:1},
+{id:221,type:'single',q:'Mi a látásélesség egysége?',opts:['1 percnyi látószög','10 percnyi látószög','15 percnyi látószög','100 percnyi látószög'],ans:0},
+{id:222,type:'single',q:'Mi a nystagmus?',opts:['szédülés','szemtekerezgés','hányás','pupillamerevség'],ans:1},
+{id:223,type:'single',q:'Mi a protanopia?',opts:['vörös színvakság','zöld színvakság','farkasvakság','vakság'],ans:0},
+{id:224,type:'single',q:'Mi a scotoma?',opts:['a látótér szigetszerű kisesése','féloldali látótérkiesés','a centrum vizsgálatára szolgáló látótérvizsgáló módszer','a látótér koncentrikus szűkülete'],ans:0},
+{id:226,type:'single',q:'Mi a tonometria?',opts:['a szem belnyomásának mérése','a szemmozgások vizsgálata','a szemfenéki erekben lévő nyomás mérése','a szemizmok akciós áramának mérése'],ans:0},
+{id:228,type:'single',q:'Mi az entropium?',opts:['a szemhéjszélek összenövése','a szemhéj kifordulása','a szemrés zárásának elégtelensége','a szemhéj befordulása'],ans:3},
+{id:229,type:'single',q:'Mi az exophthalmus?',opts:['a szem belnyomásának emelkedése','a lencse elszürkülése','a szemek kidülledése','az üvegtest elhígulása'],ans:2},
+{id:230,type:'single',q:'Mi hajlamosít befelé térő kancsalságra?',opts:['myopia','hypermetropia','presbyopia','alkalmazkodás bénulása'],ans:1},
+{id:231,type:'single',q:'Mi okoz heteronym hemianopiát?',opts:['Látópálya-, agykéregbántalom','látóideg-bántalom','chiasma-bántalom','kisagysérülés'],ans:2},
+{id:235,type:'single',q:'Mikor adunk antibiotikum szemcseppet?',opts:['iritis acuta esetén','akut glaucomás rohamban','conjunctivitis acutában','neuritis nervi optici esetén'],ans:2},
+{id:239,type:'single',q:'Milyen szemcseppet adunk száraz szem betegség esetén?',opts:['antibiotikumot','műkönnyet','steroidtartalmú szemcseppet','pupillatágítót'],ans:1},
+{id:242,type:'single',q:'Mire szolgál a Javal-féle ophthalmometer?',opts:['a szem össztörőrendszerében lévő astigmia mérésére','a szaruhártya görbületi sugarának mérésére','a pupilla átmérőjének mérésére','a látóélesség meghatározására'],ans:1},
+{id:246,type:'single',q:'Mit jelent az emmetropia fogalma?',opts:['ép szemtekét','normális mértékű alkalmazkodást','teljes látóélességet','a helyes arány a szemteke hossza és a törőerő között'],ans:3},
+{id:247,type:'single',q:'Mit nevezünk adaptationak?',opts:['a szemlencse alakváltoztatását a fixált tárgy elhelyezkedése szerint','a pupilla beszűkülését fény hatására','a szem alkalmazkodását a környezet fényviszonyaihoz','a retina színérzékelő funkcióját'],ans:2},
+{id:251,type:'single',q:'Mit nevezünk fusiónak?',opts:['a másodfokú binokuláris látást','amikor a központi idegrendszer a két szem működését összerendezi','azt a működést, amikor a két szem retinájának nem identikus pontjain keletkezett képet egynek látjuk','amikor mindkét szemben azonos méretű kép keletkezik'],ans:0},
+{id:252,type:'single',q:'Mit nevezünk látóélességnek?',opts:['a szemnek azt a képességét, hogy a látott tárgyakról képet alkot','a minimum separabile értékbeli kifejezését','a tárgyak felismerését','a szem egyik fő funkcióját'],ans:1},
+{id:256,type:'single',q:'Mit okozhat az A-vitamin hiánya?',opts:['tályogot a szaruhártyán','hemeralopiát','színtévesztést','polyneuropathiát'],ans:1},
+{id:261,type:'single',q:'Pupillatáguláshoz vezet:',opts:['a sympathicus idegvégződések bénítása','a parasympaticus idegvégződés izgatása','a parasympatichus idegvégződések gátlása','a béta-receptorok gátlása'],ans:2},
+{id:262,type:'single',q:'Mi az ophthalmia electrica kiváltó oka?',opts:['allergia','ultraibolya sugárzás','infravörös fény','ultrahang','túl erős megvilágítás fehér fénnyel'],ans:1},
+{id:266,type:'single',q:'A conjunctivitis epidemica kórokozója:',opts:['adenovirus 8','diplobacillus Morax-Axenfeld','adenovirus 3','varicellavírus','Koch-Weeks-féle baktérium'],ans:0},
+{id:270,type:'single',q:'A phacogen uvetitis milyen típusú betegség?',opts:['fertőzéses eredetű gyulladás','autoimmun eredetű gyulladás','sérüléses eredetű fertőzés','műtét kapcsán történt fertőzés'],ans:1},
+{id:271,type:'single',q:'A szürkehályog melyik szint szűri ki?',opts:['fehér','kék','vörös','zöld'],ans:1},
+{id:272,type:'single',q:'A tartós szemnyomás emelkedésének mi a következménye?',opts:['szemfenéki arteriák falán a reflexcsík kiszélesedése','kereszteződési tünetek','a látóidegfő excavatiója','a látóidegfő ischaemiás prominentiája'],ans:2},
+{id:274,type:'single',q:'Általában milyen életkorban fordul elő a retinoblastoma?',opts:['0-2 éves korig','6-8 éves korban','pubertáskorban','40-50 éves kor között','öregkorban'],ans:0},
+{id:286,type:'single',q:'Feltétlenül műtéti megoldást igényel:',opts:['tompalátás','simplex galucoma','erosio corneae','ablatio retinae'],ans:3},
+{id:291,type:'single',q:'Hány stádiuma van a ROP-nak?',opts:['kettő','három','négy','öt'],ans:3},
+{id:295,type:'single',q:'Keratometria során elkövetett 1 dioptria mérési hiba hány D nem várt postoperatív fénytörési hibát okoz?',opts:['1','2','0,33','0,5'],ans:2},
+{id:311,type:'single',q:'Melyik nystagmusforma fiziológiás?',opts:['amblyopiás nystagmus','toxikus nystagmus','centrális eredetű nystagmus','optokineticus nystagmus'],ans:3},
+{id:313,type:'single',q:'Mennyi a fiziológiás astigmia értéke?',opts:['egyenes (direkt) astigmia 0.5 dioptria','fordított (inverz) astigmia 0.5 dioptria','egyenes (direkt) astigmia 1.0 dioptria','fordított (inverz) astigmia 1.0 dioptria'],ans:0},
+{id:316,type:'single',q:'Mi a tavaszi kötőhártya-gyulladás fő tünete?',opts:['bevérzés a kötőhártya alatt','látásromlás','nyirokcsomó-duzzanat','viszketés','szaruhártya-ereződés'],ans:3},
+{id:318,type:'single',q:'Mi az aniridia?',opts:['maximálisan kitágított pupilla','a traumás mydriasis másik neve','az iris teljes hiánya fejlődési rendellenesség következtében','az iris művi szövethiánya'],ans:2},
+{id:322,type:'single',q:'Mi jellemző a sugártest gyulladásra?',opts:['szaruhártya-beszűrődés','paragrafus alakú szemhéjszél','precipitatumok','pigmentszóródás az üvegtestben','erőteljes váladékozás a szemrésben'],ans:2},
+{id:323,type:'single',q:'Mi okoz amauroticus macskaszemet?',opts:['agydaganat','embolia arteriae centralis retinae','a szemgolyó tompa sérülése','retinoblastoma','keratitis e lagophthalmo'],ans:3},
+{id:350,type:'single',q:'Szemnyomás csökkentő hatású szemcsepp:',opts:['Atropin','Neomycin','Viscosa','Xalatan (latanoprost)','Mannisol'],ans:3},
+{id:351,type:'single',q:'Szürkehályog műtét után 6 hétig nem javasolt:',opts:['televíziót nézni, számítógépezni','műkönnyet használni','uszodába, gyógyfürdőbe menni','napszemüveget viselni'],ans:2},
+
+// ── MULTIPLE CHOICE (364–439) ──
+{id:364,type:'multi',q:'Az alábbiak közül mely képletek haladnak a fissura orbitalis superioron keresztül?',opts:['III. agyideg','IV. agyideg','V/1. agyideg','VI. agyideg'],ans:[0,1,2,3]},
+{id:365,type:'multi',q:'Az alábbiak közül melyek a maxilla nyúlványai?',opts:['processus frontalis','processus palatinus','processus alveolaris','processus articularis superior'],ans:[0,1,2]},
+{id:366,type:'multi',q:'Hol fordul elő a szervezetben endothel?',opts:['a vesecsatornácskákban','a Bowmann-tokban','a gyomorban','vérerek és nyirokerek falában'],ans:[3]},
+{id:372,type:'multi',q:'Mely fehérjék felelősek az izomszövet összhúzékonyságáért?',opts:['aktin','kollagén','miozin','elasztin'],ans:[0,2]},
+{id:373,type:'multi',q:'Melyik sejtalkotó tartalmaz DNS-t?',opts:['riboszóma','mitokondrium','Golgi-készülék','sejtmag'],ans:[1,3]},
+{id:374,type:'multi',q:'Melyik transzportfolyamat jár membránlefűződéssel?',opts:['exocitózis','endocitózis','fagocitózis','apoptózis'],ans:[1,2]},
+{id:375,type:'multi',q:'Mi jellemző a lizoszómára?',opts:['a sejten belüli emésztés szervecskéje','enzimeket tartalmaz','a Golgi-készülékből fűződik le','membrán veszi körül'],ans:[0,1,2,3]},
+{id:378,type:'multi',q:'Fagocitózisra képes sejt:',opts:['neutrofil granulocyta','monocyta','szöveti macrophag','lymphocyta'],ans:[0,1,2]},
+{id:380,type:'multi',q:'Melyik eszköz esetén egyenes állású mindig a kép?',opts:['bikonvex lencse','bikonkáv lencse','homorú tükör','domború tükör'],ans:[1,3]},
+{id:382,type:'multi',q:'Melyik eszköz gyűjtő hatású?',opts:['bikonvex lencse','bikonkáv lencse','homorú tükör','domború tükör'],ans:[0,2]},
+{id:384,type:'multi',q:'Melyik eszköz szóró hatású?',opts:['bikonvex lencse','bikonkáv lencse','homorú tükör','domború tükör'],ans:[1,3]},
+{id:388,type:'multi',q:'Melyik leképezési hiba fordulhat elő tükrök esetén is?',opts:['astigmatismus','sphaericus aberratio','kóma','kromatikus aberratio'],ans:[0,1,2]},
+{id:389,type:'multi',q:'Melyik leképezési hiba frekvenciafüggő?',opts:['astigmatismus','sphaericus aberratio','kóma','kromatikus aberratio'],ans:[3]},
+{id:391,type:'multi',q:'Melyik leképezési hiba korrigálható lencserendszerrel?',opts:['astigmatismus','sphaericus aberratio','kóma','kromatikus aberratio'],ans:[0,1,2,3]},
+{id:396,type:'multi',q:'Fiatalkori (1-es típusú) diabetes mellitusra jellemző:',opts:['gyakoribb, mint a felnőttkori (2-es típusú) diabetes mellitus','van saját insulin termelés','insulin kezelés mellett a diéta nem fontos','insulinnal kell kezelni'],ans:[3]},
+{id:397,type:'multi',q:'Hogyan terjed a hepatitis B. vírus?',opts:['faeco-oralis úton','szexuális úton','cseppfertőzéssel','szülés közben az anya fertőzheti újszülöttjét'],ans:[1,3]},
+{id:398,type:'multi',q:'Melyek a krónikus veseelégtelenség leggyakoribb okai?',opts:['TBC','diabetes mellitus','hyperthyreosis','hypertonia'],ans:[1,3]},
+{id:399,type:'multi',q:'Mélyvénás thrombosis kialakulására hajlamosít:',opts:['immobilitás','malignus tumor','műtét','alacsony thrombocyta szám'],ans:[0,1,2]},
+{id:401,type:'multi',q:'Friss szaruhártya ereződés kialakulása esetén teendő:',opts:['jelenlegi lencse viselésének felfüggesztése','alacsonyabb Dk értékű lencsére váltás','lencse anyagának megváltoztatása','műkönny adása'],ans:[0,2]},
+{id:402,type:'multi',q:'Kontaktlencse vizsgálatkor rutinszerűen ellenőrizzük:',opts:['a kontaktlencse illeszkedést','a szaruhártya ereződést','a lencsefelszín állapotát','a trabecularis hálózatot'],ans:[0,1,2]},
+{id:403,type:'multi',q:'Kontaktlencseviselés abbahagyásának leggyakoribb okai:',opts:['dioptria változások','a lencseviselés magas költsége','fájdalom','szárazság érzés'],ans:[2,3]},
+{id:405,type:'multi',q:'Lencse viselése nem jön szóba:',opts:['szaruhártya gyulladás','erősen lecsökkent könnytermelés','szemhéjgyulladás','küzdő sportoknál'],ans:[0,1,2]},
+{id:408,type:'multi',q:'Milyen kontaktlencsét ajánl egy 2.00 D cornealis asztigmiával rendelkező páciensnek?',opts:['tórikus lágylencsét','tórikus RGP lencsét','szférikus RGP lencsét','szférikus lágylencsét'],ans:[0,1,2]},
+{id:410,type:'multi',q:'Prosztetikus kontaktlencsét elsősorban a következő esetekben javasolunk:',opts:['a cornea torzító hegeinek fedésére','bakteriális keratitis fájdalom csökkentésére','traumás mydriasisban pupillaképzésre','keratopathia metaherpeticában'],ans:[0,2,3]},
+{id:412,type:'multi',q:'A fissura orbitalis superioron keresztül halad:',opts:['vena ophthalmica','nervus oculomotorius','nervus trochlearis','nervus abducens'],ans:[0,1,2,3]},
+{id:413,type:'multi',q:'A nervus oculomotorius (n. III.) idegzi be:',opts:['musculus sphincter pupillae','musculus rectus externus','musculus ciliaris','musculus obliquus superior'],ans:[0,2]},
+{id:414,type:'multi',q:'A retina ingerfelvevő elemei:',opts:['csapok és pálcikák','látóideg','neuroepithelsejtek','pigmentepithelsejtek'],ans:[0,2]},
+{id:419,type:'multi',q:'Mely állítások igazak a könnyrendszerről?',opts:['A könny secretióját kizárólag a glandula lacrimalis végzi','A könny mucirétegét a Meibom-mirigyek termelik','Az epiphora oka a könny fokozott termelődése','A Schirmer-próba a könny mennyiségének vizsgálatára szolgál'],ans:[3]},
+{id:420,type:'multi',q:'Mi lehet a rövidlátás oka?',opts:['túl hosszú a szem optikai tengelye','a szaruhártya fokozott domborúsága','a szemlencse fokozott törőereje','hemeralopia'],ans:[0,1,2]},
+{id:421,type:'multi',q:'Milyen következménye lehet a korrigálatlan hypermetropiának?',opts:['kancsalság','kettős látás','fejfájás','szemtekerezgés'],ans:[0,2]},
+{id:427,type:'multi',q:'Az arteria centralis retinae embolia jelei:',opts:['papillavérbőség','papillaprominentia','nagy kiterjedésű vérzések a retinán','az ideghártya fehér, ischaemiás, a macula piros'],ans:[3]},
+{id:428,type:'multi',q:'Bakteriális eredetű kötőhártya-gyulladás jellemzői:',opts:['bőséges serosus váladék képződése','erőteljes könnyezés','fehéres, tejszerű váladék képződése','bőséges, sárgászöld, sűrű váladék képződése'],ans:[3]},
+{id:430,type:'multi',q:'Hirtelen kialakuló kettőslátás oka lehet:',opts:['agyvérzés','koponyasérülés','myasthenia gravis','amblyopia'],ans:[0,1,2]},
+{id:432,type:'multi',q:'Mi jellemző az akut glaucomás rohamra?',opts:['erős szem körüli fájdalom','nystagmus','a szemgolyó tapintata kemény','atropin adása szükséges'],ans:[0,2]},
+{id:434,type:'multi',q:'Mi vezethet kancsalsághoz?',opts:['korrigálatlan hypermetropia','a szemizmok traumás sérülése','a szemizmok beidegzési zavara','endocrin ophthalmopathia'],ans:[0,1,2,3]},
+{id:436,type:'multi',q:'Milyen szemműtétek következtében alakulhat ki leggyakrabban secunder glaucoma?',opts:['szürkehályogműtét','kancsalműtétek','vitrectomia szilikonolaj-implantatióval','xanthelasma műtét'],ans:[0,2]},
+{id:437,type:'multi',q:'Mit okozhat az A-vitamin hiánya?',opts:['gyűrűs tályogot a szaruhártyán','farkasvakságot','színtévesztést','keratomalaciát'],ans:[1,3]},
+{id:439,type:'multi',q:'Szürkehályogműtétet kell végezni:',opts:['Ha az életvitelt zavaró látásromlást okoz','Ha a tumescens hályog szemnyomás emelkedést okoz','Ha phakogen uvetitist találunk','Ha romlani kezd a távoli visus'],ans:[0,1,2]},
+
+// ── TRUE/FALSE (441–596) ──
+{id:441,type:'truefalse',q:'Igazak, vagy hamisak az alábbi állítások?',stmts:[
+  {t:'A korhoz kötött kötelező védőoltások a szekunder prevencióhoz tartoznak',ans:'H'},
+  {t:'A korai halálozás kategóriája azért jött létre, hogy meghatározható legyen az az életkor, amely felett már a nagyon drága beavatkozásokat már nem kell elvégezni',ans:'H'}
+]},
+{id:443,type:'truefalse',q:'A belső szemnyomás szabályozásában részt vesz:',stmts:[
+  {t:'a choriocapillaris rendszer',ans:'H'},
+  {t:'a corpus ciliare',ans:'I'},
+  {t:'a cornea endothelrétege',ans:'H'},
+  {t:'az iris pigmentlap',ans:'H'}
+]},
+{id:444,type:'truefalse',q:'A musculus dilatator pupillae neuronjai:',stmts:[
+  {t:'adrenerg neuronok',ans:'I'},
+  {t:'cholinerg neuronok',ans:'H'}
+]},
+{id:445,type:'truefalse',q:'A retina felépítéséről tudjuk:',stmts:[
+  {t:'a retina 8 rétegű',ans:'H'},
+  {t:'a csapok a ganglionsejtekkel kapcsolódnak',ans:'H'},
+  {t:'a fotoreceptorok külső tagjában található rhodopsin',ans:'I'},
+  {t:'a belső magvas rétegben csak bipoláris sejtek találhatók',ans:'H'}
+]},
+{id:446,type:'truefalse',q:'A retina jellemzői:',stmts:[
+  {t:'az ora serrata előtt csak a pigmenthám folytatódik',ans:'I'},
+  {t:'az aequator mögött kezdődik a pars optica retinae',ans:'H'},
+  {t:'a fovea centralis 3 mm átmérőjű',ans:'H'},
+  {t:'a foveola centralis 0,3 mm átmérőjű árok',ans:'I'}
+]},
+{id:447,type:'truefalse',q:'A retina keringéséről tudjuk:',stmts:[
+  {t:'artériás vért csak az arteria centralisból kap',ans:'H'},
+  {t:'a retina külső négy rétege a choriocapillarisból táplálkozik',ans:'I'},
+  {t:'az arteria centralis a retinae a látóidegfőn keresztül lép be a szembe',ans:'I'},
+  {t:'a macula perifovealisan érmentes',ans:'H'}
+]},
+{id:448,type:'truefalse',q:'A retina működéséről ismert:',stmts:[
+  {t:'a pálcikák a fényhez való adaptáció eszközei',ans:'I'},
+  {t:'a rhodopsin bomlása biokémiai folyamat',ans:'I'},
+  {t:'a pigmentepithel a Bruch-membránnal együtt a külső vér-retina gátat képezi',ans:'I'},
+  {t:'a pigmentepithel sejteket zonula occludens köti össze',ans:'I'}
+]},
+{id:449,type:'truefalse',q:'Az alábbi állítások közül mi igaz és mi nem?',stmts:[
+  {t:'A reflexkör idegrendszeri központ felé vezető ágát afferens ágnak nevezzük',ans:'I'},
+  {t:'A reflexkörnek az idegrendszeri központhoz vezető ágát efferens ágának nevezzük',ans:'H'},
+  {t:'A külső szemizmokat beidegző idegek magja a gerincvelőben található',ans:'H'},
+  {t:'A belső szemizmok beidegzésének központja az occipitalis lebenyben található',ans:'H'}
+]},
+{id:451,type:'truefalse',q:'Az üvegtest jellemzői:',stmts:[
+  {t:'kollagént és hialuronsavat tartalmaz',ans:'I'},
+  {t:'víztartalma 50%',ans:'H'},
+  {t:'kívülről a membrana hyaloidea határolja',ans:'I'},
+  {t:'sehol sincs szoros kapcsolatban az ideghártyával',ans:'H'}
+]},
+{id:452,type:'truefalse',q:'Az üvegtestről ismeretes:',stmts:[
+  {t:'a bázisa szorosan kötődik a pars plana epitheliumához',ans:'I'},
+  {t:'elülső bemélyedése a fossa patellaris',ans:'I'},
+  {t:'semmilyen életkorban nincs szoros kapcsolata a lencsével',ans:'H'},
+  {t:'a Cloquet-csatorna az arteria hyaloidea maradványa',ans:'I'}
+]},
+{id:455,type:'truefalse',q:'Döntse el, hogy a következő állítások igazak-e vagy nem!',stmts:[
+  {t:'A könnymirigyek sympathicus beidegzés alatt állnak',ans:'I'},
+  {t:'A pupilla tágulása akkor alakul ki, amikor a sympathicus beidegzés bénul és parasympathicus tónus fokozódás jön létre',ans:'H'},
+  {t:'A lencse akkor képes törőerejét növelni, ha a parasympathicus beidegzés kerül túlsúlyba',ans:'I'},
+  {t:'Az acethylcholin a parasympathicus idegek és a neuromuscularis synapsisok ingerületátvivő anyaga',ans:'I'}
+]},
+{id:459,type:'truefalse',q:'Melyik állítás igaz a Purkinje-féle jelenség értelmében?',stmts:[
+  {t:'sötétadaptatióban a szem fényérzékenységi maximuma a rövid hullámhosszak irányába tolódik el',ans:'I'},
+  {t:'sötétadaptatióban a szem fényérzékenységi maximuma a hosszú hullámhosszak irányába tolódik el',ans:'H'}
+]},
+{id:466,type:'truefalse',q:'Az alábbi állítások közül melyik igaz?',stmts:[
+  {t:'Embernél egy-egy szem látótere 150-160 fok',ans:'I'},
+  {t:'Az egymást fedő látótérrész kb. 130 fok',ans:'I'},
+  {t:'2 x 30 fokos temporális félholdat csak egy-egy szem érzékel',ans:'I'},
+  {t:'Binokuláris működés az egymást fedő látótérrészben van',ans:'I'},
+  {t:'A binokuláris látás alapja, hogy a rostok ne kereszteződjenek',ans:'H'}
+]},
+{id:471,type:'truefalse',q:'Milyen okok vezetnek kettős látáshoz?',stmts:[
+  {t:'luxatio lentis',ans:'I'},
+  {t:'endocrin ophthalmopathia',ans:'I'},
+  {t:'amaurosis',ans:'H'},
+  {t:'anisocoria',ans:'I'}
+]},
+{id:472,type:'truefalse',q:'A bénulásos kancsalságra jellemző:',stmts:[
+  {t:'diplopia',ans:'I'},
+  {t:'ferde fejtartás',ans:'I'},
+  {t:'változó kancsalsági szög',ans:'I'},
+  {t:'csak gyerekkorban alakulhat ki',ans:'H'},
+  {t:'bármely életkorban kialakulhat',ans:'I'}
+]},
+{id:477,type:'truefalse',q:'A horizontális és vertikális heterophoriák együttes jelenléte:',stmts:[
+  {t:'ritka',ans:'H'},
+  {t:'gyakori',ans:'I'}
+]},
+{id:479,type:'truefalse',q:'A kísérő kancsalságra jellemző:',stmts:[
+  {t:'95%-ban divergens',ans:'H'},
+  {t:'Gyermekkorban alakul ki',ans:'I'},
+  {t:'Diplopia kíséri',ans:'H'},
+  {t:'A kancsalító szem amblyopiás lesz',ans:'I'},
+  {t:'A kancsalsági szög állandó',ans:'I'}
+]},
+{id:484,type:'truefalse',q:'A sztereopszis élettani alakulására jellemző:',stmts:[
+  {t:'A sztereopszis kialakulása 13-31 hetes korban kezdődik',ans:'H'},
+  {t:'6-12 hónapos korban a sztereopszis kialakulása nagymértékben fokozódik',ans:'I'},
+  {t:'A sztereopszis 7-9 éves korban csaknem megegyezik a felnőttkorival',ans:'I'},
+  {t:'A sztereopszis kialakulását mesterséges körülmények között meg lehet akadályozni',ans:'I'},
+  {t:'60 éves korig relatíve stabil a sztereopszis',ans:'I'}
+]},
+
+// ── ANALYSIS A/B/C/D/E (597–755) ──
+{id:597,type:'analysis',q:'Elemezze az állításokat!',stmt1:'-3,0 D-ás szemeket nem terheli a presbyopia',stmt2:'az ilyen személyek időskorban korrekció nélkül jól olvasnak.',ans:'A'},
+{id:598,type:'analysis',q:'Elemezze az állításokat!',stmt1:'A cornea gyors regeneratióra képes hámsejtekkel rendelkezik',stmt2:'ritka betegség a szaruhártya-gyulladás.',ans:'C'},
+{id:599,type:'analysis',q:'Elemezze az állításokat!',stmt1:'A csapok jelentik a fovea centralis színlátó elemeit',stmt2:'a fovea pusztulásakor sérül a színlátás.',ans:'A'},
+{id:600,type:'analysis',q:'Elemezze az állításokat!',stmt1:'A fundus fluorescein-angiographia vizsgálata a szem keringési állapotáról ad felvilágosítást',stmt2:'alkalmas a retina ereiben a vérnyomás mérésére.',ans:'C'},
+{id:601,type:'analysis',q:'Elemezze az állításokat!',stmt1:'A konvergens kancsalság befelé térő kancsalságot jelent',stmt2:'oka az orbita falai által bezárt szög.',ans:'C'},
+{id:602,type:'analysis',q:'Elemezze az állításokat!',stmt1:'A koponyaüreg zárt teret képez',stmt2:'a bármely okból kialakult agynyomásfokozódás életveszélyes állapot.',ans:'A'},
+{id:603,type:'analysis',q:'Elemezze az állításokat!',stmt1:'A látásélesség Snellen szerint a látott tárgy szélső pontjairól a szem optikai csomópontján áthaladó sugarak által közrefogott szög mértékével határozható meg',stmt2:'az egészséges szem 1,0-es látásának egysége 1 szögperc.',ans:'B'},
+{id:606,type:'analysis',q:'Elemezze az állításokat!',stmt1:'A nasalis retinafélből származó rostok kereszteződnek a chiasma opticumban',stmt2:'a sérülésük kétoldali temporalis látótérkiesést okoz.',ans:'A'},
+{id:607,type:'analysis',q:'Elemezze az állításokat!',stmt1:'A nervus trochlearis idegzi be a felső ferde szemizmot',stmt2:'bénulása kifelétekintési képtelenséget idéz elő.',ans:'C'},
+{id:608,type:'analysis',q:'Elemezze az állításokat!',stmt1:'A pálcikák a peripherián helyezkednek el',stmt2:'ablatio retinae esetében elvész a színlátás.',ans:'C'},
+{id:610,type:'analysis',q:'Elemezze az állításokat!',stmt1:'A parasympathicus izgatók a corpus ciliaere görcsét okozzák',stmt2:'a pilocarpin szemcsepp myopizálódást válthat ki.',ans:'A'},
+{id:611,type:'analysis',q:'Elemezze az állításokat!',stmt1:'A pupillareflex afferens és efferens rostjai együtt futnak a látópálya rostjaival',stmt2:'a látópálya károsodása együtt jár a pupillareflex zavaraival.',ans:'E'},
+{id:612,type:'analysis',q:'Elemezze az állításokat!',stmt1:'A retina capillarisaiban a középnyomás 30-40 Hgmm',stmt2:'simplex glaucomában könnyen károsodik a papilla keringése, és atrophia alakul ki.',ans:'A'},
+{id:615,type:'analysis',q:'Elemezze az állításokat!',stmt1:'A rövidlátók konkáv üveget igényelnek',stmt2:'jól látnak közelre.',ans:'B'},
+{id:617,type:'analysis',q:'Elemezze az állításokat!',stmt1:'A szem változatlan convergentia mellett bizonyos mértékig változtathatja az alkalmazkodást',stmt2:'ezt nevezzük relatív alkalmazkodási szélességnek.',ans:'A'},
+{id:619,type:'analysis',q:'Elemezze az állításokat!',stmt1:'A színvakság örökölhető betegség',stmt2:'minden színlátászavar kétszemes.',ans:'C'},
+{id:620,type:'analysis',q:'Elemezze az állításokat!',stmt1:'A vena centralis retinae középnyomása 15-20 Hgmm',stmt2:'emelkedett szemnyomás mellett a venaelzáródás veszélye megnő.',ans:'A'},
+{id:622,type:'analysis',q:'Elemezze az állításokat!',stmt1:'Az alkalmazkodásbénulás az oculomotorius-bénulás egyik tünete',stmt2:'a pupilla tág, a beteg nem tud olvasni.',ans:'A'},
+{id:624,type:'analysis',q:'Elemezze az állításokat!',stmt1:'Az astigmiának két fajtája a fiziológiás és a szabályos astigmia',stmt2:'nem kell korrigálni.',ans:'E'},
+{id:627,type:'analysis',q:'Elemezze az állításokat!',stmt1:'Az öregszeműséget presbyopiának nevezzük',stmt2:'idővel a szemlencse részleges elszürkülését eredményezi.',ans:'C'},
+{id:629,type:'analysis',q:'Elemezze az állításokat!',stmt1:'Csapok legnagyobb számban a fovea centralisban találhatók',stmt2:'a pálcikák pusztulása látótérszűkületet eredményez.',ans:'B'},
+{id:630,type:'analysis',q:'Elemezze az állításokat!',stmt1:'Fotoreceptorok csak a fovea centralisban találhatók',stmt2:'a pálcikák pusztulása farkasvakságot okoz.',ans:'D'},
+{id:632,type:'analysis',q:'Elemezze az állításokat!',stmt1:'Közelre alkalmazkodó szem optikai rendszere myopia irányába tolódik el',stmt2:'alkalmazkodási görcsben lévő szem távolra konkáv lencsét igényel.',ans:'A'},
+{id:645,type:'analysis',q:'Elemezze az állításokat!',stmt1:'A szaruhártya fiziológiásan astigmiás',stmt2:'a vízszintes és a függőleges meridiánban különbözőek a görbületi sugarak.',ans:'A'},
+{id:648,type:'analysis',q:'Elemezze az állításokat!',stmt1:'A szaruhártya hátsó felszínének negatív a törőereje',stmt2:'a csarnokvíz törésmutatója kisebb, mint a szaruhártya törésmutatója.',ans:'B'},
+{id:649,type:'analysis',q:'Elemezze az állításokat!',stmt1:'A szaruhártya képezi a szem törőerejének 2/3-át',stmt2:'a mögötte lévő csarnokvíz csökkenti a homorú felszín törőerejét.',ans:'A'},
+{id:653,type:'analysis',q:'Elemezze az állításokat!',stmt1:'A szemlencse széli részének kisebb a törésmutatója',stmt2:'a lencse anyagának optikai sűrűsége a magból kiindulva a szélek felé csökken.',ans:'A'},
+{id:655,type:'analysis',q:'Elemezze az állításokat!',stmt1:'A fakultatív hypermetropiás szem távolpontja valódi',stmt2:'az akkomodáció igénybevételével a szem távolra jól lát.',ans:'D'},
+{id:661,type:'analysis',q:'Elemezze az állításokat!',stmt1:'A kromatikus aberratiót achromatizálással korrigálhatjuk',stmt2:'a flintüveg szórólencse újraegyesíti a koronaüveg-gyűjtőlencse által felbontott fénysugarakat.',ans:'A'},
+{id:662,type:'analysis',q:'Elemezze az állításokat!',stmt1:'A látóélesség alapja az 1\' látószög',stmt2:'az 1\' látószög szemfenéki képe megfelel a fovea centralisban elhelyezkedő csapok méretének.',ans:'A'},
+{id:664,type:'analysis',q:'Elemezze az állításokat!',stmt1:'A myopiás szem közelpontja virtuális',stmt2:'csak a konvergens fénysugarakat képes a retinára összegyűjteni.',ans:'E'},
+{id:666,type:'analysis',q:'Elemezze az állításokat!',stmt1:'A myopiásoknál általában jobb látóélesség érhető el a kontaktlencsével',stmt2:'a szemüveglencse kicsinyít a kontaktlencséhez képest.',ans:'A'},
+{id:667,type:'analysis',q:'Elemezze az állításokat!',stmt1:'A myopiát szórólencsével korrigáljuk',stmt2:'az ametropia foka pozitív.',ans:'C'},
+{id:668,type:'analysis',q:'Elemezze az állításokat!',stmt1:'A prizma vörös színű fényt töri meg legkevésbé',stmt2:'a vörös színű fény törésmutatója a legkisebb.',ans:'A'},
+{id:670,type:'analysis',q:'Elemezze az állításokat!',stmt1:'A relatív hypermetropiás szem távolpontja virtuális',stmt2:'az alkalmazkodóképesség igénybevétele távolba nézéskor együtt jár a konvergenciával.',ans:'B'},
+{id:672,type:'analysis',q:'Elemezze az állításokat!',stmt1:'A szem főpontjai az elülső csarnokban helyezkednek el',stmt2:'a szaruhártya adja a szem törőerejének 2/3-át.',ans:'B'},
+{id:679,type:'analysis',q:'Elemezze az állításokat!',stmt1:'Az emmetropiás szem alkalmazkodásmentes esetben a párhuzamos fénysugarakat a retinán gyűjti össze',stmt2:'a szem hátsó fókuszpontja a retinára esik.',ans:'A'},
+{id:681,type:'analysis',q:'Elemezze az állításokat!',stmt1:'Az emmetropiás szemnél az ametropia foka nulla',stmt2:'a szem mérete és törőereje egymással összhangban van.',ans:'A'},
+{id:682,type:'analysis',q:'Elemezze az állításokat!',stmt1:'Az interferencia hullámok találkozása esetén valósul meg',stmt2:'a koherens hullámok erősíthetik, vagy gyengíthetik egymást.',ans:'B'},
+{id:693,type:'analysis',q:'Elemezze az állításokat!',stmt1:'A binoculáris látás ép körülmények között tág határok között biztosítva van',stmt2:'a szervezet megterhelése orthophoriás embernél nem váltja ki a binokuláris látás zavarát.',ans:'A'},
+{id:698,type:'analysis',q:'Elemezze az állításokat!',stmt1:'A csapok döntő többsége a foveolában van',stmt2:'ennek épsége fotopikus és az ép színlátás legfontosabb feltétele.',ans:'A'},
+{id:701,type:'analysis',q:'Elemezze az állításokat!',stmt1:'A glaucoma betegség a látóidegfő károsodását okozza',stmt2:'ilyenkor papillaoedemát látunk a szemfenéken.',ans:'C'},
+{id:702,type:'analysis',q:'Elemezze az állításokat!',stmt1:'A glaucoma betegség látótérkieséssel jár',stmt2:'a szemnyomás akut glaucomás rohamban eléri a 60Hgmm-t is.',ans:'B'},
+{id:703,type:'analysis',q:'Elemezze az állításokat!',stmt1:'A glaucoma simplex korai időszaka nem jár panasszal',stmt2:'ilyenkor csak szűrővizsgálatokkal lehet diagnosztizálni.',ans:'A'},
+{id:709,type:'analysis',q:'Elemezze az állításokat!',stmt1:'A látóélesség csak akkor csökken, ha a macula és a papilla külön-külön vagy együttesen érintett',stmt2:'pusztán a látásélesség vizsgálata nem ad kielégítő képet a szem állapotáról.',ans:'A'},
+{id:712,type:'analysis',q:'Elemezze az állításokat!',stmt1:'A magas szemnyomás a látóidegfő atrophiáját okozza',stmt2:'belső szemnyomás magasabb, mint a papilla capillarisaiban uralkodó vérnyomás.',ans:'A'},
+{id:724,type:'analysis',q:'Elemezze az állításokat!',stmt1:'A szaruhártya mély gyulladása a keratitis disciformis',stmt2:'herpesvírus által kiváltott immunológiai történés következménye.',ans:'A'},
+{id:725,type:'analysis',q:'Elemezze az állításokat!',stmt1:'A szaruhártya véglegesen elveszítheti átlátszóságát',stmt2:'a sérült endothelrétegen keresztül csarnokvíz jut a rostjai közé.',ans:'A'},
+{id:727,type:'analysis',q:'Elemezze az állításokat!',stmt1:'A szivárványhártya gyulladása kapcsán sejtek kerülnek a csarnokvízbe',stmt2:'ilyen módon jön létre az iritisre jellemző Tyndall-jelenség.',ans:'A'},
+{id:735,type:'analysis',q:'Elemezze az állításokat!',stmt1:'Az arteria centralis retinae elzáródás azt eredményezi',stmt2:'retinában nincs keringés, azért azonnali fényérzés-nélküliséget okoz.',ans:'A'},
+{id:739,type:'analysis',q:'Elemezze az állításokat!',stmt1:'Előfordul kancsalság mellett kialakult amblyopia',stmt2:'gyermekeknél a kezelés első lépése az amblyopia megszüntetése.',ans:'A'},
+{id:740,type:'analysis',q:'Elemezze az állításokat!',stmt1:'Ha a retina levált, de a leválás nem érinti a maculát, a látásélesség teljes is lehet',stmt2:'nem elég csak a látásélesség vizsgálatra hagyatkozni.',ans:'A'},
+{id:745,type:'analysis',q:'Elemezze az állításokat!',stmt1:'Kettős látás esetén a bénult szemizmú szemben a valóságos helyzettől eltérő térbeli képzet keletkezik',stmt2:'a fixált tárgy képe nem a foveolában keletkezik.',ans:'A'},
+{id:748,type:'analysis',q:'Elemezze az állításokat!',stmt1:'Minden gyulladás vérbőséggel jár',stmt2:'a gyulladásos terület vörös.',ans:'A'},
+{id:750,type:'analysis',q:'Elemezze az állításokat!',stmt1:'Szemizombénulás esetén a bénult izom azon a szemen van, ahol kettőskép-vizsgálat során a peripheriásan elhelyezkedő kép van',stmt2:'a bénult izmú szemben a keletkezett kép a látótérben ott helyezkedik el, ahová a bénult izom vitte volna a szem nézővonalát.',ans:'A'},
+];
+
+// ═══════════════════════════════════════════════════════════════
+// STATE
+// ═══════════════════════════════════════════════════════════════
+let selectedCount = null;
+let queue = [];
+let current = 0;
+let score = 0;
+let correctCount = 0;
+let wrongCount = 0;
+let answered = false;
+
+// Per-question state
+let selectedSingle = null;
+let selectedMulti = new Set();
+let tfAnswers = {};
+let selectedAnalysis = null;
+
+const ANALYSIS_OPTS = [
+  {k:'A', desc:'Mindkét állítás igaz, és van összefüggés közöttük'},
+  {k:'B', desc:'Mindkét állítás igaz, de nincs összefüggés közöttük'},
+  {k:'C', desc:'Az első igaz, a második hamis'},
+  {k:'D', desc:'Az első hamis, a második igaz'},
+  {k:'E', desc:'Mindkét állítás hamis'},
+];
+
+// ═══════════════════════════════════════════════════════════════
+// HOME
+// ═══════════════════════════════════════════════════════════════
+function selectCount(n) {
+  selectedCount = n;
+  document.querySelectorAll('.count-btn').forEach(b => b.classList.remove('selected'));
+  event.currentTarget.classList.add('selected');
+  document.getElementById('startBtn').disabled = false;
+}
+
+function shuffle(arr) {
+  let a = [...arr];
+  for (let i = a.length-1; i>0; i--) {
+    const j = Math.floor(Math.random()*(i+1));
+    [a[i],a[j]] = [a[j],a[i]];
+  }
+  return a;
+}
+
+function startQuiz() {
+  queue = shuffle(QUESTIONS).slice(0, selectedCount);
+  current = 0; score = 0; correctCount = 0; wrongCount = 0;
+  showScreen('quiz');
+  renderQuestion();
+}
+
+function goHome() {
+  showScreen('home');
+  document.querySelectorAll('.count-btn').forEach(b => b.classList.remove('selected'));
+  selectedCount = null;
+  document.getElementById('startBtn').disabled = true;
+}
+
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+}
+
+// ═══════════════════════════════════════════════════════════════
+// QUIZ
+// ═══════════════════════════════════════════════════════════════
+function renderQuestion() {
+  answered = false;
+  selectedSingle = null;
+  selectedMulti = new Set();
+  tfAnswers = {};
+  selectedAnalysis = null;
+
+  const q = queue[current];
+  const total = queue.length;
+
+  // Header
+  const pct = ((current)/total*100);
+  document.getElementById('progressBar').style.width = pct+'%';
+  document.getElementById('progressText').textContent = `${current+1} / ${total}`;
+  document.getElementById('scoreChip').textContent = `${score} pt`;
+
+  // Question card
+  const badges = {single:'badge-single',multi:'badge-multi',truefalse:'badge-truefalse',analysis:'badge-analysis'};
+  const labels = {single:'Egy helyes válasz',multi:'Több helyes válasz',truefalse:'Igaz / Hamis',analysis:'Összefüggés elemzés'};
+  document.getElementById('typeBadge').className = 'question-type-badge '+badges[q.type];
+  document.getElementById('typeBadge').textContent = labels[q.type];
+  document.getElementById('questionNum').textContent = `#${q.id}`;
+  document.getElementById('questionText').textContent = q.q;
+
+  // Feedback
+  const fb = document.getElementById('feedbackBar');
+  fb.className = 'feedback-bar';
+
+  // Next btn
+  const nb = document.getElementById('nextBtn');
+  nb.disabled = true;
+  nb.className = 'next-btn';
+  nb.textContent = current < total-1 ? 'Válassz egy választ' : 'Eredmény megtekintése';
+
+  // Render answers
+  const area = document.getElementById('answersArea');
+  area.innerHTML = '';
+
+  if (q.type === 'single') renderSingle(q, area);
+  else if (q.type === 'multi') renderMulti(q, area);
+  else if (q.type === 'truefalse') renderTrueFalse(q, area);
+  else if (q.type === 'analysis') renderAnalysis(q, area);
+}
+
+function renderSingle(q, area) {
+  const wrap = document.createElement('div');
+  wrap.className = 'options-wrap';
+  q.opts.forEach((opt, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'option-btn';
+    btn.innerHTML = `<span class="opt-marker">${String.fromCharCode(65+i)}</span><span>${opt}</span>`;
+    btn.onclick = () => {
+      if (answered) return;
+      document.querySelectorAll('.option-btn').forEach(b => b.classList.remove('selected'));
+      btn.classList.add('selected');
+      selectedSingle = i;
+      enableNext();
+    };
+    wrap.appendChild(btn);
+  });
+  area.appendChild(wrap);
+}
+
+function renderMulti(q, area) {
+  const instr = document.createElement('div');
+  instr.style.cssText = 'font-size:12px;color:var(--muted);margin-bottom:8px;';
+  instr.textContent = 'Jelöld meg az összes helyes választ!';
+  area.appendChild(instr);
+  const wrap = document.createElement('div');
+  wrap.className = 'options-wrap';
+  q.opts.forEach((opt, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'option-btn checkbox';
+    btn.innerHTML = `<span class="opt-marker">${String.fromCharCode(65+i)}</span><span>${opt}</span>`;
+    btn.onclick = () => {
+      if (answered) return;
+      if (selectedMulti.has(i)) { selectedMulti.delete(i); btn.classList.remove('selected'); btn.querySelector('.opt-marker').textContent = String.fromCharCode(65+i); }
+      else { selectedMulti.add(i); btn.classList.add('selected'); btn.querySelector('.opt-marker').textContent = '✓'; }
+      selectedMulti.size > 0 ? enableNext() : disableNext();
+    };
+    wrap.appendChild(btn);
+  });
+  area.appendChild(wrap);
+}
+
+function renderTrueFalse(q, area) {
+  q.stmts.forEach((stmt, i) => {
+    const card = document.createElement('div');
+    card.className = 'tf-statement';
+    card.innerHTML = `<p>${i+1}. ${stmt.t}</p><div class="tf-btns"><button class="tf-btn" onclick="selectTF(${i},'I',this)">I – Igaz</button><button class="tf-btn" onclick="selectTF(${i},'H',this)">H – Hamis</button></div>`;
+    area.appendChild(card);
+  });
+}
+
+window.selectTF = function(idx, val, btn) {
+  if (answered) return;
+  const card = btn.closest('.tf-statement');
+  card.querySelectorAll('.tf-btn').forEach(b => { b.classList.remove('selected-true','selected-false'); });
+  if (val === 'I') btn.classList.add('selected-true');
+  else btn.classList.add('selected-false');
+  tfAnswers[idx] = val;
+  if (Object.keys(tfAnswers).length === queue[current].stmts.length) enableNext();
+};
+
+function renderAnalysis(q, area) {
+  const stmtsDiv = document.createElement('div');
+  stmtsDiv.className = 'analysis-statements';
+  stmtsDiv.innerHTML = `<div class="analysis-stmt first">1️⃣ ${q.stmt1}</div><div class="analysis-stmt second">2️⃣ ${q.stmt2}</div>`;
+  area.appendChild(stmtsDiv);
+  const grid = document.createElement('div');
+  grid.className = 'analysis-grid';
+  ANALYSIS_OPTS.forEach(opt => {
+    const btn = document.createElement('button');
+    btn.className = 'analysis-option';
+    btn.dataset.key = opt.k;
+    btn.innerHTML = `<span class="opt-key">${opt.k}</span><span class="opt-desc">${opt.desc}</span>`;
+    btn.onclick = () => {
+      if (answered) return;
+      document.querySelectorAll('.analysis-option').forEach(b => b.classList.remove('selected'));
+      btn.classList.add('selected');
+      selectedAnalysis = opt.k;
+      enableNext();
+    };
+    grid.appendChild(btn);
+  });
+  area.appendChild(grid);
+}
+
+function enableNext() {
+  const nb = document.getElementById('nextBtn');
+  nb.disabled = false;
+  nb.className = 'next-btn ready';
+  nb.textContent = 'Válasz ellenőrzése →';
+}
+function disableNext() {
+  const nb = document.getElementById('nextBtn');
+  nb.disabled = true;
+  nb.className = 'next-btn';
+}
+
+function nextQuestion() {
+  if (!answered) { checkAnswer(); return; }
+  current++;
+  if (current >= queue.length) { showResults(); return; }
+  renderQuestion();
+}
+
+function checkAnswer() {
+  answered = true;
+  const q = queue[current];
+  let isCorrect = false;
+
+  if (q.type === 'single') {
+    isCorrect = selectedSingle === q.ans;
+    document.querySelectorAll('.option-btn').forEach((btn, i) => {
+      btn.disabled = true;
+      if (i === q.ans) btn.classList.add('correct');
+      else if (i === selectedSingle && !isCorrect) btn.classList.add('wrong');
+    });
+  } else if (q.type === 'multi') {
+    const correctSet = new Set(q.ans);
+    const userSet = selectedMulti;
+    isCorrect = q.ans.every(a => userSet.has(a)) && userSet.size === q.ans.length;
+    document.querySelectorAll('.option-btn').forEach((btn, i) => {
+      btn.disabled = true;
+      if (correctSet.has(i)) btn.classList.add('correct');
+      else if (userSet.has(i)) btn.classList.add('wrong');
+    });
+  } else if (q.type === 'truefalse') {
+    let allRight = true;
+    q.stmts.forEach((stmt, i) => {
+      const userAns = tfAnswers[i];
+      const card = document.querySelectorAll('.tf-statement')[i];
+      const btns = card.querySelectorAll('.tf-btn');
+      btns.forEach(b => b.disabled = true);
+      const isI = stmt.ans === 'I';
+      const trueBtn = btns[0], falseBtn = btns[1];
+      if (stmt.ans === 'I') { trueBtn.classList.add('correct-true'); } else { falseBtn.classList.add('correct-false'); }
+      if (userAns !== stmt.ans) {
+        allRight = false;
+        if (userAns === 'I') trueBtn.classList.add('wrong-answer');
+        else falseBtn.classList.add('wrong-answer');
+      }
+    });
+    isCorrect = allRight;
+  } else if (q.type === 'analysis') {
+    isCorrect = selectedAnalysis === q.ans;
+    document.querySelectorAll('.analysis-option').forEach(btn => {
+      btn.disabled = true;
+      if (btn.dataset.key === q.ans) btn.classList.add('correct');
+      else if (btn.dataset.key === selectedAnalysis && !isCorrect) btn.classList.add('wrong');
+    });
+  }
+
+  // Feedback
+  const fb = document.getElementById('feedbackBar');
+  const fbIcon = document.getElementById('fbIcon');
+  const fbMsg = document.getElementById('fbMsg');
+  if (isCorrect) {
+    score += 10;
+    correctCount++;
+    fb.className = 'feedback-bar correct-fb show';
+    fbIcon.textContent = '✅';
+    fbMsg.textContent = 'Helyes! +10 pont';
+  } else {
+    wrongCount++;
+    fb.className = 'feedback-bar wrong-fb show';
+    fbIcon.textContent = '❌';
+    if (q.type === 'single') fbMsg.textContent = `Helytelen. Helyes: ${q.opts[q.ans]}`;
+    else if (q.type === 'multi') fbMsg.textContent = `Helytelen. Helyes: ${q.ans.map(a=>String.fromCharCode(65+a)).join(', ')}`;
+    else if (q.type === 'truefalse') fbMsg.textContent = 'Helytelen. A helyes válaszok zöldek.';
+    else fbMsg.textContent = `Helytelen. Helyes: ${q.ans}`;
+  }
+
+  document.getElementById('scoreChip').textContent = `${score} pt`;
+
+  const nb = document.getElementById('nextBtn');
+  nb.disabled = false;
+  nb.className = 'next-btn ready';
+  nb.textContent = current < queue.length-1 ? 'Következő →' : 'Eredmény →';
+}
+
+// ═══════════════════════════════════════════════════════════════
+// RESULTS
+// ═══════════════════════════════════════════════════════════════
+function showResults() {
+  showScreen('results');
+  const total = queue.length;
+  const pct = Math.round(correctCount/total*100);
+
+  document.getElementById('resultPct').textContent = pct+'%';
+  document.getElementById('statCorrect').textContent = correctCount;
+  document.getElementById('statWrong').textContent = wrongCount;
+  document.getElementById('statTotal').textContent = total;
+
+  // Ring animation
+  const circumference = 2 * Math.PI * 68;
+  const offset = circumference * (1 - pct/100);
+  setTimeout(() => {
+    document.getElementById('resultCircle').style.strokeDashoffset = offset;
+    document.getElementById('resultCircle').style.transition = 'stroke-dashoffset 1s ease';
+  }, 100);
+
+  // Medal & title
+  let medal, title, sub;
+  if (pct >= 90) { medal='🏆'; title='Kiváló!'; sub='Mesteri teljesítmény!'; }
+  else if (pct >= 75) { medal='🥇'; title='Nagyon jó!'; sub='Gratulálunk!'; }
+  else if (pct >= 60) { medal='🥈'; title='Jó teljesítmény'; sub='Még egy kis gyakorlás!'; }
+  else if (pct >= 40) { medal='🥉'; title='Haladás!'; sub='Érdemes újra próbálni.'; }
+  else { medal='📚'; title='Tanulj tovább!'; sub='Olvasd át az anyagot.'; }
+
+  document.getElementById('medal').textContent = medal;
+  document.getElementById('resultTitle').textContent = title;
+  document.getElementById('resultSub').textContent = `${sub} Pontszám: ${score} | Helyes: ${correctCount}/${total}`;
+}
+
+function restartQuiz() {
+  queue = shuffle(QUESTIONS).slice(0, selectedCount);
+  current = 0; score = 0; correctCount = 0; wrongCount = 0;
+  showScreen('quiz');
+  renderQuestion();
+}
+</script>
+
+</body>
+</html>
