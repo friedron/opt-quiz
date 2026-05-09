@@ -82,6 +82,27 @@ letter-spacing: 0.3px;
 .start-btn:hover { background: #79beff; }
 .start-btn:disabled { opacity: 0.4; cursor: not-allowed; }
 
+.master-btn {
+width: 100%;
+background: var(–surface);
+border: 2px solid var(–border);
+border-radius: var(–radius);
+padding: 16px 18px;
+cursor: pointer;
+transition: all 0.2s;
+display: flex; align-items: center; gap: 14px;
+text-align: left;
+margin-bottom: 12px;
+}
+.master-btn:hover { border-color: var(–gold); background: rgba(227,179,65,0.06); }
+.master-btn.selected { border-color: var(–gold); background: rgba(227,179,65,0.1); }
+.master-icon { font-size: 28px; flex-shrink: 0; }
+.master-texts { display: flex; flex-direction: column; }
+.master-label { font-family: ‘DM Serif Display’, serif; font-size: 20px; color: var(–gold); }
+.master-desc { font-size: 12px; color: var(–muted); margin-top: 3px; line-height: 1.4; }
+.master-bar { background: rgba(227,179,65,0.08); border: 1px solid rgba(227,179,65,0.25); border-radius: 10px; padding: 8px 14px; font-size: 13px; color: var(–gold); text-align: center; margin-bottom: 10px; display: none; }
+.master-bar.show { display: block; }
+
 /* ── QUIZ ── */
 #quiz { gap: 0; }
 
@@ -234,11 +255,16 @@ font-family: ‘DM Sans’, sans-serif;
     <h1>Optometria Kvíz</h1>
     <p>Záróvizsga felkészítő tesztkérdések</p>
   </div>
-  <div class="section-label">Kérdések száma</div>
+  <div class="section-label">Mód választása</div>
   <div class="count-grid">
     <button class="count-btn" onclick="selectCount(30)">30<span>kérdés</span></button>
     <button class="count-btn" onclick="selectCount(100)">100<span>kérdés</span></button>
   </div>
+  <button class="master-btn" id="masterModeBtn" onclick="selectMaster()">
+    <span class="master-icon">♾️</span>
+    <span class="master-label">Végtelen Mód</span>
+    <span class="master-desc">Minden kérdést helyesen kell megválaszolni — a hibásak visszakerülnek!</span>
+  </button>
   <button class="start-btn" id="startBtn" onclick="startQuiz()" disabled>Kezdés →</button>
 </div>
 
@@ -260,6 +286,7 @@ font-family: ‘DM Sans’, sans-serif;
     <div class="question-text" id="questionText"></div>
   </div>
 
+  <div class="master-bar" id="masterBar"></div>
   <div id="answersArea"></div>
   <div class="feedback-bar" id="feedbackBar"><span class="fb-icon" id="fbIcon"></span><span id="fbMsg"></span></div>
 
@@ -661,7 +688,11 @@ const QUESTIONS = [
 // STATE
 // ═══════════════════════════════════════════════════════════════
 let selectedCount = null;
+let masterMode = false;
 let queue = [];
+let masterPool = [];       // questions not yet correctly answered
+let masterSolved = 0;      // how many uniquely solved
+let masterTotal = 0;       // total unique questions
 let current = 0;
 let score = 0;
 let correctCount = 0;
@@ -687,8 +718,18 @@ const ANALYSIS_OPTS = [
 // ═══════════════════════════════════════════════════════════════
 function selectCount(n) {
   selectedCount = n;
+  masterMode = false;
   document.querySelectorAll('.count-btn').forEach(b => b.classList.remove('selected'));
+  document.getElementById('masterModeBtn').classList.remove('selected');
   event.currentTarget.classList.add('selected');
+  document.getElementById('startBtn').disabled = false;
+}
+
+function selectMaster() {
+  masterMode = true;
+  selectedCount = null;
+  document.querySelectorAll('.count-btn').forEach(b => b.classList.remove('selected'));
+  document.getElementById('masterModeBtn').classList.add('selected');
   document.getElementById('startBtn').disabled = false;
 }
 
@@ -702,8 +743,16 @@ function shuffle(arr) {
 }
 
 function startQuiz() {
-  queue = shuffle(QUESTIONS).slice(0, selectedCount);
   current = 0; score = 0; correctCount = 0; wrongCount = 0;
+  if (masterMode) {
+    masterPool = shuffle(QUESTIONS);
+    masterTotal = masterPool.length;
+    masterSolved = 0;
+    queue = [masterPool[0]];
+    current = 0;
+  } else {
+    queue = shuffle(QUESTIONS).slice(0, selectedCount);
+  }
   showScreen('quiz');
   renderQuestion();
 }
@@ -711,7 +760,9 @@ function startQuiz() {
 function goHome() {
   showScreen('home');
   document.querySelectorAll('.count-btn').forEach(b => b.classList.remove('selected'));
+  document.getElementById('masterModeBtn').classList.remove('selected');
   selectedCount = null;
+  masterMode = false;
   document.getElementById('startBtn').disabled = true;
 }
 
@@ -734,9 +785,19 @@ function renderQuestion() {
   const total = queue.length;
 
   // Header
-  const pct = ((current)/total*100);
-  document.getElementById('progressBar').style.width = pct+'%';
-  document.getElementById('progressText').textContent = `${current+1} / ${total}`;
+  const mb = document.getElementById('masterBar');
+  if (masterMode) {
+    const pct2 = Math.round(masterSolved/masterTotal*100);
+    mb.className = 'master-bar show';
+    mb.textContent = `♾️ Teljesítve: ${masterSolved} / ${masterTotal} kérdés (${pct2}%) — Visszamaradt: ${masterPool.length}`;
+    document.getElementById('progressBar').style.width = (masterSolved/masterTotal*100)+'%';
+    document.getElementById('progressText').textContent = `${masterSolved}/${masterTotal} kész`;
+  } else {
+    mb.className = 'master-bar';
+    const pct = ((current)/total*100);
+    document.getElementById('progressBar').style.width = pct+'%';
+    document.getElementById('progressText').textContent = `${current+1} / ${total}`;
+  }
   document.getElementById('scoreChip').textContent = `${score} pt`;
 
   // Question card
@@ -755,7 +816,7 @@ function renderQuestion() {
   const nb = document.getElementById('nextBtn');
   nb.disabled = true;
   nb.className = 'next-btn';
-  nb.textContent = current < total-1 ? 'Válassz egy választ' : 'Eredmény megtekintése';
+  nb.textContent = 'Válassz egy választ';
 
   // Render answers
   const area = document.getElementById('answersArea');
@@ -865,9 +926,17 @@ function disableNext() {
 
 function nextQuestion() {
   if (!answered) { checkAnswer(); return; }
-  current++;
-  if (current >= queue.length) { showResults(); return; }
-  renderQuestion();
+  if (masterMode) {
+    // masterPool is updated in checkAnswer; if empty we're done
+    if (masterPool.length === 0) { showResults(); return; }
+    queue = [masterPool[0]];
+    current = 0;
+    renderQuestion();
+  } else {
+    current++;
+    if (current >= queue.length) { showResults(); return; }
+    renderQuestion();
+  }
 }
 
 function checkAnswer() {
@@ -926,7 +995,17 @@ function checkAnswer() {
     correctCount++;
     fb.className = 'feedback-bar correct-fb show';
     fbIcon.textContent = '✅';
-    fbMsg.textContent = 'Helyes! +10 pont';
+    if (masterMode) {
+      // Remove this question from the pool (it was at index 0)
+      masterPool.shift();
+      masterSolved++;
+      const remaining = masterPool.length;
+      fbMsg.textContent = remaining === 0
+        ? 'Helyes! 🏆 Minden kérdést teljesítettél!'
+        : `Helyes! +10 pont — Még ${remaining} kérdés van hátra`;
+    } else {
+      fbMsg.textContent = 'Helyes! +10 pont';
+    }
   } else {
     wrongCount++;
     fb.className = 'feedback-bar wrong-fb show';
@@ -935,6 +1014,12 @@ function checkAnswer() {
     else if (q.type === 'multi') fbMsg.textContent = `Helytelen. Helyes: ${q.ans.map(a=>String.fromCharCode(65+a)).join(', ')}`;
     else if (q.type === 'truefalse') fbMsg.textContent = 'Helytelen. A helyes válaszok zöldek.';
     else fbMsg.textContent = `Helytelen. Helyes: ${q.ans}`;
+    if (masterMode) {
+      // Move this question to a random position later in the pool (not first)
+      masterPool.shift();
+      const insertAt = masterPool.length === 0 ? 0 : Math.floor(Math.random() * Math.max(1, Math.min(masterPool.length, 5))) + 1;
+      masterPool.splice(insertAt, 0, q);
+    }
   }
 
   document.getElementById('scoreChip').textContent = `${score} pt`;
@@ -942,7 +1027,11 @@ function checkAnswer() {
   const nb = document.getElementById('nextBtn');
   nb.disabled = false;
   nb.className = 'next-btn ready';
-  nb.textContent = current < queue.length-1 ? 'Következő →' : 'Eredmény →';
+  if (masterMode) {
+    nb.textContent = masterPool.length === 0 ? 'Eredmény 🏆' : 'Következő →';
+  } else {
+    nb.textContent = current < queue.length-1 ? 'Következő →' : 'Eredmény →';
+  }
 }
 
 // ═══════════════════════════════════════════════════════════════
@@ -950,11 +1039,17 @@ function checkAnswer() {
 // ═══════════════════════════════════════════════════════════════
 function showResults() {
   showScreen('results');
-  const total = queue.length;
-  const pct = Math.round(correctCount/total*100);
+  let total, pct;
+  if (masterMode) {
+    total = masterTotal;
+    pct = 100; // completed all
+  } else {
+    total = queue.length;
+    pct = Math.round(correctCount/total*100);
+  }
 
   document.getElementById('resultPct').textContent = pct+'%';
-  document.getElementById('statCorrect').textContent = correctCount;
+  document.getElementById('statCorrect').textContent = masterMode ? masterTotal : correctCount;
   document.getElementById('statWrong').textContent = wrongCount;
   document.getElementById('statTotal').textContent = total;
 
@@ -968,7 +1063,9 @@ function showResults() {
 
   // Medal & title
   let medal, title, sub;
-  if (pct >= 90) { medal='🏆'; title='Kiváló!'; sub='Mesteri teljesítmény!'; }
+  if (masterMode) {
+    medal='♾️'; title='Végtelen Mód befejezve!'; sub=`Minden ${total} kérdést helyesen megválaszoltál!`;
+  } else if (pct >= 90) { medal='🏆'; title='Kiváló!'; sub='Mesteri teljesítmény!'; }
   else if (pct >= 75) { medal='🥇'; title='Nagyon jó!'; sub='Gratulálunk!'; }
   else if (pct >= 60) { medal='🥈'; title='Jó teljesítmény'; sub='Még egy kis gyakorlás!'; }
   else if (pct >= 40) { medal='🥉'; title='Haladás!'; sub='Érdemes újra próbálni.'; }
@@ -976,12 +1073,19 @@ function showResults() {
 
   document.getElementById('medal').textContent = medal;
   document.getElementById('resultTitle').textContent = title;
-  document.getElementById('resultSub').textContent = `${sub} Pontszám: ${score} | Helyes: ${correctCount}/${total}`;
+  document.getElementById('resultSub').textContent = `${sub} Pontszám: ${score} | Kísérletek: ${correctCount+wrongCount}`;
 }
 
 function restartQuiz() {
-  queue = shuffle(QUESTIONS).slice(0, selectedCount);
   current = 0; score = 0; correctCount = 0; wrongCount = 0;
+  if (masterMode) {
+    masterPool = shuffle(QUESTIONS);
+    masterTotal = masterPool.length;
+    masterSolved = 0;
+    queue = [masterPool[0]];
+  } else {
+    queue = shuffle(QUESTIONS).slice(0, selectedCount);
+  }
   showScreen('quiz');
   renderQuestion();
 }
