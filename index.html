@@ -231,22 +231,26 @@ display: flex; align-items: center; justify-content: center;
 
 .start-btn {
 width: 100%;
-background: var(–blue);
-color: #fff;
+background: var(–line);
+color: var(–text3);
 font-weight: 700;
 border: none;
 border-radius: var(–r-md);
 padding: 17px;
 font-family: ‘Syne’, sans-serif;
 font-size: 15px;
-font-weight: 700;
-cursor: pointer;
-transition: opacity 0.2s, transform 0.12s;
+cursor: not-allowed;
+transition: all 0.2s;
 letter-spacing: 0.3px;
 }
 .start-btn:active:not(:disabled) { transform: scale(0.98); }
-.start-btn:disabled { opacity: 0.3; cursor: not-allowed; }
-.start-btn.ready { background: linear-gradient(135deg, var(–blue) 0%, #7C5BF0 100%); }
+.start-btn.ready {
+background: var(–blue);
+color: #fff;
+cursor: pointer;
+box-shadow: 0 4px 18px rgba(37,99,235,0.40);
+}
+.start-btn.ready:hover { filter: brightness(1.1); }
 
 /* ══════════════════════════════════════════
 QUIZ SCREEN
@@ -552,24 +556,25 @@ line-height: 1.4;
 /* Next button */
 .next-btn {
 width: 100%;
-background: var(–card);
-border: 1.5px solid var(–line);
-color: var(–text2);
+background: var(–line);
+border: 1.5px solid var(–line2);
+color: var(–text3);
 border-radius: var(–r-md);
 padding: 16px;
 font-family: ‘Syne’, sans-serif;
 font-size: 14px; font-weight: 700;
-cursor: pointer;
+cursor: not-allowed;
 transition: all 0.18s;
 letter-spacing: 0.2px;
 }
-.next-btn:disabled { opacity: 0.3; cursor: not-allowed; }
+.next-btn:disabled { cursor: not-allowed; }
 .next-btn.ready {
 background: var(–blue);
 border-color: var(–blue);
 color: #fff;
+cursor: pointer;
 font-weight: 700;
-box-shadow: 0 4px 14px rgba(79,142,247,0.35);
+box-shadow: 0 4px 18px rgba(37,99,235,0.40);
 }
 .next-btn.ready:active { transform: scale(0.98); }
 
@@ -732,7 +737,7 @@ transition: border-color 0.15s, color 0.15s;
         <div class="mode-check"></div>
       </button>
     </div>
-    <button class="start-btn" id="startBtn" onclick="startQuiz()" disabled>Kezdés</button>
+    <button class="start-btn" id="startBtn" onclick="startQuiz()">Kezdés</button>
   </div>
 </div>
 
@@ -771,7 +776,7 @@ transition: border-color 0.15s, color 0.15s;
       <span class="fb-icon" id="fbIcon"></span>
       <span id="fbMsg"></span>
     </div>
-    <button class="next-btn" id="nextBtn" onclick="nextQuestion()" disabled>Válassz egy választ</button>
+    <button class="next-btn" id="nextBtn" onclick="nextQuestion()">Válassz egy választ</button>
   </div>
 </div>
 
@@ -1719,7 +1724,6 @@ function selectCount(n) {
   const colorMap = {30:'sel-blue', 100:'sel-green'};
   event.currentTarget.className = 'mode-card ' + (colorMap[n] || 'sel-blue');
   const sb = document.getElementById('startBtn');
-  sb.disabled = false;
   sb.className = 'start-btn ready';
 }
 
@@ -1729,8 +1733,7 @@ function selectMaster() {
   document.querySelectorAll('.mode-card').forEach(b => b.className = 'mode-card');
   document.getElementById('masterModeBtn').className = 'mode-card sel-gold';
   const sb = document.getElementById('startBtn');
-  sb.disabled = false;
-  sb.className = 'start-btn ready';
+    sb.className = 'start-btn ready';
 }
 
 function shuffle(arr) {
@@ -1743,6 +1746,7 @@ function shuffle(arr) {
 }
 
 function startQuiz() {
+  if (!selectedCount && !masterMode) return;
   current = 0; score = 0; correctCount = 0; wrongCount = 0;
   if (masterMode) {
     masterPool = shuffle(QUESTIONS);
@@ -1763,7 +1767,6 @@ function goHome() {
   selectedCount = null;
   masterMode = false;
   const sb = document.getElementById('startBtn');
-  sb.disabled = true;
   sb.className = 'start-btn';
 }
 
@@ -1816,7 +1819,6 @@ function renderQuestion() {
 
   // Next btn
   const nb = document.getElementById('nextBtn');
-  nb.disabled = true;
   nb.className = 'next-btn';
   nb.textContent = 'Válassz egy választ';
 
@@ -1919,17 +1921,16 @@ function renderAnalysis(q, area) {
 
 function enableNext() {
   const nb = document.getElementById('nextBtn');
-  nb.disabled = false;
   nb.className = 'next-btn ready';
   nb.textContent = 'Válasz ellenőrzése →';
 }
 function disableNext() {
   const nb = document.getElementById('nextBtn');
-  nb.disabled = true;
   nb.className = 'next-btn';
 }
 
 function nextQuestion() {
+  if (!document.getElementById('nextBtn').className.includes('ready')) return;
   if (!answered) { checkAnswer(); return; }
   if (masterMode) {
     // masterPool is updated in checkAnswer; if empty we're done
@@ -2030,7 +2031,6 @@ function checkAnswer() {
   document.getElementById('scoreChip').textContent = `${score} pt`;
 
   const nb = document.getElementById('nextBtn');
-  nb.disabled = false;
   nb.className = 'next-btn ready';
   if (masterMode) {
     nb.textContent = masterPool.length === 0 ? 'Eredmény 🏆' : 'Következő →';
