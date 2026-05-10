@@ -1387,6 +1387,7 @@ function selectCount(n) {
   event.currentTarget.className = 'mode-card ' + (colorMap[n] || 'sel-blue');
   const sb = document.getElementById('startBtn');
   sb.className = 'cta-btn on';
+  sb.style.cssText = 'background:#2563EB;color:#ffffff;cursor:pointer;box-shadow:0 4px 16px rgba(37,99,235,0.4);';
 }
 
 function selectMaster() {
@@ -1396,6 +1397,7 @@ function selectMaster() {
   document.getElementById('masterModeBtn').className = 'mode-card active-amber';
   const sb = document.getElementById('startBtn');
     sb.className = 'cta-btn on';
+  sb.style.cssText = 'background:#2563EB;color:#ffffff;cursor:pointer;box-shadow:0 4px 16px rgba(37,99,235,0.4);';
 }
 
 function shuffle(arr) {
@@ -1430,6 +1432,7 @@ function goHome() {
   masterMode = false;
   const sb = document.getElementById('startBtn');
   sb.className = 'cta-btn';
+  sb.style.cssText = 'background:#E2E8F0;color:#94A3B8;cursor:not-allowed;box-shadow:none;';
 }
 
 function showScreen(id) {
@@ -1482,6 +1485,7 @@ function renderQuestion() {
   // Next btn
   const nb = document.getElementById('nextBtn');
   nb.className = 'go-btn';
+  nb.style.cssText = 'background:#E2E8F0;color:#94A3B8;cursor:not-allowed;box-shadow:none;';
   nb.textContent = 'Válassz egy választ';
 
   // Render answers
@@ -1494,6 +1498,23 @@ function renderQuestion() {
   else if (q.type === 'analysis') renderAnalysis(q, area);
 }
 
+function styleBtn(btn, state) {
+  const dot = btn.querySelector('.opt-dot');
+  if (state === 'default') {
+    btn.style.cssText = 'background:#fff;border:2px solid #E2E8F0;box-shadow:none;';
+    if (dot) dot.style.cssText = 'background:#F1F5F9;border:2px solid #CBD5E1;color:#475569;';
+  } else if (state === 'picked') {
+    btn.style.cssText = 'background:#DBEAFE;border:2px solid #2563EB;box-shadow:0 0 0 2px #2563EB;';
+    if (dot) dot.style.cssText = 'background:#2563EB;border:2px solid #2563EB;color:#fff;';
+  } else if (state === 'ok') {
+    btn.style.cssText = 'background:#DCFCE7;border:2px solid #16A34A;box-shadow:0 0 0 2px #16A34A;';
+    if (dot) dot.style.cssText = 'background:#16A34A;border:2px solid #16A34A;color:#fff;';
+  } else if (state === 'bad') {
+    btn.style.cssText = 'background:#FEE2E2;border:2px solid #DC2626;box-shadow:0 0 0 2px #DC2626;';
+    if (dot) dot.style.cssText = 'background:#DC2626;border:2px solid #DC2626;color:#fff;';
+  }
+}
+
 function renderSingle(q, area) {
   const wrap = document.createElement('div');
   wrap.className = 'opts-list';
@@ -1501,10 +1522,11 @@ function renderSingle(q, area) {
     const btn = document.createElement('button');
     btn.className = 'opt-btn';
     btn.innerHTML = `<span class="opt-dot">${String.fromCharCode(65+i)}</span><span>${opt}</span>`;
+    styleBtn(btn, 'default');
     btn.onclick = () => {
       if (answered) return;
-      document.querySelectorAll('.opt-btn').forEach(b => b.classList.remove('picked'));
-      btn.classList.add('picked');
+      document.querySelectorAll('.opt-btn').forEach(b => styleBtn(b, 'default'));
+      styleBtn(btn, 'picked');
       selectedSingle = i;
       enableNext();
     };
@@ -1524,10 +1546,11 @@ function renderMulti(q, area) {
     const btn = document.createElement('button');
     btn.className = 'opt-btn cb';
     btn.innerHTML = `<span class="opt-dot">${String.fromCharCode(65+i)}</span><span>${opt}</span>`;
+    styleBtn(btn, 'default');
     btn.onclick = () => {
       if (answered) return;
-      if (selectedMulti.has(i)) { selectedMulti.delete(i); btn.classList.remove('picked'); btn.querySelector('.opt-dot').textContent = String.fromCharCode(65+i); }
-      else { selectedMulti.add(i); btn.classList.add('picked'); btn.querySelector('.opt-dot').textContent = '✓'; }
+      if (selectedMulti.has(i)) { selectedMulti.delete(i); styleBtn(btn, 'default'); btn.querySelector('.opt-dot').textContent = String.fromCharCode(65+i); }
+      else { selectedMulti.add(i); styleBtn(btn, 'picked'); btn.querySelector('.opt-dot').textContent = '✓'; }
       selectedMulti.size > 0 ? enableNext() : disableNext();
     };
     wrap.appendChild(btn);
@@ -1550,9 +1573,11 @@ function renderTrueFalse(q, area) {
 window.selectTF = function(idx, val, btn) {
   if (answered) return;
   const card = btn.closest('.tf-card');
-  card.querySelectorAll('.tf-btn').forEach(b => { b.classList.remove('t','f'); });
-  if (val === 'I') btn.classList.add('t');
-  else btn.classList.add('f');
+  card.querySelectorAll('.tf-btn').forEach(b => {
+    b.style.cssText = 'background:transparent;color:#475569;font-weight:600;';
+  });
+  if (val === 'I') btn.style.cssText = 'background:#DCFCE7;color:#16A34A;font-weight:700;';
+  else             btn.style.cssText = 'background:#FEE2E2;color:#DC2626;font-weight:700;';
   tfAnswers[idx] = val;
   if (Object.keys(tfAnswers).length === queue[current].stmts.length) enableNext();
 };
@@ -1571,8 +1596,14 @@ function renderAnalysis(q, area) {
     btn.innerHTML = `<span class="an-key">${opt.k}</span><span class="an-desc">${opt.desc}</span>`;
     btn.onclick = () => {
       if (answered) return;
-      document.querySelectorAll('.an-opt').forEach(b => b.classList.remove('picked'));
-      btn.classList.add('picked');
+      document.querySelectorAll('.an-opt').forEach(b => {
+        b.style.cssText = 'background:#fff;border:2px solid #E2E8F0;box-shadow:none;';
+        const k = b.querySelector('.an-key');
+        if(k) k.style.cssText = 'background:#F1F5F9;border:2px solid #CBD5E1;color:#D97706;';
+      });
+      btn.style.cssText = 'background:#FEF3C7;border:2px solid #D97706;box-shadow:0 0 0 2px #D97706;';
+      const bk = btn.querySelector('.an-key');
+      if(bk) bk.style.cssText = 'background:#D97706;border:2px solid #D97706;color:#fff;';
       selectedAnalysis = opt.k;
       enableNext();
     };
@@ -1584,11 +1615,13 @@ function renderAnalysis(q, area) {
 function enableNext() {
   const nb = document.getElementById('nextBtn');
   nb.className = 'go-btn on';
+  nb.style.cssText = 'background:#2563EB;color:#ffffff;cursor:pointer;box-shadow:0 4px 16px rgba(37,99,235,0.4);';
   nb.textContent = 'Válasz ellenőrzése →';
 }
 function disableNext() {
   const nb = document.getElementById('nextBtn');
   nb.className = 'go-btn';
+  nb.style.cssText = 'background:#E2E8F0;color:#94A3B8;cursor:not-allowed;box-shadow:none;';
 }
 
 function nextQuestion() {
@@ -1616,8 +1649,8 @@ function checkAnswer() {
     isCorrect = selectedSingle === q.ans;
     document.querySelectorAll('.opt-btn').forEach((btn, i) => {
       btn.disabled = true;
-      if (i === q.ans) btn.classList.add('ok');
-      else if (i === selectedSingle && !isCorrect) btn.classList.add('bad');
+      if (i === q.ans) styleBtn(btn, 'ok');
+      else if (i === selectedSingle && !isCorrect) styleBtn(btn, 'bad');
     });
   } else if (q.type === 'multi') {
     const correctSet = new Set(q.ans);
@@ -1625,8 +1658,8 @@ function checkAnswer() {
     isCorrect = q.ans.every(a => userSet.has(a)) && userSet.size === q.ans.length;
     document.querySelectorAll('.opt-btn').forEach((btn, i) => {
       btn.disabled = true;
-      if (correctSet.has(i)) btn.classList.add('ok');
-      else if (userSet.has(i)) btn.classList.add('bad');
+      if (correctSet.has(i)) styleBtn(btn, 'ok');
+      else if (userSet.has(i)) styleBtn(btn, 'bad');
     });
   } else if (q.type === 'truefalse') {
     let allRight = true;
@@ -1649,8 +1682,14 @@ function checkAnswer() {
     isCorrect = selectedAnalysis === q.ans;
     document.querySelectorAll('.an-opt').forEach(btn => {
       btn.disabled = true;
-      if (btn.dataset.key === q.ans) btn.classList.add('ok');
-      else if (btn.dataset.key === selectedAnalysis && !isCorrect) btn.classList.add('bad');
+      const k = btn.querySelector('.an-key');
+      if (btn.dataset.key === q.ans) {
+        btn.style.cssText = 'background:#DCFCE7;border:2px solid #16A34A;box-shadow:0 0 0 2px #16A34A;';
+        if(k) k.style.cssText = 'background:#16A34A;border:2px solid #16A34A;color:#fff;';
+      } else if (btn.dataset.key === selectedAnalysis && !isCorrect) {
+        btn.style.cssText = 'background:#FEE2E2;border:2px solid #DC2626;box-shadow:0 0 0 2px #DC2626;';
+        if(k) k.style.cssText = 'background:#DC2626;border:2px solid #DC2626;color:#fff;';
+      }
     });
   }
 
@@ -1694,6 +1733,7 @@ function checkAnswer() {
 
   const nb = document.getElementById('nextBtn');
   nb.className = 'go-btn on';
+  nb.style.cssText = 'background:#2563EB;color:#ffffff;cursor:pointer;box-shadow:0 4px 16px rgba(37,99,235,0.4);';
   if (masterMode) {
     nb.textContent = masterPool.length === 0 ? 'Eredmény 🏆' : 'Következő →';
   } else {
