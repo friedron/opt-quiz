@@ -1431,10 +1431,10 @@ function renderSingle(q, area) {
   q.opts.forEach((opt, i) => {
     const btn = document.createElement('button');
     btn.className = 'opt-btn';
-    btn.innerHTML = `<span class="opt-marker">${String.fromCharCode(65+i)}</span><span>${opt}</span>`;
+    btn.innerHTML = `<span class="opt-dot">${String.fromCharCode(65+i)}</span><span>${opt}</span>`;
     btn.onclick = () => {
       if (answered) return;
-      document.querySelectorAll('.option-btn').forEach(b => b.classList.remove('picked'));
+      document.querySelectorAll('.opt-btn').forEach(b => b.classList.remove('picked'));
       btn.classList.add('picked');
       selectedSingle = i;
       enableNext();
@@ -1454,11 +1454,11 @@ function renderMulti(q, area) {
   q.opts.forEach((opt, i) => {
     const btn = document.createElement('button');
     btn.className = 'opt-btn cb';
-    btn.innerHTML = `<span class="opt-marker">${String.fromCharCode(65+i)}</span><span>${opt}</span>`;
+    btn.innerHTML = `<span class="opt-dot">${String.fromCharCode(65+i)}</span><span>${opt}</span>`;
     btn.onclick = () => {
       if (answered) return;
-      if (selectedMulti.has(i)) { selectedMulti.delete(i); btn.classList.remove('picked'); btn.querySelector('.opt-marker').textContent = String.fromCharCode(65+i); }
-      else { selectedMulti.add(i); btn.classList.add('picked'); btn.querySelector('.opt-marker').textContent = '✓'; }
+      if (selectedMulti.has(i)) { selectedMulti.delete(i); btn.classList.remove('picked'); btn.querySelector('.opt-dot').textContent = String.fromCharCode(65+i); }
+      else { selectedMulti.add(i); btn.classList.add('picked'); btn.querySelector('.opt-dot').textContent = '✓'; }
       selectedMulti.size > 0 ? enableNext() : disableNext();
     };
     wrap.appendChild(btn);
@@ -1499,10 +1499,10 @@ function renderAnalysis(q, area) {
     const btn = document.createElement('button');
     btn.className = 'an-opt';
     btn.dataset.key = opt.k;
-    btn.innerHTML = `<span class="opt-key">${opt.k}</span><span class="opt-desc">${opt.desc}</span>`;
+    btn.innerHTML = `<span class="an-key">${opt.k}</span><span class="an-desc">${opt.desc}</span>`;
     btn.onclick = () => {
       if (answered) return;
-      document.querySelectorAll('.analysis-option').forEach(b => b.classList.remove('picked'));
+      document.querySelectorAll('.an-opt').forEach(b => b.classList.remove('picked'));
       btn.classList.add('picked');
       selectedAnalysis = opt.k;
       enableNext();
@@ -1523,7 +1523,7 @@ function disableNext() {
 }
 
 function nextQuestion() {
-  if (!document.getElementById('nextBtn').className.includes('ready')) return;
+  if (!document.getElementById('nextBtn').className.includes('on')) return;
   if (!answered) { checkAnswer(); return; }
   if (masterMode) {
     // masterPool is updated in checkAnswer; if empty we're done
@@ -1545,7 +1545,7 @@ function checkAnswer() {
 
   if (q.type === 'single') {
     isCorrect = selectedSingle === q.ans;
-    document.querySelectorAll('.option-btn').forEach((btn, i) => {
+    document.querySelectorAll('.opt-btn').forEach((btn, i) => {
       btn.disabled = true;
       if (i === q.ans) btn.classList.add('ok');
       else if (i === selectedSingle && !isCorrect) btn.classList.add('bad');
@@ -1554,7 +1554,7 @@ function checkAnswer() {
     const correctSet = new Set(q.ans);
     const userSet = selectedMulti;
     isCorrect = q.ans.every(a => userSet.has(a)) && userSet.size === q.ans.length;
-    document.querySelectorAll('.option-btn').forEach((btn, i) => {
+    document.querySelectorAll('.opt-btn').forEach((btn, i) => {
       btn.disabled = true;
       if (correctSet.has(i)) btn.classList.add('ok');
       else if (userSet.has(i)) btn.classList.add('bad');
@@ -1578,7 +1578,7 @@ function checkAnswer() {
     isCorrect = allRight;
   } else if (q.type === 'analysis') {
     isCorrect = selectedAnalysis === q.ans;
-    document.querySelectorAll('.analysis-option').forEach(btn => {
+    document.querySelectorAll('.an-opt').forEach(btn => {
       btn.disabled = true;
       if (btn.dataset.key === q.ans) btn.classList.add('ok');
       else if (btn.dataset.key === selectedAnalysis && !isCorrect) btn.classList.add('bad');
@@ -1592,7 +1592,7 @@ function checkAnswer() {
   if (isCorrect) {
     score += 10;
     correctCount++;
-    fb.className = 'feedback-bar correct-fb show';
+    fb.className = 'feedback ok-fb show';
     fbIcon.textContent = '✅';
     if (masterMode) {
       // Remove this question from the pool (it was at index 0)
@@ -1607,7 +1607,7 @@ function checkAnswer() {
     }
   } else {
     wrongCount++;
-    fb.className = 'feedback-bar wrong-fb show';
+    fb.className = 'feedback bad-fb show';
     fbIcon.textContent = '❌';
     if (q.type === 'single') fbMsg.textContent = `Helytelen. Helyes: ${q.opts[q.ans]}`;
     else if (q.type === 'multi') fbMsg.textContent = `Helytelen. Helyes: ${q.ans.map(a=>String.fromCharCode(65+a)).join(', ')}`;
