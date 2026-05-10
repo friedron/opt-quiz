@@ -1,0 +1,10444 @@
+const QUESTIONS = [
+  {
+    "id": 1,
+    "type": "single",
+    "q": "Az orvostechnikai eszközöknél csak a bekövetkezett baleseteket kell jelenteni a hatóságnak?",
+    "opts": [
+      "Igen.",
+      "Nem, azt is jelenteni kell, ha bekövetkezhetett volna.",
+      "Ez csak a kórházra tartozik."
+    ],
+    "ans": 1
+  },
+  {
+    "id": 2,
+    "type": "single",
+    "q": "Egy orvostechnikai eszköz hibás működése, kalibrálatlansága, pontatlansága veszélyes helyzetnek tekinthető-e?",
+    "opts": [
+      "Nem.",
+      "Igen.",
+      "Ezt az alkalmazó mérlegeli."
+    ],
+    "ans": 1
+  },
+  {
+    "id": 3,
+    "type": "single",
+    "q": "Használható-e az orvostechnikai eszköz a használati útmutatótól eltérően?",
+    "opts": [
+      "Igen.",
+      "Nem.",
+      "Ez a felhasználó szakmai mérlegelési joga."
+    ],
+    "ans": 1
+  },
+  {
+    "id": 4,
+    "type": "single",
+    "q": "Ki dönti el, mire használható egy orvostechnikai eszköz?",
+    "opts": [
+      "A szakorvos.",
+      "A hatóság.",
+      "A gyártó."
+    ],
+    "ans": 2
+  },
+  {
+    "id": 5,
+    "type": "single",
+    "q": "Kinek kell jelenteni az orvostechnikai eszközzel bekövetkezett balesetet vagy ha bekövetkezhetett volna?",
+    "opts": [
+      "Nem kell jelenteni, de a minőségügyi rendszert felül kell vizsgálni.",
+      "A hatóságnak a jogszabályban előírt nyomtatványon.",
+      "A helyi munkavédelmi felelősnek, ha van."
+    ],
+    "ans": 1
+  },
+  {
+    "id": 6,
+    "type": "single",
+    "q": "Kötelező-e a magyar nyelvű használati útmutató orvostechnikai eszközhöz?",
+    "opts": [
+      "Igen.",
+      "Nem.",
+      "Igen, ha kéri a felhasználó."
+    ],
+    "ans": 0
+  },
+  {
+    "id": 7,
+    "type": "single",
+    "q": "Kötelező-e az orvostechnikai eszköz hatékonyságát bizonyítani?",
+    "opts": [
+      "Nem.",
+      "Igen.",
+      "Ezt az alkalmazó mérlegeli."
+    ],
+    "ans": 1
+  },
+  {
+    "id": 8,
+    "type": "single",
+    "q": "Kötelezőek-e az EU orvostechnikai eszköz szabályai Magyarországon?",
+    "opts": [
+      "Nem, csak ajánlás.",
+      "A felhasználó mérlegeli.",
+      "Igen."
+    ],
+    "ans": 2
+  },
+  {
+    "id": 9,
+    "type": "single",
+    "q": "Milyen módszerre kell visszavezethetőnek lennie a hatékonyság bizonyításának?",
+    "opts": [
+      "Irodalomkutatás.",
+      "Dokumentált klinikai kísérlet.",
+      "Egyedi próbák."
+    ],
+    "ans": 1
+  },
+  {
+    "id": 10,
+    "type": "single",
+    "q": "Mit jelent a CE jelölés az orvostechnikai eszközön?",
+    "opts": [
+      "Minőségügyi jel.",
+      "Megfelelés az uniós direktívának.",
+      "A centrális elektromos kiegyenlítés jele."
+    ],
+    "ans": 1
+  },
+  {
+    "id": 11,
+    "type": "single",
+    "q": "Hány féle orvostechnikai eszköz időszakos felülvizsgálatát írja elő miniszteri rendelet?",
+    "opts": [
+      "Egyet sem, ez a kórház döntésén múlik.",
+      "21.",
+      "Mindegyikét."
+    ],
+    "ans": 1
+  },
+  {
+    "id": 12,
+    "type": "single",
+    "q": "Mekkora pontatlanság terheli általában orvostechnikai eszközöket?",
+    "opts": [
+      "1%.",
+      "5%.",
+      "20%."
+    ],
+    "ans": 1
+  },
+  {
+    "id": 13,
+    "type": "single",
+    "q": "Mi a következménye a felülvizsgálat elmaradásának?",
+    "opts": [
+      "Az eszköz használatának felfüggesztése.",
+      "Pénzbüntetés.",
+      "Munkaügyi elmarasztalás."
+    ],
+    "ans": 0
+  },
+  {
+    "id": 14,
+    "type": "single",
+    "q": "Min múlik leginkább a mérések pontossága?",
+    "opts": [
+      "A műszer saját pontatlanságán.",
+      "A használó ismeretein.",
+      "A gyártás minőségügyi rendszerén."
+    ],
+    "ans": 1
+  },
+  {
+    "id": 15,
+    "type": "single",
+    "q": "Mit jelent a piros színű jelzés aktiválódása az orvostechnikai eszközökön?",
+    "opts": [
+      "A készülék üzemen kívül van.",
+      "A készülék veszélyhelyzetet érzékelt.",
+      "A készülék veszélyes feszültséggel üzemel."
+    ],
+    "ans": 1
+  },
+  {
+    "id": 16,
+    "type": "single",
+    "q": "Mit jelent a sárga színű jelzés aktiválódása az orvostechnikai eszközökön?",
+    "opts": [
+      "A készülék üzemen kívül van.",
+      "A készülék figyelmeztet.",
+      "A készülék valamely üzemmódja bekapcsolásának visszajelzése."
+    ],
+    "ans": 1
+  },
+  {
+    "id": 17,
+    "type": "single",
+    "q": "Hogyan fejti ki védő hatását az EPH?",
+    "opts": [
+      "A szünetmentes villamos áramellátással.",
+      "Nincsenek eltérő potenciálok.",
+      "A paciens el van szigetelve mindentől."
+    ],
+    "ans": 1
+  },
+  {
+    "id": 18,
+    "type": "single",
+    "q": "Hol használható a B (body) szimbólumú elektromos készülék?",
+    "opts": [
+      "Általános gyógyászati helyeken.",
+      "Ahol a bőrfelület szigetelő hatása leromlik pl EKG szoba.",
+      "Ahol a szívbe vagy nagyerekbe közvetlenül csatlakoznak."
+    ],
+    "ans": 0
+  },
+  {
+    "id": 19,
+    "type": "single",
+    "q": "Hol használható a BF (body floating) szimbólumú készülék?",
+    "opts": [
+      "Általános gyógyászati helyeken.",
+      "Ahol a bőrfelület szigetelő hatása leromlik pl EKG szoba.",
+      "Ahol a szívbe vagy nagyerekbe közvetlenül csatlakoznak."
+    ],
+    "ans": 1
+  },
+  {
+    "id": 20,
+    "type": "single",
+    "q": "Körülbelül hányszor nagyobb a normál bőrfelületen érzékelhető hálózati áram a szívet leállítani képes áramnál?",
+    "opts": [
+      "Egyforma.",
+      "2-szer.",
+      "15-ször."
+    ],
+    "ans": 2
+  },
+  {
+    "id": 21,
+    "type": "single",
+    "q": "Mit jelent a farmakodinámia kifejezés?",
+    "opts": [
+      "gyógyszer alkalmazás",
+      "gyógyszer mellékhatás",
+      "gyógyszer hatás a szervezetre",
+      "gyógyszerek ellenjavallat"
+    ],
+    "ans": 2
+  },
+  {
+    "id": 22,
+    "type": "single",
+    "q": "Az alábbiak közül melyik ér vesz részt az agy vérellátásában?",
+    "opts": [
+      "arteria carotis externa",
+      "arteria vertebralis",
+      "arteria iliaca externa",
+      "truncus coeliacus"
+    ],
+    "ans": 1
+  },
+  {
+    "id": 23,
+    "type": "single",
+    "q": "Hogyan nevezzük az os temporale sziklacsonti részét?",
+    "opts": [
+      "pars squamosa",
+      "pars petrosa",
+      "pars tympanica",
+      "pars descendens"
+    ],
+    "ans": 1
+  },
+  {
+    "id": 24,
+    "type": "single",
+    "q": "Melyik agyideg lép át a canalis opticuson?",
+    "opts": [
+      "nervus oculomotorius",
+      "nervus ophthalmicus",
+      "nervus opticus",
+      "nervus hypoglossus"
+    ],
+    "ans": 2
+  },
+  {
+    "id": 25,
+    "type": "single",
+    "q": "Mennyi az erythrocyták száma mikroliterenként?",
+    "opts": [
+      "4.5-5 millió",
+      "1-2 millió",
+      "3-4 millió",
+      "6.5-7 millió"
+    ],
+    "ans": 0
+  },
+  {
+    "id": 26,
+    "type": "single",
+    "q": "A Lang teszttel mit vizsgálhatunk?",
+    "opts": [
+      "A szemmozgásokat vizsgáljuk",
+      "A közeli harmadfokú binokuláris látást, azaz a szterolátást vizsgáljuk ezzel",
+      "A színlátást vizsgáljuk",
+      "A bénulást tudjuk kimutatni"
+    ],
+    "ans": 1
+  },
+  {
+    "id": 27,
+    "type": "single",
+    "q": "A távoli Maddox vizsgálathoz kell:",
+    "opts": [
+      "Szemtükör",
+      "Pupilla lámpa",
+      "Vörös zöld szemüveg",
+      "Maddox kereszt és Maddox cilinder"
+    ],
+    "ans": 3
+  },
+  {
+    "id": 28,
+    "type": "single",
+    "q": "A verzió sebessége, a vergenciához hasonlítva:",
+    "opts": [
+      "gyorsabb",
+      "lassabb",
+      "ugyan olyan sebességű",
+      "nem lehet összehasonlítani"
+    ],
+    "ans": 0
+  },
+  {
+    "id": 29,
+    "type": "single",
+    "q": "Az alábbi állítások közül melyik a helyes?",
+    "opts": [
+      "Embernél a látóidegrostok 50%-a kereszteződik",
+      "Embernél a látóidegrostok temporális fele kereszteződik",
+      "Embernél a látóidegrostok a corpus geniculatum lateraléban kereszteződnek",
+      "A látókéregben csak monokuláris sejtek vannak"
+    ],
+    "ans": 0
+  },
+  {
+    "id": 30,
+    "type": "single",
+    "q": "Az alábbiak közül hova tartozik a mozgásparallaxis?",
+    "opts": [
+      "Látási jelzőmozzanatok: monokuláris",
+      "Látási jelzőmozzanatok: binokuláris",
+      "Szemmozgásos jelzőmozzanatok",
+      "Látási jelzőmozzanatok: monokuláris, statikus, perspektíva"
+    ],
+    "ans": 0
+  },
+  {
+    "id": 31,
+    "type": "single",
+    "q": "Az alábbiak közül melyik a másodfokú binokularitás szinonimája?",
+    "opts": [
+      "fúzió",
+      "fuzionalitás",
+      "funkció",
+      "torzió"
+    ],
+    "ans": 0
+  },
+  {
+    "id": 32,
+    "type": "single",
+    "q": "Divergencia matematikai értelemben:",
+    "opts": [
+      "negatív előjelű",
+      "pozitív előjelű",
+      "nincs előjele",
+      "mindkettő"
+    ],
+    "ans": 0
+  },
+  {
+    "id": 33,
+    "type": "single",
+    "q": "Iseiconia jelentése:",
+    "opts": [
+      "Azonos fénytörés a két szemen",
+      "Azonos képnagyság a két szemben",
+      "Azonos méretű a két szem",
+      "Azonos fokú a két szem konvergenciája"
+    ],
+    "ans": 1
+  },
+  {
+    "id": 34,
+    "type": "single",
+    "q": "Közelei Maddox vizsgálatot milyen eszközökkel tudjuk elvégezni?",
+    "opts": [
+      "10 hasábot teszünk él felfelé a jobb szem elé és Csapodi olvasópróbák közeli Maddox tábláját tartjuk 40 cm-re",
+      "Polár szűrős szemüveget és vörös zöld ábrát kell adni",
+      "Csapody tábla és Bagolini üveg",
+      "Piros zöld szemüveget és négy pont ábrát kell nézni"
+    ],
+    "ans": 0
+  },
+  {
+    "id": 35,
+    "type": "single",
+    "q": "Melyik állítás helyes a heterophoriákkal kapcsolatban?",
+    "opts": [
+      "a heterophoriák közömbösítésekor a kiinduló állapot mindig tisztán sensoros kompenzáció",
+      "a sensorium kifáradásakor lép fel a motoros kompenzáció",
+      "ha a kereszttesztnél talált hasábértékekkel az összes ábra alaphelyzetűvé válik akkor tisztán motoros közömbösítésről beszélünk",
+      "a heterophoriára jellemző panaszokat a monocularisan optimális korrekció viselése mindig megoldja"
+    ],
+    "ans": 2
+  },
+  {
+    "id": 36,
+    "type": "single",
+    "q": "Melyik állítás helyes a versiókkal és vergentiákkal kapcsolatban?",
+    "opts": [
+      "versiók akkor következnek be ha eltérő távolságú tárgyakat nézünk",
+      "vergentiák akkor következnek be ha egymás után azonos távolságú de oldalirányban különböző tárgyakat tekintünk meg",
+      "azt a vergentiahelyzetet melynél normális esetben binokuláris egyeslátás adódik munkahelyzetnek nevezzük",
+      "a horror fusions igen gyakori kórkép"
+    ],
+    "ans": 2
+  },
+  {
+    "id": 37,
+    "type": "single",
+    "q": "Melyik állítás igaz a heterophoriákkal kapcsolatban?",
+    "opts": [
+      "Keresztezetlen észleléskor exophoriáról van szó.",
+      "Jobb oldali hyperphoriánál a hasábot jobb oldalon alappal felfelé kell elhelyezni",
+      "A kereszttesztnek nincs centralis fusiós ingert adó része",
+      "A tisztán motorosan kompenzált heterophoriánál hasábos korrekció nélkül csak óratesztnél találunk eltérést"
+    ],
+    "ans": 3
+  },
+  {
+    "id": 38,
+    "type": "single",
+    "q": "Melyik statikus jelzőmozzanat győzheti le a retinális diszparitást?",
+    "opts": [
+      "méret",
+      "takarás",
+      "perspektíva",
+      "árnyékolás"
+    ],
+    "ans": 1
+  },
+  {
+    "id": 39,
+    "type": "single",
+    "q": "Mi az elsőfokú binokuláris látás?",
+    "opts": [
+      "Amikor két szem látóterének 120º-os átmérőjű területe fedi egymást",
+      "Amikor a két szemet külön érő különböző fény- vagy színingert egyszerre fogjunk fel",
+      "Amikor a két szem korrespondáló pontjain keletkezett kép tudatunkban egybeolvad",
+      "Amikor két szem együttműködésének köszönhetően a tárgyakat három dimenzióban érzékeljük"
+    ],
+    "ans": 1
+  },
+  {
+    "id": 40,
+    "type": "single",
+    "q": "Mi az incyclo-vergentina helyzet?",
+    "opts": [
+      "a szemek befelé térülése",
+      "divergentia fellépése a szemek lefelé térülésekor",
+      "mindkét szem vertikális meridiánja „A\" helyzetet vesz fel",
+      "a szemek közelre nézésekor fellépő összetérülése"
+    ],
+    "ans": 2
+  },
+  {
+    "id": 41,
+    "type": "single",
+    "q": "Mikor jön létre zavaró diplopia?",
+    "opts": [
+      "Amikor egy térbeli pont képe a két szem retinájának nem identikus pontjaira esik",
+      "Amikor két szem foveola centralisa egymásnak nem identikus pontjaként szerepel",
+      "Amikor az egyik szem foveola centralisában keletkezett kép a másik szem pseudofoveolájával jön fusioba.",
+      "Amikor az egyik szem foveolájában keletkezett kép mérete lényeges eltér a másik szem foveolájában keletkezett kép méretétől"
+    ],
+    "ans": 1
+  },
+  {
+    "id": 42,
+    "type": "single",
+    "q": "Milyen módszereket ismerünk a fúzió kimutatására?",
+    "opts": [
+      "Synoptophor Maddox Wort és Schober teszt Polateszt Bagolini teszt és más tesztek",
+      "Atropinos tágításban vizsgálható",
+      "Refraktométerrel lehet kivizsgálni",
+      "Táblaolvasás külön szemmel"
+    ],
+    "ans": 0
+  },
+  {
+    "id": 43,
+    "type": "single",
+    "q": "Milyen pontokból szerkesztett pontsor a horopter-kör?",
+    "opts": [
+      "A retina peripheria ún. disparat pontjainak összességéből szerkesztett sor",
+      "A két szem által fixált pont körül azon pontokból szerkesztett pontsor, melyeknek vetülete a retina nem identikus pontjaira estik.",
+      "A két szem által fixált pont körüli azon pontokból szerkesztett pontsor, melyeknek vetülete mindkét retina identikus pontjaira esik"
+    ],
+    "ans": 2
+  },
+  {
+    "id": 44,
+    "type": "single",
+    "q": "Mire alkalmas a synoptophor?",
+    "opts": [
+      "A refrakció meghatározására",
+      "A közeli visus vizsgálatára",
+      "Szemnyomás mérésére",
+      "A binokuláris látás vizsgálatára"
+    ],
+    "ans": 3
+  },
+  {
+    "id": 45,
+    "type": "single",
+    "q": "Mit jelent a „strabismus concomittans\" kifejezés?",
+    "opts": [
+      "kísérő kancsalság",
+      "bénulásos kancsalság",
+      "konvergens kancsalság",
+      "divergens kancsalság"
+    ],
+    "ans": 0
+  },
+  {
+    "id": 46,
+    "type": "single",
+    "q": "Mit jelent az, ha a fusiót kizárva végzett takarásos próbával beállító mozgást találunk?",
+    "opts": [
+      "amblyopiát",
+      "orthphoriát",
+      "heterophoriát",
+      "nincs vezérszeme a betegnek"
+    ],
+    "ans": 2
+  },
+  {
+    "id": 47,
+    "type": "single",
+    "q": "Mit jelent az, ha csak egy bizonyos tekintési irányban találunk kettős látást?",
+    "opts": [
+      "csak kisfokú ametropia okozza a kancsalságot",
+      "valószínűleg rosszul végeztük a vizsgálatot",
+      "bénulásos kancsalságról van szó",
+      "heterophoriával állunk szemben"
+    ],
+    "ans": 2
+  },
+  {
+    "id": 48,
+    "type": "single",
+    "q": "Mit jelent az, hogy sensomotoros egyensúlyban vannak a szemek?",
+    "opts": [
+      "A fúzió megtartott",
+      "Nincs refraciós hiba",
+      "A binokuláris látás szenzoros és motoros feltételei jók",
+      "Mindkét szem azonos mértékben kancsalit kifelé és befelé is"
+    ],
+    "ans": 2
+  },
+  {
+    "id": 49,
+    "type": "single",
+    "q": "Mit nevezünk Panum-mezőnek?",
+    "opts": [
+      "a retina peripheriájának identikus mezőit",
+      "a két szem látóterének egymással fedésben lévő területét",
+      "a két szem centrumának identikus pontjait",
+      "a szemészetben nincs ilyen fogalom"
+    ],
+    "ans": 1
+  },
+  {
+    "id": 50,
+    "type": "single",
+    "q": "Polateszthez szükség van:",
+    "opts": [
+      "Polarizációs szemüvegre és polarizált teszt ábrákat tartalmazó vizsgáló készülékre és legjobb korrigált visust adó próba szemüvegre",
+      "Bagolini csikolt üvegre és refraktométerre",
+      "Szemüvegszekrényre és szemnyomásmérésre",
+      "Lang sztereo teszt után Cover tesztet kell végezni takarólapáttal"
+    ],
+    "ans": 0
+  },
+  {
+    "id": 51,
+    "type": "single",
+    "q": "Verzió mindkét szem:",
+    "opts": [
+      "azonos nagyságú, de ellentétes irányú elmozdulása",
+      "azonos nagyságú, és azonos irányú elmozdulása",
+      "eltérő nagyságú, és ellentétes irányú elmozdulása",
+      "eltérő nagyságú, de azonos irányú elmozdulása"
+    ],
+    "ans": 1
+  },
+  {
+    "id": 52,
+    "type": "single",
+    "q": "A fehérjék másodlagos szerkezetét adja:",
+    "opts": [
+      "az aminosavak sorrendje",
+      "az a-hélix és a b-redő",
+      "a nukleinsavak sorrendje",
+      "a két poliamidláncból álló kettős hélix"
+    ],
+    "ans": 1
+  },
+  {
+    "id": 53,
+    "type": "single",
+    "q": "A lipidek csoportjába tartozó valamennyi anyagra jellemző:",
+    "opts": [
+      "zsíroldékonyak",
+      "micellákat képeznek",
+      "kettős kötéseik miatt színesek",
+      "észterek"
+    ],
+    "ans": 0
+  },
+  {
+    "id": 54,
+    "type": "single",
+    "q": "Az állati/emberi sejtekben raktározott poliszaharid:",
+    "opts": [
+      "Keményítő",
+      "Cellulóz",
+      "Kitin",
+      "Glikogén"
+    ],
+    "ans": 3
+  },
+  {
+    "id": 55,
+    "type": "single",
+    "q": "Az endoszimbiózisról a következő állítás igaz:",
+    "opts": [
+      "Ez a mód volt a kompartmentek keletkezésének kizárólagos útja",
+      "Az autogén móddal együtt vezetett a prokarióták kialakulásához",
+      "Az ősi prokarióták többsége így táplálkozott a sejtfalán keresztül",
+      "Sejtfalát veszített ősi prokarióta így tett szert egyes sejtszervekre"
+    ],
+    "ans": 3
+  },
+  {
+    "id": 56,
+    "type": "single",
+    "q": "Ha valakinek a szemszín génjéből két egyforma allélja van, akkor erre a tulajdonságra nézve:",
+    "opts": [
+      "Heterozigóta",
+      "Hemizigóta",
+      "Homozigóta",
+      "Monoszómiás"
+    ],
+    "ans": 2
+  },
+  {
+    "id": 57,
+    "type": "single",
+    "q": "Mikor keletkezett bolygónk, a Föld?",
+    "opts": [
+      "15 milliárd évvel ezelőtt",
+      "4.6 milliárd évvel ezelőtt",
+      "10 millió évvel ezelőtt",
+      "3.8 milliárd évvel ezelőtt"
+    ],
+    "ans": 1
+  },
+  {
+    "id": 58,
+    "type": "single",
+    "q": "A véralvadási faktorok közé tartozik:",
+    "opts": [
+      "heparin",
+      "fibrinogén",
+      "szerotonin",
+      "fibrinolizin"
+    ],
+    "ans": 1
+  },
+  {
+    "id": 59,
+    "type": "single",
+    "q": "Hyperthyreosis esetén:",
+    "opts": [
+      "a mozgás és a beszéd lelassul",
+      "mixödéma keletkezik",
+      "a beteg jelentősen meghízik",
+      "a beteg pulzusa szapora, vérnyomása emelkedik"
+    ],
+    "ans": 3
+  },
+  {
+    "id": 60,
+    "type": "single",
+    "q": "Melyik a neuromuscularis szinapszis ingerületátvivő anyaga?",
+    "opts": [
+      "noradrenalin",
+      "dopamin",
+      "acetilkolin",
+      "szerotonin"
+    ],
+    "ans": 2
+  },
+  {
+    "id": 61,
+    "type": "single",
+    "q": "Mit bont le a nyál, és milyen termékek keletkeznek?",
+    "opts": [
+      "cellulózt maltózra és oligoszacharidokra",
+      "fehérjéket aminosavakra és kisebb peptidekre",
+      "keményítőt maltózra és oligoszacharidokra",
+      "keményítőt szacharózra és maltózra"
+    ],
+    "ans": 2
+  },
+  {
+    "id": 62,
+    "type": "single",
+    "q": "Neutrofil granulocyták feladata:",
+    "opts": [
+      "sejttörmelékek fagocitálása",
+      "baktériumok fagocitálása",
+      "antigénprezentáció",
+      "hisztamin termelése"
+    ],
+    "ans": 1
+  },
+  {
+    "id": 63,
+    "type": "single",
+    "q": "A felsoroltak közül melyik esetén közeledik a szem közelpontja a távolpont térbeli helyéhez?",
+    "opts": [
+      "astigmia",
+      "myopia",
+      "hypermetropia",
+      "presbyopia"
+    ],
+    "ans": 3
+  },
+  {
+    "id": 64,
+    "type": "single",
+    "q": "A felsoroltak közül melyik nem jellemző a fényforrásokra?",
+    "opts": [
+      "fényerősség",
+      "fényáram",
+      "megvilágítási erősség",
+      "felületi világosság"
+    ],
+    "ans": 2
+  },
+  {
+    "id": 65,
+    "type": "single",
+    "q": "A felsoroltak közül melyiknek van két valódi fókuszpontja?",
+    "opts": [
+      "gyűjtőlencse",
+      "szórólencse",
+      "homorú tükör",
+      "domború tükör"
+    ],
+    "ans": 0
+  },
+  {
+    "id": 66,
+    "type": "single",
+    "q": "A felsoroltak közül melyikre jellemző, hogy a tárgypontból kiinduló fénysugarakat úgy kell a szemüveggel módosítani, mintha azok a szem közelpontjából jönnének?",
+    "opts": [
+      "astigmia",
+      "myopia",
+      "hypermetropia",
+      "presbyopia"
+    ],
+    "ans": 3
+  },
+  {
+    "id": 67,
+    "type": "single",
+    "q": "A fénytörési hibák közül melyiknél valódi mindig a közelpont és a távolpont?",
+    "opts": [
+      "astigmia",
+      "myopia",
+      "hypermetropia",
+      "presbyopia"
+    ],
+    "ans": 1
+  },
+  {
+    "id": 68,
+    "type": "single",
+    "q": "A kétszeres fókusztávolságnál messzebb lévő tárgyakról valódi fordított állású kicsinyített képet hoz létre a tárggyal megegyező oldalon:",
+    "opts": [
+      "gyűjtőlencse",
+      "szórólencse",
+      "homorú tükör",
+      "domború tükör"
+    ],
+    "ans": 2
+  },
+  {
+    "id": 69,
+    "type": "single",
+    "q": "A leképezési hibák közül melyik nem korrigálható lencserendszer segítségével?",
+    "opts": [
+      "sphaericus aberratio",
+      "astigmatismus",
+      "képmezőhajlás",
+      "kromatikus aberratio"
+    ],
+    "ans": 3
+  },
+  {
+    "id": 70,
+    "type": "single",
+    "q": "A törőközegek közül melyik adja a szem törőerejének 2/3-át?",
+    "opts": [
+      "szaruhártya",
+      "csarnokvíz",
+      "szemlencse",
+      "üvegtest"
+    ],
+    "ans": 0
+  },
+  {
+    "id": 71,
+    "type": "single",
+    "q": "Az anizotróp anyagokon áthaladó fénysugarak melyik jelenséget hozzák létre?",
+    "opts": [
+      "interferencia",
+      "polarizáció",
+      "elnyelés",
+      "elhajlás"
+    ],
+    "ans": 1
+  },
+  {
+    "id": 72,
+    "type": "single",
+    "q": "Az emberi szem esetén melyik leképezési hibát korrigálhatja a pupilla?",
+    "opts": [
+      "sphaericus aberratio",
+      "astigmatismus",
+      "képmezőhajlás",
+      "kromatikus aberratio"
+    ],
+    "ans": 0
+  },
+  {
+    "id": 73,
+    "type": "single",
+    "q": "Hol van a tárgy homorú tükör esetén ha a kép a tárggyal azonos méretű?",
+    "opts": [
+      "a fókuszon belül",
+      "a fókuszban",
+      "a fókuszpont és a geometriai középpont között",
+      "a geometriai középpontban",
+      "a geometriai középponton kívül"
+    ],
+    "ans": 3
+  },
+  {
+    "id": 74,
+    "type": "single",
+    "q": "Hol van a tárgy homorú tükör esetén ha a kép a tükör mögött keletkezik?",
+    "opts": [
+      "a fókuszon belül",
+      "a fókuszban",
+      "a fókuszpont és a geometriai középpont között",
+      "a geometriai középpontban",
+      "a geometriai középponton kívül"
+    ],
+    "ans": 0
+  },
+  {
+    "id": 75,
+    "type": "single",
+    "q": "Hol van a tárgy homorú tükör esetén ha a kép egyenes állású és nagyított?",
+    "opts": [
+      "a fókuszon belül",
+      "a fókuszban",
+      "a fókuszpont és a geometriai középpont között",
+      "a geometriai középpontban",
+      "a geometriai középponton kívül"
+    ],
+    "ans": 0
+  },
+  {
+    "id": 76,
+    "type": "single",
+    "q": "Hol van a tárgy homorú tükör esetén ha a kép fordított állású és nagyított?",
+    "opts": [
+      "a fókuszon belül",
+      "a fókuszban",
+      "a fókuszpont és a geometriai középpont között",
+      "a geometriai középpontban",
+      "a geometriai középponton kívül"
+    ],
+    "ans": 2
+  },
+  {
+    "id": 77,
+    "type": "single",
+    "q": "Hol van a tárgy homorú tükör esetén ha a kép kicsinyített?",
+    "opts": [
+      "a fókuszon belül",
+      "a fókuszban",
+      "a fókuszpont és a geometriai középpont között",
+      "a geometriai középpontban",
+      "a geometriai középponton kívül"
+    ],
+    "ans": 4
+  },
+  {
+    "id": 78,
+    "type": "single",
+    "q": "Hol van a tárgy homorú tükör esetén ha a kép látszólagos?",
+    "opts": [
+      "a fókuszon belül",
+      "a fókuszban",
+      "a fókuszpont és a geometriai középpont között",
+      "a geometriai középpontban",
+      "a geometriai középponton kívül"
+    ],
+    "ans": 0
+  },
+  {
+    "id": 79,
+    "type": "single",
+    "q": "Hol van a tárgy homorú tükör esetén ha nem keletkezik kép?",
+    "opts": [
+      "a fókuszon belül",
+      "a fókuszban",
+      "a fókuszpont és a geometriai középpont között",
+      "a geometriai középpontban",
+      "a geometriai középponton kívül"
+    ],
+    "ans": 1
+  },
+  {
+    "id": 80,
+    "type": "single",
+    "q": "Mely fénytörési hiba esetén jellemezhetjük az ametropia fokát 2 értékkel?",
+    "opts": [
+      "astigmia",
+      "myopia",
+      "hypermetropia",
+      "presbyopia"
+    ],
+    "ans": 0
+  },
+  {
+    "id": 81,
+    "type": "single",
+    "q": "Mely fénytörési hiba esetén virtuális mindig a szem távolpontja?",
+    "opts": [
+      "astigmia",
+      "myopia",
+      "hypermetropia",
+      "presbyopia"
+    ],
+    "ans": 2
+  },
+  {
+    "id": 82,
+    "type": "single",
+    "q": "Mely jelenség alapul a fény részecske természetén?",
+    "opts": [
+      "interferencia",
+      "polarizáció",
+      "elnyelés",
+      "elhajlás"
+    ],
+    "ans": 2
+  },
+  {
+    "id": 83,
+    "type": "single",
+    "q": "Mely jelenség hatására jön létre a Poisson-féle folt?",
+    "opts": [
+      "interferencia",
+      "polarizáció",
+      "elnyelés",
+      "elhajlás"
+    ],
+    "ans": 3
+  },
+  {
+    "id": 84,
+    "type": "single",
+    "q": "Mely jelenség nincs hatással az emberi szemre?",
+    "opts": [
+      "interferencia",
+      "polarizáció",
+      "elnyelés",
+      "elhajlás"
+    ],
+    "ans": 1
+  },
+  {
+    "id": 85,
+    "type": "single",
+    "q": "Mely jelenség valósul meg a hullámok találkozásakor?",
+    "opts": [
+      "interferencia",
+      "polarizáció",
+      "elnyelés",
+      "elhajlás"
+    ],
+    "ans": 0
+  },
+  {
+    "id": 86,
+    "type": "single",
+    "q": "Mely közegnek a törésmutatója a legnagyobb az emberi szemben?",
+    "opts": [
+      "szaruhártya",
+      "csarnokvíz",
+      "szemlencse",
+      "üvegtest"
+    ],
+    "ans": 2
+  },
+  {
+    "id": 87,
+    "type": "single",
+    "q": "Mely törőközeg törésmutatója változik az életkor előrehaladtával?",
+    "opts": [
+      "szaruhártya",
+      "csarnokvíz",
+      "szemlencse",
+      "üvegtest"
+    ],
+    "ans": 2
+  },
+  {
+    "id": 88,
+    "type": "single",
+    "q": "Melyik az a közeg, amelyik levegőben nagyobb törőerejű, mint a szemben?",
+    "opts": [
+      "szaruhártya",
+      "csarnokvíz",
+      "szemlencse",
+      "üvegtest"
+    ],
+    "ans": 0
+  },
+  {
+    "id": 89,
+    "type": "single",
+    "q": "Melyik az a közeg amelyik víz felvétele esetén növeli a szem törőerejét?",
+    "opts": [
+      "szaruhártya",
+      "csarnokvíz",
+      "szemlencse",
+      "üvegtest"
+    ],
+    "ans": 2
+  },
+  {
+    "id": 90,
+    "type": "single",
+    "q": "Melyik az a leképezési hiba amelyik a tárgy nagy mérete miatt valósul meg?",
+    "opts": [
+      "sphaericus aberratio",
+      "astigmatismus",
+      "képmezőhajlás",
+      "kromatikus aberratio"
+    ],
+    "ans": 2
+  },
+  {
+    "id": 91,
+    "type": "single",
+    "q": "Melyik az az eszköz, amelyik a tárgyoldalon hoz létre nagyított látszólagos képet?",
+    "opts": [
+      "gyűjtőlencse",
+      "szórólencse",
+      "homorú tükör",
+      "domború tükör"
+    ],
+    "ans": 0
+  },
+  {
+    "id": 92,
+    "type": "single",
+    "q": "Melyik az az eszköz, mely mindig látszólagos képet hoz létre a tárgy felőli oldalon?",
+    "opts": [
+      "gyűjtőlencse",
+      "szórólencse",
+      "homorú tükör",
+      "domború tükör"
+    ],
+    "ans": 1
+  },
+  {
+    "id": 93,
+    "type": "single",
+    "q": "Melyik az az optikai eszköz, melynek feladata a fénysugár elforgatása?",
+    "opts": [
+      "síkpárhuzamos lemez",
+      "síktükör",
+      "prizma",
+      "lencse"
+    ],
+    "ans": 2
+  },
+  {
+    "id": 94,
+    "type": "single",
+    "q": "Melyik eszköz hoz létre látszólagos kicsinyített képet a tárggyal ellentétes oldalon?",
+    "opts": [
+      "gyűjtőlencse",
+      "szórólencse",
+      "homorú tükör",
+      "domború tükör"
+    ],
+    "ans": 3
+  },
+  {
+    "id": 95,
+    "type": "single",
+    "q": "Melyik eszköz hoz létre valódi nagyított képet a tárggyal megegyező oldalon?",
+    "opts": [
+      "gyűjtőlencse",
+      "szórólencse",
+      "homorú tükör",
+      "domború tükör"
+    ],
+    "ans": 2
+  },
+  {
+    "id": 96,
+    "type": "single",
+    "q": "Melyik eszköz viselkedik úgy mintha az optikai tengely felé mutató élű prizmákból állna?",
+    "opts": [
+      "gyűjtőlencse",
+      "szórólencse",
+      "homorú tükör",
+      "domború tükör"
+    ],
+    "ans": 0
+  },
+  {
+    "id": 97,
+    "type": "single",
+    "q": "Melyik eszköznek van a virtuális fókuszpontja mindig a tárggyal ellentétes oldalon?",
+    "opts": [
+      "gyűjtőlencse",
+      "szórólencse",
+      "homorú tükör",
+      "domború tükör"
+    ],
+    "ans": 1
+  },
+  {
+    "id": 98,
+    "type": "single",
+    "q": "Melyik eszköznek van két virtuális fókuszpontja?",
+    "opts": [
+      "gyűjtőlencse",
+      "szórólencse",
+      "homorú tükör",
+      "domború tükör"
+    ],
+    "ans": 1
+  },
+  {
+    "id": 99,
+    "type": "single",
+    "q": "Melyik fénytörési hiba esetén negatív mindig az ametropia foka?",
+    "opts": [
+      "astigmia",
+      "myopia",
+      "hypermetropia",
+      "presbyopia"
+    ],
+    "ans": 1
+  },
+  {
+    "id": 100,
+    "type": "single",
+    "q": "Melyik fénytörési hiba esetén pozitív mindig az ametropia foka?",
+    "opts": [
+      "astigmia",
+      "myopia",
+      "hypermetropia",
+      "presbyopia"
+    ],
+    "ans": 2
+  },
+  {
+    "id": 101,
+    "type": "single",
+    "q": "Melyik fénytörési hiba hozza létre a Sturm-féle konoidot?",
+    "opts": [
+      "astigmia",
+      "myopia",
+      "hypermetropia",
+      "presbyopia"
+    ],
+    "ans": 0
+  },
+  {
+    "id": 102,
+    "type": "single",
+    "q": "Melyik fénytörési hiba korrigálható asphaericus felülettel?",
+    "opts": [
+      "sphaericus aberratio",
+      "astigmatismus",
+      "képmezőhajlás",
+      "kromatikus aberratio"
+    ],
+    "ans": 0
+  },
+  {
+    "id": 103,
+    "type": "single",
+    "q": "Melyik fénytörési hiba osztható fel fakultatív, relatív és abszolút csoportra?",
+    "opts": [
+      "astigmia",
+      "myopia",
+      "hypermetropia",
+      "presbyopia"
+    ],
+    "ans": 2
+  },
+  {
+    "id": 104,
+    "type": "single",
+    "q": "Melyik fénytörési hiba osztható fel reguláris és irreguláris csoportra?",
+    "opts": [
+      "astigmia",
+      "myopia",
+      "hypermetropia",
+      "presbyopia"
+    ],
+    "ans": 0
+  },
+  {
+    "id": 105,
+    "type": "single",
+    "q": "Melyik jelenség használható fel a lencsék feszültségének vizsgálatára?",
+    "opts": [
+      "interferencia",
+      "polarizáció",
+      "elnyelés",
+      "elhajlás"
+    ],
+    "ans": 1
+  },
+  {
+    "id": 106,
+    "type": "single",
+    "q": "Melyik jelenség hatására jönnek létre a Newton-gyűrűk?",
+    "opts": [
+      "interferencia",
+      "polarizáció",
+      "elnyelés",
+      "elhajlás"
+    ],
+    "ans": 0
+  },
+  {
+    "id": 107,
+    "type": "single",
+    "q": "Melyik jelenség játszik szerepet a reflexiócsökkentő réteg működésében?",
+    "opts": [
+      "interferencia",
+      "polarizáció",
+      "elnyelés",
+      "elhajlás"
+    ],
+    "ans": 0
+  },
+  {
+    "id": 108,
+    "type": "single",
+    "q": "Melyik jelenség rontja el a látóélességet 2 mm-nél szűkebb pupilla esetén?",
+    "opts": [
+      "interferencia",
+      "polarizáció",
+      "elnyelés",
+      "elhajlás"
+    ],
+    "ans": 3
+  },
+  {
+    "id": 109,
+    "type": "single",
+    "q": "Melyik jelenséget határozza meg a közeg anyagi minősége és hőmérséklete egyszerre?",
+    "opts": [
+      "interferencia",
+      "polarizáció",
+      "elnyelés",
+      "elhajlás"
+    ],
+    "ans": 2
+  },
+  {
+    "id": 110,
+    "type": "single",
+    "q": "Melyik jellemző alapegysége azonos körülbelül egy gyertya fényességével?",
+    "opts": [
+      "fényerősség",
+      "fényáram",
+      "megvilágítási erősség",
+      "felületi világosság"
+    ],
+    "ans": 0
+  },
+  {
+    "id": 111,
+    "type": "single",
+    "q": "Melyik jellemző alapegységet határozzuk meg egy etalon fényforrással?",
+    "opts": [
+      "fényerősség",
+      "fényáram",
+      "megvilágítási erősség",
+      "felületi világosság"
+    ],
+    "ans": 0
+  },
+  {
+    "id": 112,
+    "type": "single",
+    "q": "Melyik jellemző értéke függ a fényforrástól mért távolságtól?",
+    "opts": [
+      "fényerősség",
+      "fényáram",
+      "megvilágítási erősség",
+      "felületi világosság"
+    ],
+    "ans": 2
+  },
+  {
+    "id": 113,
+    "type": "single",
+    "q": "Melyik jellemző értéke változhat különböző irányokban?",
+    "opts": [
+      "fényerősség",
+      "fényáram",
+      "megvilágítási erősség",
+      "felületi világosság"
+    ],
+    "ans": 0
+  },
+  {
+    "id": 114,
+    "type": "single",
+    "q": "Melyik jellemző értékét adjuk meg luxban?",
+    "opts": [
+      "fényerősség",
+      "fényáram",
+      "megvilágítási erősség",
+      "felületi világosság"
+    ],
+    "ans": 2
+  },
+  {
+    "id": 115,
+    "type": "single",
+    "q": "Melyik jellemző értékét befolyásolhatja az ha a felület nem merőleges a fénysugarakra?",
+    "opts": [
+      "fényerősség",
+      "fényáram",
+      "megvilágítási erősség",
+      "felületi világosság"
+    ],
+    "ans": 2
+  },
+  {
+    "id": 116,
+    "type": "single",
+    "q": "Melyik jellemző mértékegysége a stilb?",
+    "opts": [
+      "fényerősség",
+      "fényáram",
+      "megvilágítási erősség",
+      "felületi világosság"
+    ],
+    "ans": 3
+  },
+  {
+    "id": 117,
+    "type": "single",
+    "q": "Melyik jellemzőből származtathatjuk a másik hármat?",
+    "opts": [
+      "fényerősség",
+      "fényáram",
+      "megvilágítási erősség",
+      "felületi világosság"
+    ],
+    "ans": 0
+  },
+  {
+    "id": 118,
+    "type": "single",
+    "q": "Melyik jellemzőt mérhetjük másodpercenként kibocsátott fotonok számával?",
+    "opts": [
+      "fényerősség",
+      "fényáram",
+      "megvilágítási erősség",
+      "felületi világosság"
+    ],
+    "ans": 1
+  },
+  {
+    "id": 119,
+    "type": "single",
+    "q": "Melyik közeg fősíkjai helyezkednek el a közegen kívül?",
+    "opts": [
+      "szaruhártya",
+      "csarnokvíz",
+      "szemlencse",
+      "üvegtest"
+    ],
+    "ans": 2
+  },
+  {
+    "id": 120,
+    "type": "single",
+    "q": "Melyik közeg törésmutatója nem állandó a teljes közegben?",
+    "opts": [
+      "szaruhártya",
+      "csarnokvíz",
+      "szemlencse",
+      "üvegtest"
+    ],
+    "ans": 2
+  },
+  {
+    "id": 121,
+    "type": "single",
+    "q": "Melyik közegben helyezkedik el a szem két fő síkja?",
+    "opts": [
+      "szaruhártya",
+      "csarnokvíz",
+      "szemlencse",
+      "üvegtest"
+    ],
+    "ans": 1
+  },
+  {
+    "id": 122,
+    "type": "single",
+    "q": "Melyik közegnek a hatása ellentétes a szemben mint a levegőben?",
+    "opts": [
+      "szaruhártya",
+      "csarnokvíz",
+      "szemlencse",
+      "üvegtest"
+    ],
+    "ans": 1
+  },
+  {
+    "id": 123,
+    "type": "single",
+    "q": "Melyik leképezési hiba korrigálható egy koronaüvegből és egy flintüvegből álló lencserendszerrel?",
+    "opts": [
+      "sphaericus aberratio",
+      "astigmatismus",
+      "képmezőhajlás",
+      "kromatikus aberratio"
+    ],
+    "ans": 3
+  },
+  {
+    "id": 124,
+    "type": "single",
+    "q": "Melyik leképezési hiba korrigálható rekesz alkalmazásával?",
+    "opts": [
+      "sphaericus aberratio",
+      "astigmatismus",
+      "képmezőhajlás",
+      "kromatikus aberratio"
+    ],
+    "ans": 0
+  },
+  {
+    "id": 125,
+    "type": "single",
+    "q": "Melyik leképezési hiba korrigálható sphaericus lencséknél a görbületi sugarak helyes megválasztásával?",
+    "opts": [
+      "sphaericus aberratio",
+      "astigmatismus",
+      "képmezőhajlás",
+      "kromatikus aberratio"
+    ],
+    "ans": 0
+  },
+  {
+    "id": 126,
+    "type": "single",
+    "q": "Melyik leképezési hiba nem jellemző a tükrökre?",
+    "opts": [
+      "sphaericus aberratio",
+      "astigmatismus",
+      "képmezőhajlás",
+      "kromatikus aberratio"
+    ],
+    "ans": 3
+  },
+  {
+    "id": 127,
+    "type": "single",
+    "q": "Melyik leképezési hibánál keletkezik a Sturm-féle konoid?",
+    "opts": [
+      "sphaericus aberratio",
+      "astigmatismus",
+      "képmezőhajlás",
+      "kromatikus aberratio"
+    ],
+    "ans": 1
+  },
+  {
+    "id": 128,
+    "type": "single",
+    "q": "Melyik leképezési hibánál nevezzük a lencséket alulkorrigáltnak vagy túlkorrigáltnak?",
+    "opts": [
+      "sphaericus aberratio",
+      "astigmatismus",
+      "képmezőhajlás",
+      "kromatikus aberratio"
+    ],
+    "ans": 0
+  },
+  {
+    "id": 129,
+    "type": "single",
+    "q": "Melyik leképezési hibát korrigálhatja a szemben a retina görbült alakja?",
+    "opts": [
+      "sphaericus aberratio",
+      "astigmatismus",
+      "képmezőhajlás",
+      "kromatikus aberratio"
+    ],
+    "ans": 2
+  },
+  {
+    "id": 130,
+    "type": "single",
+    "q": "Melyik optikai eszköznél alkalmazzuk a gyakorlatban a teljes visszaverődés jelenségét?",
+    "opts": [
+      "síkpárhuzamos lemez",
+      "síktükör",
+      "prizma",
+      "lencse"
+    ],
+    "ans": 2
+  },
+  {
+    "id": 131,
+    "type": "single",
+    "q": "Melyik optikai test fordítja meg csak a kép oldalait?",
+    "opts": [
+      "síkpárhuzamos lemez",
+      "síktükör",
+      "prizma",
+      "lencse"
+    ],
+    "ans": 1
+  },
+  {
+    "id": 132,
+    "type": "single",
+    "q": "Melyik optikai test hozhat létre fordított állású képet?",
+    "opts": [
+      "síkpárhuzamos lemez",
+      "síktükör",
+      "prizma",
+      "lencse"
+    ],
+    "ans": 3
+  },
+  {
+    "id": 133,
+    "type": "single",
+    "q": "Melyik optikai test képalkotása távolságfüggő?",
+    "opts": [
+      "síkpárhuzamos lemez",
+      "síktükör",
+      "prizma",
+      "lencse"
+    ],
+    "ans": 3
+  },
+  {
+    "id": 134,
+    "type": "single",
+    "q": "Melyik optikai testet használja fel a képnagyság mérésére a Helmholtz-féle ophthalmometer?",
+    "opts": [
+      "síkpárhuzamos lemez",
+      "síktükör",
+      "prizma",
+      "lencse"
+    ],
+    "ans": 0
+  },
+  {
+    "id": 135,
+    "type": "single",
+    "q": "Melyik optikai testnél nem kell figyelembe venni az alapanyag törésmutatóját?",
+    "opts": [
+      "síkpárhuzamos lemez",
+      "síktükör",
+      "prizma",
+      "lencse"
+    ],
+    "ans": 1
+  },
+  {
+    "id": 136,
+    "type": "single",
+    "q": "Melyik optikai testtel hozható létre egyenes állású kép a Kepler-távcsövekben?",
+    "opts": [
+      "síkpárhuzamos lemez",
+      "síktükör",
+      "prizma",
+      "lencse"
+    ],
+    "ans": 2
+  },
+  {
+    "id": 137,
+    "type": "single",
+    "q": "Melyik törőközeg törésmutatóját használja a Gullstrand féle szemmodell a szem átlagos törésmutatójának?",
+    "opts": [
+      "szaruhártya",
+      "csarnokvíz",
+      "szemlencse",
+      "üvegtest"
+    ],
+    "ans": 1
+  },
+  {
+    "id": 138,
+    "type": "single",
+    "q": "Milyen irányba tolja el az alkalmazkodás a fénytörést?",
+    "opts": [
+      "astigmia",
+      "myopia",
+      "hypermetropia",
+      "presbyopia"
+    ],
+    "ans": 1
+  },
+  {
+    "id": 139,
+    "type": "single",
+    "q": "A vírusokra jellemző:",
+    "opts": [
+      "Csak fénymikroszkóppal láthatók",
+      "Mikrométer méretűek",
+      "Nanométer méretűek",
+      "Csak vegetatív formában fordul elő"
+    ],
+    "ans": 2
+  },
+  {
+    "id": 140,
+    "type": "single",
+    "q": "Az alábbiak közül melyik NEM minősül antropogén légszennyező forrásnak?",
+    "opts": [
+      "Ipar általi emisszió",
+      "A talaj pora",
+      "Közlekedés emissziója",
+      "Háztartási hulladékok égetése"
+    ],
+    "ans": 1
+  },
+  {
+    "id": 141,
+    "type": "single",
+    "q": "Mi az inkubációs idő?",
+    "opts": [
+      "a kórokozó ürülésének kezdetéig eltelő idő",
+      "a kórokozóhordozás ideje",
+      "a kórokozó elszaporodásához szükséges idő",
+      "a fertőzés és a klinikai tünetek megjelenése között eltelő idő"
+    ],
+    "ans": 3
+  },
+  {
+    "id": 142,
+    "type": "single",
+    "q": "Milyen irányba tolja el az aphakia a fénytörési hibát?",
+    "opts": [
+      "astigmia",
+      "myopia",
+      "hypermetropia",
+      "presbyopia"
+    ],
+    "ans": 2
+  },
+  {
+    "id": 143,
+    "type": "single",
+    "q": "Mely hatóanyagot használják a glaukóma kezelésében?",
+    "opts": [
+      "timolol (Arutimol)",
+      "atropin",
+      "neomycin",
+      "ciprofloxacin",
+      "tropicamid"
+    ],
+    "ans": 0
+  },
+  {
+    "id": 144,
+    "type": "single",
+    "q": "Mit nevezünk generikus gyógyszernek?",
+    "opts": [
+      "új hatóanyagot tartalmazó készítményeket",
+      "termékszabadalommal védett gyógyszereket",
+      "általános, széles körben használt gyógyszereket",
+      "genetikai hatású készítményeket",
+      "szabadalommal nem védett meglévő hatóanyagú készítményeket"
+    ],
+    "ans": 4
+  },
+  {
+    "id": 145,
+    "type": "single",
+    "q": "Melyik nem tágítja a pupillát?",
+    "opts": [
+      "atropin",
+      "tropicamid",
+      "cylopentolat",
+      "pilocarpin",
+      "fenilefrin"
+    ],
+    "ans": 3
+  },
+  {
+    "id": 146,
+    "type": "single",
+    "q": "Mekkora tömegű magnéziumion tartalmaz 1x10 23 db elektront? [Ar(Mg)=24,3]",
+    "opts": [
+      "4,05g",
+      "405mg",
+      "338mg",
+      "48,6g",
+      "2,43g"
+    ],
+    "ans": 1
+  },
+  {
+    "id": 147,
+    "type": "single",
+    "q": "Melyik az az elemi részecske amelyiknek száma egy elem minden atomjában és ionjában megegyezik?",
+    "opts": [
+      "a proton",
+      "az elektron",
+      "a neutron",
+      "a proton és az elektron",
+      "a proton és a neutron"
+    ],
+    "ans": 0
+  },
+  {
+    "id": 148,
+    "type": "single",
+    "q": "Melyik elem atomjai a legkisebb átmérőjűek?",
+    "opts": [
+      "H",
+      "He",
+      "Li",
+      "F",
+      "Ne"
+    ],
+    "ans": 3
+  },
+  {
+    "id": 149,
+    "type": "single",
+    "q": "Mennyi a klór átlagos relatív molekulatömege?",
+    "opts": [
+      "35,5",
+      "35,5g",
+      "35,5g/mol",
+      "71",
+      "71g/mol"
+    ],
+    "ans": 3
+  },
+  {
+    "id": 150,
+    "type": "single",
+    "q": "A felsorolt alapanyagok közül melyik igényli a legkevésbé a fehérjetisztítást?",
+    "opts": [
+      "Hagyományos magasabb víztartalmú hidrogél",
+      "RGP",
+      "Hagyományos alacsonyabb víztartalmú hidrogél"
+    ],
+    "ans": 1
+  },
+  {
+    "id": 151,
+    "type": "single",
+    "q": "A lágy kontaktlencse illesztését szorosnak találja. Hogyan változtat rajta?",
+    "opts": [
+      "az új próbalencsénél növeli a lencse alapgörbületi sugarának értéket",
+      "az új próbalencsénél csökkenti a lencse alapgörbületi sugarának értéket",
+      "az új próbalencsénél növeli a lencse átmérőjét"
+    ],
+    "ans": 0
+  },
+  {
+    "id": 152,
+    "type": "single",
+    "q": "A praecornealis könnyfilm mely rétege akadályozza meg a könny elpárolgását?",
+    "opts": [
+      "vizes fázis",
+      "lipidfázis",
+      "mucinréteg",
+      "a fentiek mindegyike",
+      "egyik sem a fentiek közül"
+    ],
+    "ans": 1
+  },
+  {
+    "id": 153,
+    "type": "single",
+    "q": "A szaruhártya legvastagabb rétege:",
+    "opts": [
+      "epithelium",
+      "Bowman membran",
+      "stroma",
+      "Descemet membran",
+      "endothelium"
+    ],
+    "ans": 2
+  },
+  {
+    "id": 154,
+    "type": "single",
+    "q": "A szaruhártya mely rétege áll egy sejtsorból?",
+    "opts": [
+      "epithelium",
+      "Bowman membran",
+      "stroma",
+      "Descemet membran",
+      "endothelium"
+    ],
+    "ans": 4
+  },
+  {
+    "id": 155,
+    "type": "single",
+    "q": "A szaruhártya mely rétege képes a teljes regenerálódásra?",
+    "opts": [
+      "stroma",
+      "endothelium",
+      "Descemet-hártya",
+      "epithelium",
+      "Bowman-hártya"
+    ],
+    "ans": 3
+  },
+  {
+    "id": 156,
+    "type": "single",
+    "q": "Az újabb lágy kontaktlencse hátsófelszínére melyik lencsegeometria jellemző?",
+    "opts": [
+      "egygörbületű",
+      "kétgörbületű",
+      "aszférikus",
+      "lenticularis"
+    ],
+    "ans": 2
+  },
+  {
+    "id": 157,
+    "type": "single",
+    "q": "Egy lágy tórikus lencse -1.0 D sph -1.0 D cyl 180 fokos. A lencse 10 fokot rotálódott az óramutató járásával ellentétesen. Milyen fokbeállítással rendeli meg?",
+    "opts": [
+      "180 fok",
+      "170 fok",
+      "10 fok"
+    ],
+    "ans": 1
+  },
+  {
+    "id": 158,
+    "type": "single",
+    "q": "Egy oldat felszínt nedvesítő képessége jobb ha:",
+    "opts": [
+      "a lencsefelszínnel létrejött nedvesedési szöge nagyobb",
+      "nyomelemeket tartalmaz",
+      "oxigénben dúsabb",
+      "felszínnel létrejött nedvesedési szöge kisebb"
+    ],
+    "ans": 3
+  },
+  {
+    "id": 159,
+    "type": "single",
+    "q": "Mennyi a könny pH-értéke?",
+    "opts": [
+      "pH 4,8-5.2",
+      "pH 6.4-6.8",
+      "pH 7.0-7.4",
+      "pH 7.4-7.8",
+      "pH 8.2-8.6"
+    ],
+    "ans": 3
+  },
+  {
+    "id": 160,
+    "type": "single",
+    "q": "Mi utal arra hogy a lágy kontaktlencse illesztése laza?",
+    "opts": [
+      "a kontaktlencse kissé decentrált",
+      "levegőbuborék látható a lencse közepe alatt",
+      "a lencse nehezen mozdítható ki a push up teszttel",
+      "pislogás után közvetlenül éles a keratometriás kép"
+    ],
+    "ans": 3
+  },
+  {
+    "id": 161,
+    "type": "single",
+    "q": "Milyen kórokozóra gondolunk, ha egy keratitises beteg kórtörténetében kontaktlencse viselés és uszodavízzel való érintkezés is szerepel?",
+    "opts": [
+      "Staphylococcus",
+      "Streptococcus",
+      "Pseudomonas",
+      "Acanthamoeba"
+    ],
+    "ans": 3
+  },
+  {
+    "id": 162,
+    "type": "single",
+    "q": "Milyen vizsgálattal tudja a legnagyobb biztonsággal megállapítani a keratoconust?",
+    "opts": [
+      "réslámpával",
+      "keratométerrel",
+      "komputer topográffal",
+      "szemtükörrel"
+    ],
+    "ans": 2
+  },
+  {
+    "id": 163,
+    "type": "single",
+    "q": "Mire gondolunk, ha egy páciensnél a szaruhártya felszíne irregulárissá válik, és kisebb alapgörbületi sugárértékek lesznek mérhetők?",
+    "opts": [
+      "myopizálódás",
+      "presbyopia",
+      "keratoconus",
+      "iridocyclitis"
+    ],
+    "ans": 2
+  },
+  {
+    "id": 164,
+    "type": "single",
+    "q": "Nagyfokú direkt astigmiánál a szférikus RGP lencse fluoresceines képe a lencse tapadását mutatja:",
+    "opts": [
+      "vízszintesen",
+      "függőlegesen",
+      "alul",
+      "felül"
+    ],
+    "ans": 0
+  },
+  {
+    "id": 165,
+    "type": "single",
+    "q": "Páciense szemüvegének törőereje: -2.75 D sph. Milyen dioptriájú lágylencsét próbál fel először?",
+    "opts": [
+      "-2.5 D",
+      "-3.0 D",
+      "-2.75 D"
+    ],
+    "ans": 0
+  },
+  {
+    "id": 166,
+    "type": "single",
+    "q": "Páciense szemüvegének törőereje: -5.0 D sph. Milyen dioptriájú lágylencsét próbál fel először?",
+    "opts": [
+      "-5.0 D",
+      "-4.75 D",
+      "-5.25 D"
+    ],
+    "ans": 1
+  },
+  {
+    "id": 167,
+    "type": "single",
+    "q": "A duodenum pepikus fekélyének szövődményei között nem szerepel:",
+    "opts": [
+      "Vérzés",
+      "Perforáció",
+      "Rosszindulatú daganat kialakulása",
+      "Sztenózis kialakulása"
+    ],
+    "ans": 2
+  },
+  {
+    "id": 168,
+    "type": "single",
+    "q": "A Crohn betegségre nem jellemző:",
+    "opts": [
+      "Ép bélszakaszok váltakoznak a beteg bélszakaszokkal",
+      "A szájtól a végbélig érintett lehet a bélcsatorna",
+      "Súlyos felszívódási zavart okozhat",
+      "Jellemzően a vastagbelet érinti"
+    ],
+    "ans": 3
+  },
+  {
+    "id": 169,
+    "type": "single",
+    "q": "A szívelégtelenségnek nem tünete:",
+    "opts": [
+      "Dyspnoe",
+      "Köhögés",
+      "Nycturia",
+      "Fáradtság",
+      "Szorongás"
+    ],
+    "ans": 4
+  },
+  {
+    "id": 170,
+    "type": "single",
+    "q": "RGP kontaktlencse fluoresceines képe felül és alul könnytócsát mutat. Ez milyen asztigmiának felel meg:",
+    "opts": [
+      "kevert asztigmia",
+      "inverz asztigmia",
+      "direkt asztigmia",
+      "reziduális asztigmia"
+    ],
+    "ans": 2
+  },
+  {
+    "id": 171,
+    "type": "single",
+    "q": "Szilikon-hidrogél alapanyagú kontaktlencséken a leggyakoribb felrakódás:",
+    "opts": [
+      "protein",
+      "lipid",
+      "kalcium"
+    ],
+    "ans": 1
+  },
+  {
+    "id": 172,
+    "type": "single",
+    "q": "A forrasztott bifocalis lencsét:",
+    "opts": [
+      "két darabból állítják össze",
+      "három darabból állítják össze",
+      "négy darabból állítják össze",
+      "nincs ilyen bifocalis lencse"
+    ],
+    "ans": 0
+  },
+  {
+    "id": 173,
+    "type": "single",
+    "q": "A helyesen beállított polarizációs szűrő:",
+    "opts": [
+      "gyengíti a vízszintes síkban visszavert fénysugarakat",
+      "gyengíti a függőleges síkban visszavert fénysugarakat",
+      "mind a vízszintes, mind a függőleges síkban visszavert fénysugarakat gyengíti",
+      "egyik síkban sem befolyásolja a fényvisszaverődést"
+    ],
+    "ans": 0
+  },
+  {
+    "id": 174,
+    "type": "single",
+    "q": "A photochromaticus lencse kivilágosodása:",
+    "opts": [
+      "gyorsabb, mint a besötétedése",
+      "kb. azonos ideig tart, mint a besötétedése",
+      "lassabb, mint a besötétedése"
+    ],
+    "ans": 2
+  },
+  {
+    "id": 175,
+    "type": "single",
+    "q": "A polikarbonát karcállósága nagyjából:",
+    "opts": [
+      "fele a CR 39-ének",
+      "harmada a CR 39-ének",
+      "azonos a CR 39 karcállóságával",
+      "kétszerese a CR 39-ének"
+    ],
+    "ans": 1
+  },
+  {
+    "id": 176,
+    "type": "single",
+    "q": "A prizmás szemüveglencse hasáb erősségét az alábbi paraméterek egyikének megadásával kell jellemezni:",
+    "opts": [
+      "a prizma törőszöge prizmafokban",
+      "a prizma által okozott fényelterítés szöge fokban",
+      "a prizma által okozott fényeltérítés mértéke prizmadioptriában",
+      "a prizma értékét nem dioptriában határozzuk meg"
+    ],
+    "ans": 2
+  },
+  {
+    "id": 177,
+    "type": "single",
+    "q": "A szemüveglencse bázisa alatt:",
+    "opts": [
+      "mindig a domború oldalának felületi törőértékét értjük",
+      "mindig a homorú oldalának felületi törőértékét értjük",
+      "az abszolút értékben kisebb törőértékű felületének dioptriáját értjük",
+      "a lencse teljes törőértékét értjük"
+    ],
+    "ans": 2
+  },
+  {
+    "id": 178,
+    "type": "single",
+    "q": "A szemüvegoptikai műanyagok fajsúlya a normál szemüvegoptikai koronaüvegekének kb.:",
+    "opts": [
+      "a harmada",
+      "a negyede",
+      "a fele",
+      "nem különbözik"
+    ],
+    "ans": 2
+  },
+  {
+    "id": 179,
+    "type": "single",
+    "q": "Adott átmérőjű üveg szemüveglencse törésmutatójának növekedéseivel:",
+    "opts": [
+      "a lencse súlya csökken",
+      "a lencse súlya nő",
+      "a lencse törőértékétől függően súlya csökken vagy nő",
+      "a lencse súlya lényegében nem változik"
+    ],
+    "ans": 0
+  },
+  {
+    "id": 180,
+    "type": "single",
+    "q": "Egy +2,00 dioptriás szemüveglencsét 5 mm-rel decentrálva az előidézett prizmahatás:",
+    "opts": [
+      "10,0 prdptr",
+      "2,5 prdptr",
+      "1,0 prdptr",
+      "4,0 prdptr"
+    ],
+    "ans": 2
+  },
+  {
+    "id": 181,
+    "type": "single",
+    "q": "Ha egy 2 mm vastag szűrőlencse fényáteresztése 20% akkor egy 4 mm vastagé:",
+    "opts": [
+      "0,4",
+      "0,04",
+      "0,1",
+      "0,2"
+    ],
+    "ans": 1
+  },
+  {
+    "id": 182,
+    "type": "single",
+    "q": "5/5 Snellen látóélesség mivel azonos?",
+    "opts": [
+      "a szem maximális teljesítőképességével",
+      "1,0 decimális értékken",
+      "0,5 decimális értékekkel",
+      "a lehető legjobb látással"
+    ],
+    "ans": 1
+  },
+  {
+    "id": 183,
+    "type": "single",
+    "q": "5/5 Snellen látóélesség mivel azonos? (ismétlés)",
+    "opts": [
+      "a szem maximális teljesítőképességével",
+      "1,0 decimális értékekkel",
+      "0,5 decimális értékekkel",
+      "a lehető legjobb látással"
+    ],
+    "ans": 1
+  },
+  {
+    "id": 184,
+    "type": "single",
+    "q": "A circulus arteriosus iridis major elhelyezkedése:",
+    "opts": [
+      "a papilla szélénél",
+      "az iris gyökénél",
+      "az iris szövetében a belső harmadban",
+      "a pupillaris szélnél"
+    ],
+    "ans": 1
+  },
+  {
+    "id": 185,
+    "type": "single",
+    "q": "A circulus arteriosus iridis minor elhelyezkedése:",
+    "opts": [
+      "az iris gyökerénél",
+      "az iris szövetének külső harmadában",
+      "a pupillaris szélnél",
+      "a sugártestben"
+    ],
+    "ans": 2
+  },
+  {
+    "id": 186,
+    "type": "single",
+    "q": "A cornea normális erezettsége:",
+    "opts": [
+      "szövetben hajszálerek",
+      "érmentes",
+      "szélén erezett",
+      "erezettsége változó"
+    ],
+    "ans": 1
+  },
+  {
+    "id": 187,
+    "type": "single",
+    "q": "A féloldali látótérkiesés oka:",
+    "opts": [
+      "tractus opticus laesio",
+      "hypophysisdaganat",
+      "nervus opticus károsodás",
+      "látóközpont-sérülés"
+    ],
+    "ans": 0
+  },
+  {
+    "id": 188,
+    "type": "single",
+    "q": "A látásélességet befolyásoló tényező:",
+    "opts": [
+      "a külső szemizmok szabályos működése",
+      "a törőközegek tisztasága",
+      "a retina peripheriás degeneratiója",
+      "a másik szem ametropiája"
+    ],
+    "ans": 1
+  },
+  {
+    "id": 189,
+    "type": "single",
+    "q": "A látóideg vérellátásában vesznek részt:",
+    "opts": [
+      "arteriae ciliaris posteriores breves",
+      "arteriae ciliaris posteriores longae",
+      "arteriae ciliaris anteriores",
+      "circulus arteriosus iridis major"
+    ],
+    "ans": 0
+  },
+  {
+    "id": 190,
+    "type": "single",
+    "q": "A látópálya harmadik átkapcsolódási helye:",
+    "opts": [
+      "az occipitalis agykéreg",
+      "ganglion-sejtréteg",
+      "corpus geniculatum laterale",
+      "külső rostos réteg"
+    ],
+    "ans": 0
+  },
+  {
+    "id": 191,
+    "type": "single",
+    "q": "A látótér vizsgálatról ismeretes:",
+    "opts": [
+      "a vakfolt a macula területének felel meg",
+      "a campimetria statikus perimetriás vizsgálat",
+      "az azonos érzékenységű retinapontoknak megfelelő körök az isopterek",
+      "a statikus perimetria során az azonos érzékenységű retinapontokat keressük"
+    ],
+    "ans": 2
+  },
+  {
+    "id": 192,
+    "type": "single",
+    "q": "A musculus sphincter pupillae beidegzése:",
+    "opts": [
+      "akaratlagos",
+      "parasympathicus",
+      "sympathicus"
+    ],
+    "ans": 1
+  },
+  {
+    "id": 193,
+    "type": "single",
+    "q": "A nervus opticus kilépési helye az orbitából:",
+    "opts": [
+      "foramen opticum",
+      "fissura orbitalis superior",
+      "fissura orbitalis inferior",
+      "foramen infraorbitale"
+    ],
+    "ans": 0
+  },
+  {
+    "id": 194,
+    "type": "single",
+    "q": "A papillomacularis régióban a ganglion sejtek axonjai:",
+    "opts": [
+      "ív alakban haladnak",
+      "sugár irányban haladnak",
+      "rendezetlenül futnak",
+      "egyenes vonal mentén tömörülnek"
+    ],
+    "ans": 1
+  },
+  {
+    "id": 195,
+    "type": "single",
+    "q": "A pilocarpin pupillaszűkítő hatása:",
+    "opts": [
+      "parasympathicusgátlás",
+      "sympathicusizgatás",
+      "sympathicusgátlás",
+      "parasympathicusizgatás"
+    ],
+    "ans": 3
+  },
+  {
+    "id": 196,
+    "type": "single",
+    "q": "A retinalis sejtek első átkapcsolódási helye:",
+    "opts": [
+      "külső magvas réteg",
+      "külső rostos réteg",
+      "belső magvas réteg",
+      "belső rostos réteg"
+    ],
+    "ans": 1
+  },
+  {
+    "id": 197,
+    "type": "single",
+    "q": "A retinalis sejtek második átkapcsolódási helye:",
+    "opts": [
+      "külső magvas réteg",
+      "külső rostos réteg",
+      "belső magvas réteg",
+      "belső rostos réteg"
+    ],
+    "ans": 3
+  },
+  {
+    "id": 198,
+    "type": "single",
+    "q": "A sclera vastagsága az izmok tapadásánál:",
+    "opts": [
+      "0.3-0.4 mm",
+      "0.6 mm",
+      "1.5 mm",
+      "2 mm"
+    ],
+    "ans": 1
+  },
+  {
+    "id": 199,
+    "type": "single",
+    "q": "A szaruhártya felépítésében részt vesz:",
+    "opts": [
+      "Bowman-hártya",
+      "Bruch-membrán",
+      "fibrae zonularis",
+      "Müller-féle támasztósejtek"
+    ],
+    "ans": 0
+  },
+  {
+    "id": 200,
+    "type": "single",
+    "q": "A szaruhártya rétegeinek száma szövettani vizsgálat alapján:",
+    "opts": [
+      "2",
+      "3",
+      "4",
+      "5"
+    ],
+    "ans": 3
+  },
+  {
+    "id": 201,
+    "type": "single",
+    "q": "A szem fejlődési rendellenességeiről tudjuk:",
+    "opts": [
+      "a coloboma csak az irisben fordulhat elő",
+      "a fejlődési rendellenelleggégek mindig öröklődő betegségek",
+      "a membrana pupillaris persistens nagymértékben zavarja a látást",
+      "a colobomák az embryonalis szemhasadék záródási zavarai"
+    ],
+    "ans": 3
+  },
+  {
+    "id": 202,
+    "type": "single",
+    "q": "A szem ontogenetikai fejlődését illetően:",
+    "opts": [
+      "a szem az idegrendszer telepének előagyi részéből fejlődik ki",
+      "a lencse mesodermális eredete",
+      "a cornea teljes egészében mesodermalis eredetű",
+      "az üvegtest az embryonalis korban érmentes"
+    ],
+    "ans": 0
+  },
+  {
+    "id": 203,
+    "type": "single",
+    "q": "Az ép pupilla átmérője közepes megvilágítással:",
+    "opts": [
+      "5-8 mm",
+      "4-6 mm",
+      "2-5 mm",
+      "1-3 mm"
+    ],
+    "ans": 2
+  },
+  {
+    "id": 204,
+    "type": "single",
+    "q": "Az ép sclera színe?",
+    "opts": [
+      "mély erezettsége miatt rózsaszín",
+      "tömöttsége miatt fehér",
+      "sárgás árnyalatú",
+      "kék színű"
+    ],
+    "ans": 1
+  },
+  {
+    "id": 205,
+    "type": "single",
+    "q": "Az érhártya kiterjedésének határai:",
+    "opts": [
+      "a sugártesttől a tractus opticusig",
+      "a lencsétől az üvegtestig",
+      "az ora serratától a látóideg kilépéséig",
+      "az iristől a látóideg kilépéséig"
+    ],
+    "ans": 2
+  },
+  {
+    "id": 206,
+    "type": "single",
+    "q": "Hogyan alkalmazzuk a festékanyagot fluorescein-angiographiánál?",
+    "opts": [
+      "intravénásan",
+      "oralisan",
+      "intramuscularisan",
+      "a szembe csepegtetve"
+    ],
+    "ans": 0
+  },
+  {
+    "id": 207,
+    "type": "single",
+    "q": "Hogyan vizsgáljuk a látásélességet?",
+    "opts": [
+      "a minimum separabile elvén szerkesztett eszközzel",
+      "sciascopiával",
+      "keratometriával",
+      "refractometriával"
+    ],
+    "ans": 0
+  },
+  {
+    "id": 208,
+    "type": "single",
+    "q": "Hol találhatók a gliasejtek?",
+    "opts": [
+      "az idegszövetet táplálják",
+      "az izomszövetben találhatók",
+      "a hámszövetben találhatók",
+      "a gliasejt egyenlő az axonnal"
+    ],
+    "ans": 0
+  },
+  {
+    "id": 209,
+    "type": "single",
+    "q": "Hol tapadnak a zonula Zinnii rostjai?",
+    "opts": [
+      "a szaruhártyan",
+      "a lencsén",
+      "a csarnokzugban",
+      "a pars planán"
+    ],
+    "ans": 1
+  },
+  {
+    "id": 210,
+    "type": "single",
+    "q": "Hol van a látás agykérgi mezője?",
+    "opts": [
+      "a frontalis lebenyben",
+      "a temporalis lebenyben",
+      "a parietalis lebenyben",
+      "az occipitalis lebenyben"
+    ],
+    "ans": 3
+  },
+  {
+    "id": 211,
+    "type": "single",
+    "q": "Hol vannak az életfontosságú vegetatív központok?",
+    "opts": [
+      "a köztiagyban",
+      "a thalamusban",
+      "a nyúltagyban",
+      "a kisagyban"
+    ],
+    "ans": 2
+  },
+  {
+    "id": 212,
+    "type": "single",
+    "q": "Látótér fogalma alatt értjük:",
+    "opts": [
+      "a két szemünk által betekintett teret",
+      "a mozdulatlan szem által egyidejűleg egyszerre látott tér",
+      "a térnek az a legnagyobb mélysége melyet a szem belát",
+      "a látótér szubjektív élmény melyet nem lehet differenciálni"
+    ],
+    "ans": 1
+  },
+  {
+    "id": 213,
+    "type": "single",
+    "q": "Melyik a decimális látásvizsgáló tábla?",
+    "opts": [
+      "Csapody-féle tábla",
+      "Kettesy-féle tábla",
+      "Ishihara-tábla",
+      "Snellen-féle tábla"
+    ],
+    "ans": 1
+  },
+  {
+    "id": 214,
+    "type": "single",
+    "q": "Melyik a helyes megállapítás?",
+    "opts": [
+      "az arteria carotis interna ága az arteria ophthalmica mely az egész szemgolyót és az orbitát is ellátja",
+      "az első agyideg a látóideg a nervus opticus",
+      "a nervus oculomotorius bénulása kifele tekintési bénulást okoz",
+      "a retina mesodermalis eredetű szövet"
+    ],
+    "ans": 0
+  },
+  {
+    "id": 215,
+    "type": "single",
+    "q": "Melyik idegrendszer biztosít akaratunktól független szabályozást?",
+    "opts": [
+      "vegetatív idegrendszer",
+      "a környéki idegrendszer",
+      "a központi idegrendszer",
+      "egyik sem"
+    ],
+    "ans": 0
+  },
+  {
+    "id": 216,
+    "type": "single",
+    "q": "Melyik műszer használatos orthopticai kezelésre?",
+    "opts": [
+      "Lange-lámpa",
+      "synoptophor",
+      "electromyograph",
+      "Baillart-féle ophthalmodynamometer"
+    ],
+    "ans": 1
+  },
+  {
+    "id": 217,
+    "type": "single",
+    "q": "Melyik szembetegségnél nyújt hasznos felvilágosítást a gonioscopia?",
+    "opts": [
+      "uveitis",
+      "ablatio retinae",
+      "embolia arteriae centralis retinae",
+      "glaucoma"
+    ],
+    "ans": 3
+  },
+  {
+    "id": 218,
+    "type": "single",
+    "q": "Melyik szerv sejtjei viselik el a legkevesebb ideig a hypoxiát?",
+    "opts": [
+      "a szívizom sejtjei",
+      "a légzőközpont sejtjei",
+      "a vese sejtjei",
+      "az agykéreg sejtjei"
+    ],
+    "ans": 3
+  },
+  {
+    "id": 219,
+    "type": "single",
+    "q": "Mennyi a szaruhártya görbületi sugarának középértéke?",
+    "opts": [
+      "7,0 mm",
+      "7,8 mm",
+      "8,1 mm",
+      "8,6 mm"
+    ],
+    "ans": 1
+  },
+  {
+    "id": 220,
+    "type": "single",
+    "q": "Mennyi Európában a férfiak körében a színtévesztők aránya?",
+    "opts": [
+      "0,01",
+      "0,08",
+      "0,13",
+      "0,25"
+    ],
+    "ans": 1
+  },
+  {
+    "id": 221,
+    "type": "single",
+    "q": "Mi a látásélesség egysége?",
+    "opts": [
+      "1 percnyi látószög",
+      "10 percnyi látószög",
+      "15 percnyi látószög",
+      "100 percnyi látószög"
+    ],
+    "ans": 0
+  },
+  {
+    "id": 222,
+    "type": "single",
+    "q": "Mi a nystagmus?",
+    "opts": [
+      "szédülés",
+      "szemtekerezgés",
+      "hányás",
+      "pupillamerevség"
+    ],
+    "ans": 1
+  },
+  {
+    "id": 223,
+    "type": "single",
+    "q": "Mi a protanopia?",
+    "opts": [
+      "vörös színvakság",
+      "zöld színvakság",
+      "farkasvakság",
+      "vakság"
+    ],
+    "ans": 0
+  },
+  {
+    "id": 224,
+    "type": "single",
+    "q": "Mi a scotoma?",
+    "opts": [
+      "a látótér szigetszerű kisesése",
+      "féloldali látótérkiesés",
+      "a centrum vizsgálatára szolgáló látótérvizsgáló módszer",
+      "a látótér koncentrikus szűkülete"
+    ],
+    "ans": 0
+  },
+  {
+    "id": 225,
+    "type": "single",
+    "q": "Mi a színtévesztés?",
+    "opts": [
+      "veleszületett eresburok-elfajulás",
+      "fotoreceptor sejtek elfajulása",
+      "öröklött tulajdonság",
+      "ívfényártalom"
+    ],
+    "ans": 2
+  },
+  {
+    "id": 226,
+    "type": "single",
+    "q": "Mi a tonometria?",
+    "opts": [
+      "a szem belnyomásának mérése",
+      "a szemmozgások vizsgálata",
+      "a szemfenéki erekben lévő nyomás mérése",
+      "a szemizmok akciós áramának mérése"
+    ],
+    "ans": 0
+  },
+  {
+    "id": 227,
+    "type": "single",
+    "q": "Mi a Zinn-Haller-féle érgyűrű?",
+    "opts": [
+      "a szem vérellátásának döntő része",
+      "a látóideg kilépési helye körüli koszorúszerű arteriás fonat",
+      "az ideghártya vérellátó rendszere",
+      "vénás gyűrű a látóideg körül"
+    ],
+    "ans": 1
+  },
+  {
+    "id": 228,
+    "type": "single",
+    "q": "Mi az entropium?",
+    "opts": [
+      "a szemhéjszélek összenövése",
+      "a szemhéj kifordulása",
+      "a szemrés zárásának elégtelensége",
+      "a szemhéj befordulása"
+    ],
+    "ans": 3
+  },
+  {
+    "id": 229,
+    "type": "single",
+    "q": "Mi az exophthalmus?",
+    "opts": [
+      "a szem belnyomásának emelkedése",
+      "a lencse elszürkülése",
+      "a szemek kidülledése",
+      "az üvegtest elhígulása"
+    ],
+    "ans": 2
+  },
+  {
+    "id": 230,
+    "type": "single",
+    "q": "Mi hajlamosít befelé térő kancsalságra?",
+    "opts": [
+      "myopia",
+      "hypermetropia",
+      "presbyopia",
+      "alkalmazkodás bénulása"
+    ],
+    "ans": 1
+  },
+  {
+    "id": 231,
+    "type": "single",
+    "q": "Mi okoz heteronym hemianopiát?",
+    "opts": [
+      "Látópálya-, agykéregbántalom",
+      "látóideg-bántalom",
+      "chiasma-bántalom",
+      "kisagysérülés"
+    ],
+    "ans": 2
+  },
+  {
+    "id": 232,
+    "type": "single",
+    "q": "Mi szükséges a pálcikák adaptatiójához?",
+    "opts": [
+      "C-vitamin",
+      "rhodopsin",
+      "szabályos fényre jól reagáló pupilla",
+      "az Edinger-Westhal mag ép volta"
+    ],
+    "ans": 1
+  },
+  {
+    "id": 233,
+    "type": "single",
+    "q": "Mi termeli a csarnokvizet?",
+    "opts": [
+      "A könnymirigy",
+      "A Meibom-mirigy",
+      "A zonulák",
+      "A sugártest nyúlványok"
+    ],
+    "ans": 3
+  },
+  {
+    "id": 234,
+    "type": "single",
+    "q": "Miért vizsgáljuk a szem fényérzését?",
+    "opts": [
+      "az adaptáció minőségéről tájékozódunk",
+      "a pálcikák érzékenységét vizsgáljuk",
+      "a retina centrumának működőképességéről tájékozódunk",
+      "mert a szakma szabályai előírják"
+    ],
+    "ans": 0
+  },
+  {
+    "id": 235,
+    "type": "single",
+    "q": "Mikor adunk antibiotikum szemcseppet?",
+    "opts": [
+      "iritis acuta esetén",
+      "akut glaucomás rohamban",
+      "conjunctivitis acutában",
+      "neuritis nervi optici esetén"
+    ],
+    "ans": 2
+  },
+  {
+    "id": 236,
+    "type": "single",
+    "q": "Milyen a pozitív scotoma?",
+    "opts": [
+      "olyan látótérkiesés mely csak látótér vizsgálattal deríthető ki",
+      "az a fiziológiás látótérkiesés melyet a látótérben vakfoltnak nevezünk",
+      "az a látótérkiesés melyet a beteg saját látóterében mint foltot lát",
+      "az a látótérkiesés mely nem függ össze valóságos szemészeti betegséggel"
+    ],
+    "ans": 2
+  },
+  {
+    "id": 237,
+    "type": "single",
+    "q": "Milyen körülmények között történik szabályszerűen a színlátás vizsgálat?",
+    "opts": [
+      "sötét szobában",
+      "természetes fénnyel megvilágított szobában",
+      "mesterséges fénnyel megvilágított szobában",
+      "bárhol"
+    ],
+    "ans": 1
+  },
+  {
+    "id": 238,
+    "type": "single",
+    "q": "Milyen szembetegségeknél végzünk kettőskép-vizsgálatot?",
+    "opts": [
+      "cataracta",
+      "látóideg-gyulladás",
+      "szemizombénulás",
+      "glaucoma"
+    ],
+    "ans": 2
+  },
+  {
+    "id": 239,
+    "type": "single",
+    "q": "Milyen szemcseppet adunk száraz szem betegség esetén?",
+    "opts": [
+      "antibiotikumot",
+      "műkönnyet",
+      "steroidtartalmú szemcseppet",
+      "pupillatágítót"
+    ],
+    "ans": 1
+  },
+  {
+    "id": 240,
+    "type": "single",
+    "q": "Milyen színűnek kell lennie a Goldmann-féle félgömb projekciós periméter belső felszínének?",
+    "opts": [
+      "matt fehér",
+      "fekete",
+      "bármilyen",
+      "kék"
+    ],
+    "ans": 0
+  },
+  {
+    "id": 241,
+    "type": "single",
+    "q": "Mire szolgál a Bjerrum-ernyő?",
+    "opts": [
+      "a kettős látás vizsgálatára",
+      "a campimetriára",
+      "az egyik szem eltakarására",
+      "a heterophoria vizsgálatára"
+    ],
+    "ans": 1
+  },
+  {
+    "id": 242,
+    "type": "single",
+    "q": "Mire szolgál a Javal-féle ophthalmometer?",
+    "opts": [
+      "a szem össztörőrendszerében lévő astigmia mérésére",
+      "a szaruhártya görbületi sugarának mérésére",
+      "a pupilla átmérőjének mérésére",
+      "a látóélesség meghatározására"
+    ],
+    "ans": 1
+  },
+  {
+    "id": 243,
+    "type": "single",
+    "q": "Mire szolgál az ophthalmodynamometriás vizsgálat?",
+    "opts": [
+      "a szem belnyomásának mérése",
+      "a szemmozgások vizsgálatára",
+      "az arteria ophthalmica vérnyomásának mérése"
+    ],
+    "ans": 2
+  },
+  {
+    "id": 245,
+    "type": "single",
+    "q": "Mit jelent a thrombosis kifejezés?",
+    "opts": [
+      "vena teljes vagy részleges elzáródását",
+      "agyvérzést",
+      "súlyos tünetekkel kísért arteriás elzáródást",
+      "a capillariskeringés kiesését"
+    ],
+    "ans": 0
+  },
+  {
+    "id": 246,
+    "type": "single",
+    "q": "Mit jelent az emmetropia fogalma?",
+    "opts": [
+      "ép szemtekét",
+      "normális mértékű alkalmazkodást",
+      "teljes látóélességet",
+      "a helyes arány a szemteke hossza és a törőerő között"
+    ],
+    "ans": 3
+  },
+  {
+    "id": 247,
+    "type": "single",
+    "q": "Mit nevezünk adaptationak?",
+    "opts": [
+      "a szemlencse alakváltoztatását a fixált tárgy elhelyezkedése szerint",
+      "a pupilla beszűkülését fény hatására",
+      "a szem alkalmazkodását a környezet fényviszonyaihoz",
+      "a retina színérzékelő funkcióját"
+    ],
+    "ans": 2
+  },
+  {
+    "id": 248,
+    "type": "single",
+    "q": "Hol van az éles látás helye?",
+    "opts": [
+      "fovea centralis",
+      "corpus luteum",
+      "corpus fornicis",
+      "corpus uteri"
+    ],
+    "ans": 0
+  },
+  {
+    "id": 249,
+    "type": "single",
+    "q": "Melyik képlet tartozik a retinához?",
+    "opts": [
+      "stratum plexiforme externum",
+      "stratum basale",
+      "stratum spinosum",
+      "stratum planocellulare"
+    ],
+    "ans": 0
+  },
+  {
+    "id": 250,
+    "type": "single",
+    "q": "Mely képlet nem tartozik a retinához?",
+    "opts": [
+      "stratum plexiforme internum",
+      "stratum granulosum internum",
+      "stratum corneum",
+      "stratum ganglionare"
+    ],
+    "ans": 2
+  },
+  {
+    "id": 251,
+    "type": "single",
+    "q": "Mit nevezünk fusiónak?",
+    "opts": [
+      "a másodfokú binokuláris látást",
+      "amikor a központi idegrendszer a két szem működését összerendezi",
+      "azt a működést, amikor a két szem retinájának nem identikus pontjain keletkezett képet egynek látjuk",
+      "amikor mindkét szemben azonos méretű kép keletkezik"
+    ],
+    "ans": 0
+  },
+  {
+    "id": 252,
+    "type": "single",
+    "q": "Mit nevezünk látóélességnek?",
+    "opts": [
+      "a szemnek azt a képességét, hogy a látott tárgyakról képet alkot",
+      "a minimum separabile értékbeli kifejezését",
+      "a tárgyak felismerését",
+      "a szem egyik fő funkcióját"
+    ],
+    "ans": 1
+  },
+  {
+    "id": 253,
+    "type": "single",
+    "q": "Mit nevezünk precipitatumnak?",
+    "opts": [
+      "finom pigmentszemcsék az elülső lencsetokon",
+      "sejtes kicsapódás a szaruhártya hátlapján",
+      "cholesterinkristály kicsapódás az üvegtestben",
+      "asteroid testek az üvegtestben"
+    ],
+    "ans": 1
+  },
+  {
+    "id": 254,
+    "type": "single",
+    "q": "Mit nevezünk scotopicus látásnak?",
+    "opts": [
+      "a színlátás veleszületett hiányát",
+      "látást sötétben tartózkodva",
+      "a pálcikák pusztulásával kialakuló farkasvakság másik nevét",
+      "a csapok pusztulásával járó sötét folt látását"
+    ],
+    "ans": 1
+  },
+  {
+    "id": 255,
+    "type": "single",
+    "q": "Mit nevezünk Tyndall-jelenségnek?",
+    "opts": [
+      "a szürkületi rossz látást idegen szóval",
+      "gyakori pillacsapást idegrendszeri túlterheltségben",
+      "a csarnokvíz opaleszkálását a megnövekedett fehérjetartalom és sejtes elemek miatt",
+      "a pupilla körkörös letapadását az elülső lencsetokhoz"
+    ],
+    "ans": 2
+  },
+  {
+    "id": 256,
+    "type": "single",
+    "q": "Mit okozhat az A-vitamin hiánya?",
+    "opts": [
+      "tályogot a szaruhártyán",
+      "hemeralopiát",
+      "színtévesztést",
+      "polyneuropathiát"
+    ],
+    "ans": 1
+  },
+  {
+    "id": 257,
+    "type": "single",
+    "q": "Mit szállítanak a vena laminariák?",
+    "opts": [
+      "csarnokvizet",
+      "csarnokvizet és vért",
+      "vénás vért",
+      "arteriás vért"
+    ],
+    "ans": 2
+  },
+  {
+    "id": 258,
+    "type": "single",
+    "q": "Mit vezet el a vena vorticosa?",
+    "opts": [
+      "a szemhéjak vérét",
+      "az eresburok vérét",
+      "a látóideg vérét",
+      "az orbita fő elvezető vénája"
+    ],
+    "ans": 1
+  },
+  {
+    "id": 259,
+    "type": "single",
+    "q": "Mit vizsgálunk CFF-val?",
+    "opts": [
+      "az ideghártya működését",
+      "a látóideg állapotát",
+      "vezetéses jellegű idegi bántalmat",
+      "színlátást"
+    ],
+    "ans": 0
+  },
+  {
+    "id": 260,
+    "type": "single",
+    "q": "Mivel végezzük a színérzés szűrővizsgálatot?",
+    "opts": [
+      "perimeterrel",
+      "Csereszín-táblákkal",
+      "Holmgreen-féle pamutpróbával",
+      "Bjerrum-ernyővel"
+    ],
+    "ans": 1
+  },
+  {
+    "id": 261,
+    "type": "single",
+    "q": "Pupillatáguláshoz vezet:",
+    "opts": [
+      "a sympathicus idegvégződések bénítása",
+      "a parasympaticus idegvégződés izgatása",
+      "a parasympatichus idegvégződések gátlása",
+      "a béta-receptorok gátlása"
+    ],
+    "ans": 2
+  },
+  {
+    "id": 262,
+    "type": "single",
+    "q": "Mi az ophthalmia electrica kiváltó oka?",
+    "opts": [
+      "allergia",
+      "ultraibolya sugárzás",
+      "infravörös fény",
+      "ultrahang",
+      "túl erős megvilágítás fehér fénnyel"
+    ],
+    "ans": 1
+  },
+  {
+    "id": 263,
+    "type": "single",
+    "q": "A belső szemizmok bénulására jellemző:",
+    "opts": [
+      "convergentiabénulás",
+      "accomodatiobénulás",
+      "kettős látás",
+      "kifelé tekintési képtelenség",
+      "erőteljes könnyezés"
+    ],
+    "ans": 1
+  },
+  {
+    "id": 264,
+    "type": "single",
+    "q": "A cataracta juvenilisre jellemző:",
+    "opts": [
+      "idős korban keletkezik",
+      "az egész élet során változatlan",
+      "belőle korábban keletkezik senilis hályog mint az ép lencséből",
+      "mindig glaucoma kíséri"
+    ],
+    "ans": 2
+  },
+  {
+    "id": 265,
+    "type": "single",
+    "q": "A centralis chorioretinitis tünetei:",
+    "opts": [
+      "hirtelen látásvesztés",
+      "vörös szem",
+      "foltlátás",
+      "úszkáló homályok látása ha világos a háttér"
+    ],
+    "ans": 2
+  },
+  {
+    "id": 266,
+    "type": "single",
+    "q": "A conjunctivitis epidemica kórokozója:",
+    "opts": [
+      "adenovirus 8",
+      "diplobacillus Morax-Axenfeld",
+      "adenovirus 3",
+      "varicellavírus",
+      "Koch-Weeks-féle baktérium"
+    ],
+    "ans": 0
+  },
+  {
+    "id": 267,
+    "type": "single",
+    "q": "A látópálya sérüléseiről tudjuk:",
+    "opts": [
+      "szabálytalan látótérkiesést okoznak",
+      "vörös szem a jellemző tünete",
+      "minden esetben papilla oedemával jár",
+      "a látótér-elváltozás jellegéből lehet a látópálya-sérülés helyére következtetni"
+    ],
+    "ans": 3
+  },
+  {
+    "id": 268,
+    "type": "single",
+    "q": "A lencse melyik rétegének elszürkülése hozza létre a cataracta zonularist?",
+    "opts": [
+      "primaer embryonalis mag",
+      "secunder mag",
+      "elülső kéreg",
+      "hátsó kéreg"
+    ],
+    "ans": 0
+  },
+  {
+    "id": 269,
+    "type": "single",
+    "q": "A macula degeneráció vezető tünete:",
+    "opts": [
+      "centrális látás romlása",
+      "szikralátás",
+      "látótérbeszűkülés",
+      "színtévesztés"
+    ],
+    "ans": 0
+  },
+  {
+    "id": 270,
+    "type": "single",
+    "q": "A phacogen uvetitis milyen típusú betegség?",
+    "opts": [
+      "fertőzéses eredetű gyulladás",
+      "autoimmun eredetű gyulladás",
+      "sérüléses eredetű fertőzés",
+      "műtét kapcsán történt fertőzés"
+    ],
+    "ans": 1
+  },
+  {
+    "id": 271,
+    "type": "single",
+    "q": "A szürkehályog melyik szint szűri ki?",
+    "opts": [
+      "fehér",
+      "kék",
+      "vörös",
+      "zöld"
+    ],
+    "ans": 1
+  },
+  {
+    "id": 272,
+    "type": "single",
+    "q": "A tartós szemnyomás emelkedésének mi a következménye?",
+    "opts": [
+      "szemfenéki arteriák falán a reflexcsík kiszélesedése",
+      "kereszteződési tünetek",
+      "a látóidegfő excavatiója",
+      "a látóidegfő ischaemiás prominentiája"
+    ],
+    "ans": 2
+  },
+  {
+    "id": 273,
+    "type": "single",
+    "q": "A zoster-keratitis okozója:",
+    "opts": [
+      "gennykeltő baktérium",
+      "varicella-zoster virus",
+      "antigén-antitest reakció a corneában",
+      "fonalgomba"
+    ],
+    "ans": 1
+  },
+  {
+    "id": 274,
+    "type": "single",
+    "q": "Általában milyen életkorban fordul elő a retinoblastoma?",
+    "opts": [
+      "0-2 éves korig",
+      "6-8 éves korban",
+      "pubertáskorban",
+      "40-50 éves kor között",
+      "öregkorban"
+    ],
+    "ans": 0
+  },
+  {
+    "id": 275,
+    "type": "single",
+    "q": "Általános betegséghez tartozó progrediáló hályog:",
+    "opts": [
+      "cataracta tumescens",
+      "cataracta coronaria",
+      "cataracta diabetica",
+      "cataracta traumatica"
+    ],
+    "ans": 2
+  },
+  {
+    "id": 276,
+    "type": "single",
+    "q": "A-scannel történő bulbushosszmérésnél elkövetett 0,1mm-es hiba közelítőleg hány dioptria postoperatív fénytörési hibát eredményez?",
+    "opts": [
+      "0,1D",
+      "0,3D",
+      "0,4D",
+      "0,5D"
+    ],
+    "ans": 1
+  },
+  {
+    "id": 277,
+    "type": "single",
+    "q": "Áthatolható sérülés után az épen maradt szem megbetegedése:",
+    "opts": [
+      "ophthalmia electrica",
+      "ophthalmoblenorrhoea",
+      "ophthalmia sympathica",
+      "oculoglandularis syndroma"
+    ],
+    "ans": 2
+  },
+  {
+    "id": 278,
+    "type": "single",
+    "q": "Az alábbi elváltozás befolyásolja a látásélességet:",
+    "opts": [
+      "xanthelasma palpebrae superioris",
+      "conjunctivamelanosis",
+      "congenitalis iriscoloboma",
+      "epicanthus"
+    ],
+    "ans": 2
+  },
+  {
+    "id": 279,
+    "type": "single",
+    "q": "Az egyedfejlődéssel csökken az ametropia foka:",
+    "opts": [
+      "törési hipermetrópia",
+      "miópiás asztigmia",
+      "tengely miópia"
+    ],
+    "ans": 0
+  },
+  {
+    "id": 280,
+    "type": "single",
+    "q": "Az egyedfejlődéssel fokozódó mértékű ametropia:",
+    "opts": [
+      "törési hipermetrópia",
+      "hipermetropiás asztigmia",
+      "tengely miópia"
+    ],
+    "ans": 2
+  },
+  {
+    "id": 281,
+    "type": "single",
+    "q": "Az eversio puncti lacrimalis:",
+    "opts": [
+      "a könnypont elzáródása",
+      "a könnypont veleszületett hiánya",
+      "a könnypont kitágulása",
+      "a könnypont kifordulása"
+    ],
+    "ans": 3
+  },
+  {
+    "id": 282,
+    "type": "single",
+    "q": "Basalioma:",
+    "opts": [
+      "korán ad metastasist",
+      "invasiv a növekedése",
+      "gyermek- felnőtt- és időskorban egyforma gyakorisággal fordul elő",
+      "a szemkörnyéki daganatok 95%-át teszi ki"
+    ],
+    "ans": 1
+  },
+  {
+    "id": 283,
+    "type": "single",
+    "q": "Csökkent távoli vizus érték kialakulásához vezet:",
+    "opts": [
+      "abszolút hipermetrópia",
+      "relatív hipermetrópia",
+      "fakultatív hipermetrópia"
+    ],
+    "ans": 0
+  },
+  {
+    "id": 284,
+    "type": "single",
+    "q": "Dacryoadenitis acuta:",
+    "opts": [
+      "feszes fájdalmas hyperaemiás duzzanat a könnytömlő környékén",
+      "jellemzője a paragrafus jel",
+      "Mikulitz syndroma része",
+      "parotis gyulladás kísérheti"
+    ],
+    "ans": 3
+  },
+  {
+    "id": 285,
+    "type": "single",
+    "q": "Diabetes mellitusban előforduló szemfenéki eltérés:",
+    "opts": [
+      "rubeosis iridis",
+      "cataracta",
+      "microaneurysma",
+      "drusen papillae",
+      "foramen macula luteae"
+    ],
+    "ans": 2
+  },
+  {
+    "id": 286,
+    "type": "single",
+    "q": "Feltétlenül műtéti megoldást igényel:",
+    "opts": [
+      "tompalátás",
+      "simplex galucoma",
+      "erosio corneae",
+      "ablatio retinae"
+    ],
+    "ans": 3
+  },
+  {
+    "id": 287,
+    "type": "single",
+    "q": "Fényszegény körülmények között jobb a látásélesség:",
+    "opts": [
+      "egyszerű miópia esetén",
+      "miópiás asztigmia esetén",
+      "kezdődő szürkehályog mellett",
+      "hipermetrópia és szürkehályog együttes előfordulása esetén"
+    ],
+    "ans": 2
+  },
+  {
+    "id": 288,
+    "type": "single",
+    "q": "Gennyes váladék nélküli conjunctivitis:",
+    "opts": [
+      "gonoblenorrhoea-conjunctivitis",
+      "conjunctivitis catarrhalis acuta",
+      "blepharoconjunctivitis angularis"
+    ],
+    "ans": 1
+  },
+  {
+    "id": 289,
+    "type": "single",
+    "q": "Gram-pozitív baktérium okozta conjunctivitis:",
+    "opts": [
+      "conjunctivitis diphterica",
+      "blepharconjunctivitis angularis",
+      "conjunctivitis gonorrhoica",
+      "conjunctivitis allergica acuta"
+    ],
+    "ans": 0
+  },
+  {
+    "id": 290,
+    "type": "single",
+    "q": "Ha a páciens nem olvassa végig a vízustáblát 30 éves kora óta és egyéb betegsége nincs feltételezhető:",
+    "opts": [
+      "akkomodatív állapot",
+      "miópiás asztigmia kezdete",
+      "index miópia",
+      "binokuláris látás zavara"
+    ],
+    "ans": 0
+  },
+  {
+    "id": 291,
+    "type": "single",
+    "q": "Hány stádiuma van a ROP-nak?",
+    "opts": [
+      "kettő",
+      "három",
+      "négy",
+      "öt"
+    ],
+    "ans": 3
+  },
+  {
+    "id": 292,
+    "type": "single",
+    "q": "Heterochromia iridis iridocyclitis az érintett oldalon kevesebb irispigment jellemzi:",
+    "opts": [
+      "Horner-triász",
+      "Graefe-tünet",
+      "Guist-tünet",
+      "Fuchs-kór"
+    ],
+    "ans": 3
+  },
+  {
+    "id": 293,
+    "type": "single",
+    "q": "Hogyan nevezzük más néven az intermedier uveitist?",
+    "opts": [
+      "disseminált chorioretinitis",
+      "hátsó uvetis",
+      "pars planitis",
+      "cyclitis"
+    ],
+    "ans": 2
+  },
+  {
+    "id": 294,
+    "type": "single",
+    "q": "Invazív szemészeti vizsgáló módszer:",
+    "opts": [
+      "fluoreszcein angiographia",
+      "macula OCT",
+      "non-kontakt szemnyomás mérés",
+      "ultrahang B-scan",
+      "Ishihara"
+    ],
+    "ans": 0
+  },
+  {
+    "id": 295,
+    "type": "single",
+    "q": "Keratometria során elkövetett 1 dioptria mérési hiba hány D nem várt postoperatív fénytörési hibát okoz?",
+    "opts": [
+      "1",
+      "2",
+      "0,33",
+      "0,5"
+    ],
+    "ans": 0
+  },
+  {
+    "id": 296,
+    "type": "single",
+    "q": "Melyik a szemészeti sérülés melynek tünete a hypotoniás szem?",
+    "opts": [
+      "mészsérülés",
+      "savsérülés",
+      "cornealis idegentest",
+      "scleraruptura"
+    ],
+    "ans": 3
+  },
+  {
+    "id": 297,
+    "type": "single",
+    "q": "Melyik a szemhéj daganatos betegsége?",
+    "opts": [
+      "emphysema",
+      "haemangioma",
+      "lagophthalmus",
+      "blepharospasmus"
+    ],
+    "ans": 1
+  },
+  {
+    "id": 298,
+    "type": "single",
+    "q": "Melyik a trachoma fő tünete?",
+    "opts": [
+      "a szemnyomás emelkedése",
+      "csomóképződés",
+      "fénykerülés",
+      "vegyes belöveltség",
+      "cataracta"
+    ],
+    "ans": 1
+  },
+  {
+    "id": 299,
+    "type": "single",
+    "q": "Melyik állítás igaz a toxikus neuropathiáról?",
+    "opts": [
+      "a papilla toxicus elhalását leggyakrabban alkohol vagy nicotinmérgezés okozza",
+      "a pollenallergia gyakori oka a neuritis retrobulbarisnak",
+      "a toxicus neuropathia gyógyítása műtéti",
+      "minden vegyi anyag mérgező hatású a retinára"
+    ],
+    "ans": 0
+  },
+  {
+    "id": 300,
+    "type": "single",
+    "q": "Melyik állítás igaz az iritis acutáról?",
+    "opts": [
+      "az iritis acuta erősen fertőző vírusos gyulladás",
+      "az akut iritis tünete a fokozódó kettős látás",
+      "akut iritisben a pupilla renyhébben reagál",
+      "az iris gyulladása kiváltja a kötőhártya gyulladást is"
+    ],
+    "ans": 2
+  },
+  {
+    "id": 301,
+    "type": "single",
+    "q": "Melyik állítás igaz a csecsemők fénytörésével kapcsolatban?",
+    "opts": [
+      "minden gyerek hipermetrópiás csecsemőkorban",
+      "minden gyerek emmetrópiás csecsemőkorban",
+      "a csecsemők emmetrópiásak vagy különböző típusú ametrópiásak is lehetnek"
+    ],
+    "ans": 0
+  },
+  {
+    "id": 302,
+    "type": "single",
+    "q": "Melyik az alábbi kórképek közül fejlődési rendellenesség?",
+    "opts": [
+      "secclusio pupillae",
+      "membrana pupillaris persistens",
+      "pseudoforamen maculae luteae",
+      "iris bombans"
+    ],
+    "ans": 1
+  },
+  {
+    "id": 303,
+    "type": "single",
+    "q": "Melyik betegség jár együtt szemmozgászavarral?",
+    "opts": [
+      "primaer glaucoma",
+      "endocrin ophthalmopathia",
+      "facialis paresis",
+      "ablatio retinae"
+    ],
+    "ans": 1
+  },
+  {
+    "id": 304,
+    "type": "single",
+    "q": "Melyik betegség jellemzője a papillaris túltengés a kötőhártyán?",
+    "opts": [
+      "keratoconjunctivitis ekzematosa",
+      "conjunctivitis vernalis",
+      "episcleritis",
+      "keratoconjunctivitis epidemica",
+      "kontakt dermatitis"
+    ],
+    "ans": 1
+  },
+  {
+    "id": 305,
+    "type": "single",
+    "q": "Melyik betegség tünete a paragrafus alakú szemhéjszél?",
+    "opts": [
+      "könnytömlőgyulladás",
+      "könnymirigygyulladás",
+      "könnycsatorna-elzáródás",
+      "az orbita alsó falának sérülése",
+      "a musculus orbicularis oculi görcsös állapota"
+    ],
+    "ans": 1
+  },
+  {
+    "id": 306,
+    "type": "single",
+    "q": "Melyik életkorban fordul elő leggyakrabban a melanoma malignum?",
+    "opts": [
+      "0-2 éves korban",
+      "2-6 éves korban",
+      "pubertáskorban",
+      "felnőttkorban"
+    ],
+    "ans": 3
+  },
+  {
+    "id": 307,
+    "type": "single",
+    "q": "Melyik glaucoma veleszületett?",
+    "opts": [
+      "glaucoma simplex",
+      "glaucoma secundarium",
+      "glaucoma congenitum",
+      "glaucoma congestivum"
+    ],
+    "ans": 2
+  },
+  {
+    "id": 308,
+    "type": "single",
+    "q": "Melyik kórkép sorolható a primaer nyílt zugú glaucomák csoportjába?",
+    "opts": [
+      "glaucoma simplex",
+      "buphthalmus",
+      "glaucoma congestivum acutum",
+      "glaucoma secundarium"
+    ],
+    "ans": 0
+  },
+  {
+    "id": 309,
+    "type": "single",
+    "q": "Melyik megbetegedés erősen fertőző jellegű?",
+    "opts": [
+      "keratoconjunctivitis ekzematosa",
+      "keratoconjunctivitis epidemica",
+      "conjunctivitis vernalis",
+      "ulcus serpens corneae",
+      "keratoconjunctivitis sicca"
+    ],
+    "ans": 1
+  },
+  {
+    "id": 310,
+    "type": "single",
+    "q": "Melyik nem jóindulatú conjunctivadaganat?",
+    "opts": [
+      "retentiós cysta",
+      "naevus conjunctivae",
+      "melanosis conjunctivae",
+      "lymphoma malignum"
+    ],
+    "ans": 3
+  },
+  {
+    "id": 311,
+    "type": "single",
+    "q": "Melyik nystagmusforma fiziológiás?",
+    "opts": [
+      "amblyopiás nystagmus",
+      "toxikus nystagmus",
+      "centrális eredetű nystagmus",
+      "optokineticus nystagmus"
+    ],
+    "ans": 3
+  },
+  {
+    "id": 312,
+    "type": "single",
+    "q": "Melyik pangásos papillával járó kórkép esetén marad sokáig jó a látás?",
+    "opts": [
+      "vena centralis törzs thrombosis",
+      "AION",
+      "koponyaűri nyomásfokozódás",
+      "neuroretinopathia hypertonica"
+    ],
+    "ans": 2
+  },
+  {
+    "id": 313,
+    "type": "single",
+    "q": "Mennyi a fiziológiás astigmia értéke?",
+    "opts": [
+      "egyenes (direkt) astigmia 0.5 dioptria",
+      "fordított (inverz) astigmia 0.5 dioptria",
+      "egyenes (direkt) astigmia 1.0 dioptria",
+      "fordított (inverz) astigmia 1.0 dioptria"
+    ],
+    "ans": 0
+  },
+  {
+    "id": 314,
+    "type": "single",
+    "q": "Mi a heveny könnytömlőgyulladás tünete?",
+    "opts": [
+      "festődő szaruhártya",
+      "abscessus az orrgyök mellett",
+      "entropium",
+      "ptosis",
+      "lagophthalmus"
+    ],
+    "ans": 1
+  },
+  {
+    "id": 315,
+    "type": "single",
+    "q": "Mi a Schwalbe vonal?",
+    "opts": [
+      "a Descemet membrán végződése a szaruhártya hátlapjának perifériáján",
+      "a pigmentált és a pigmentszegény trabecularis hálózat választóvonala",
+      "a pigmentált trabecularis hálózat és a sclerasarkantyú határa",
+      "az iris gyök elülső részének határvonala"
+    ],
+    "ans": 0
+  },
+  {
+    "id": 316,
+    "type": "single",
+    "q": "Mi a tavaszi kötőhártya-gyulladás fő tünete?",
+    "opts": [
+      "bevérzés a kötőhártya alatt",
+      "látásromlás",
+      "nyirokcsomó-duzzanat",
+      "viszketés",
+      "szaruhártya-ereződés"
+    ],
+    "ans": 3
+  },
+  {
+    "id": 317,
+    "type": "single",
+    "q": "Mi az agynyomás-fokozódás szemfenéki tünete?",
+    "opts": [
+      "verőérembolia",
+      "visszérthrombosis",
+      "ideghártya-leválás",
+      "pangásos papilla",
+      "maculavérzés"
+    ],
+    "ans": 3
+  },
+  {
+    "id": 318,
+    "type": "single",
+    "q": "Mi az aniridia?",
+    "opts": [
+      "maximálisan kitágított pupilla",
+      "a traumás mydriasis másik neve",
+      "az iris teljes hiánya fejlődési rendellenesség következtében",
+      "az iris művi szövethiánya"
+    ],
+    "ans": 2
+  },
+  {
+    "id": 319,
+    "type": "single",
+    "q": "Mi az RCS?",
+    "opts": [
+      "rekatoconjunctivitis sicca",
+      "retinochorioiditis syndroma",
+      "retinopatia centralis serosa",
+      "retinochorioiditis serpiginosa"
+    ],
+    "ans": 2
+  },
+  {
+    "id": 320,
+    "type": "single",
+    "q": "Mi jellemző a keratoconjunctivitis epidemicára?",
+    "opts": [
+      "hevesen viszket",
+      "erősen fertőz",
+      "megváltoztatja a szem fénytörését",
+      "gyermekkorban lép fel",
+      "cataractát okoz"
+    ],
+    "ans": 1
+  },
+  {
+    "id": 321,
+    "type": "single",
+    "q": "Mi jellemző a neuritis retrobulbarisra?",
+    "opts": [
+      "exophthalmus",
+      "kancsalság",
+      "tünetmentes szemfenék",
+      "nystagmus horizontalis"
+    ],
+    "ans": 2
+  },
+  {
+    "id": 322,
+    "type": "single",
+    "q": "Mi jellemző a sugártest gyulladásra?",
+    "opts": [
+      "szaruhártya-beszűrődés",
+      "paragrafus alakú szemhéjszél",
+      "precipitatumok",
+      "pigmentszóródás az üvegtestben",
+      "erőteljes váladékozás a szemrésben"
+    ],
+    "ans": 2
+  },
+  {
+    "id": 323,
+    "type": "single",
+    "q": "Mi okoz amauroticus macskaszemet?",
+    "opts": [
+      "agydaganat",
+      "embolia arteriae centralis retinae",
+      "a szemgolyó tompa sérülése",
+      "retinoblastoma",
+      "keratitis e lagophthalmo"
+    ],
+    "ans": 3
+  },
+  {
+    "id": 324,
+    "type": "single",
+    "q": "Mi okoz keratitis punctata superficialist?",
+    "opts": [
+      "Streptococcus-fertőzés",
+      "vírusfertőzés",
+      "hősugárzás",
+      "allergia"
+    ],
+    "ans": 1
+  },
+  {
+    "id": 325,
+    "type": "single",
+    "q": "Mi okozza a hypopyonnal kísért ulcus serpens corneaet?",
+    "opts": [
+      "diplococcus pneumoniae",
+      "Mycobacterium tuberculosis",
+      "herpes simplex vírus",
+      "varicellavírus"
+    ],
+    "ans": 0
+  },
+  {
+    "id": 326,
+    "type": "single",
+    "q": "Miért különösen veszélyes a növényi eredetű áthatoló sérülés?",
+    "opts": [
+      "mert minden sérülés veszélyes",
+      "mert a sérülés kapcsán vérzés keletkezik",
+      "mert minden sérülés rontja a látást",
+      "mert anaerob kórokozók kerülhetnek a szem belsejébe"
+    ],
+    "ans": 3
+  },
+  {
+    "id": 327,
+    "type": "single",
+    "q": "Mikor gondolunk gombás conjunctivitisre?",
+    "opts": [
+      "hirtelen kezdődő erős könnyezéssel járó gyulladás",
+      "hirtelen kezdődő sűrű sárgás váladékkal kísért gyulladás",
+      "elhúzódó erős viszketéssel járó gyulladás",
+      "elhúzódó tünetszegény gyógyszerekre nem reagáló gyulladás"
+    ],
+    "ans": 3
+  },
+  {
+    "id": 328,
+    "type": "single",
+    "q": "Milyen általános betegség járhat súlyos esetben retinopathiával?",
+    "opts": [
+      "colitis ulcerosa",
+      "krónikus ízületi gyulladás",
+      "magas vérnyomás",
+      "tüdőgyulladás"
+    ],
+    "ans": 2
+  },
+  {
+    "id": 329,
+    "type": "single",
+    "q": "Milyen betegség a sympathiás ophthalmia?",
+    "opts": [
+      "nem gennyes szaruhártya-gyulladás",
+      "fertőző kötőhártya-gyulladás",
+      "ilyen szembetegség nincs",
+      "az eres buroknak a retina S antigénje ellen kialakult autoimmun betegsége",
+      "speciális szaruhártya-gyulladás"
+    ],
+    "ans": 3
+  },
+  {
+    "id": 330,
+    "type": "single",
+    "q": "Milyen betegségek okozhatnak leggyakrabban scleritist?",
+    "opts": [
+      "autoimmun betegségek",
+      "bakteriális fertőzések",
+      "gombás fertőzések",
+      "vírusos fertőzések"
+    ],
+    "ans": 0
+  },
+  {
+    "id": 331,
+    "type": "single",
+    "q": "Milyen egyéb elnevezése van még a paratrachomának?",
+    "opts": [
+      "conjunctivitis epidemica",
+      "uszoda-conjunctivitis",
+      "pharingoconjunctivitis",
+      "ophthalmomyasis"
+    ],
+    "ans": 1
+  },
+  {
+    "id": 332,
+    "type": "single",
+    "q": "Milyen eredetű megbetegedés az erosio corneae recidivans?",
+    "opts": [
+      "gyulladás",
+      "a regenereálódó epithelsejteknek kóros a basalis membránja",
+      "kóros a Bowman-membrán",
+      "arteficalis"
+    ],
+    "ans": 1
+  },
+  {
+    "id": 333,
+    "type": "single",
+    "q": "Milyen esetben kérünk látótérvizsgálatot zöldhályog esetén?",
+    "opts": [
+      "gyanú",
+      "feltételezhető progresszió",
+      "követés során legalább évente",
+      "mindegyik"
+    ],
+    "ans": 3
+  },
+  {
+    "id": 334,
+    "type": "single",
+    "q": "Milyen fajta betegség az angioid típusú csík?",
+    "opts": [
+      "a chorioideagyulladás késői következménye",
+      "degeneratív eredetű betegség",
+      "fejlődési rendellenesség",
+      "daganatos betegség"
+    ],
+    "ans": 1
+  },
+  {
+    "id": 335,
+    "type": "single",
+    "q": "Milyen fénytörési hibát valószínűsíthetünk amikor a páciens téveszti az optotipeket a visus vizsgálata kapcsán?",
+    "opts": [
+      "miópia",
+      "hipermetrópia",
+      "astigmia",
+      "emmetrópia"
+    ],
+    "ans": 2
+  },
+  {
+    "id": 336,
+    "type": "single",
+    "q": "Milyen módon lehet megvizsgálni hogy a látást elsősorban a cataracta rontja-e?",
+    "opts": [
+      "ultrahanggal",
+      "látótérvizsgálattal",
+      "CFF-vizsgálattal",
+      "pupillatágítás után stenopeicus lyukkal felvett visus vizsgálattal"
+    ],
+    "ans": 3
+  },
+  {
+    "id": 337,
+    "type": "single",
+    "q": "Milyen típusú gyógyszer válthat ki glaucomás rohamot sekély csarnok mellett?",
+    "opts": [
+      "pupillaszűkítő",
+      "pupillatágító",
+      "érzéstelenítő",
+      "antibiotikum"
+    ],
+    "ans": 1
+  },
+  {
+    "id": 338,
+    "type": "single",
+    "q": "Milyen tünete van a praeretinalis fibrosisnak?",
+    "opts": [
+      "magas vérnyomás",
+      "a retina peripheriás degenerációja",
+      "a macula redőzöttsége",
+      "nincs tünete"
+    ],
+    "ans": 2
+  },
+  {
+    "id": 339,
+    "type": "single",
+    "q": "Mit jelent a krónikus zárt zugú glaucoma?",
+    "opts": [
+      "véglegesen zárt csarnokzug",
+      "glaucomás roham más néven",
+      "ilyen betegség nincs",
+      "amikor diabetes mellitusban a rubeosis iridis elzárja a csarnokzugot"
+    ],
+    "ans": 0
+  },
+  {
+    "id": 340,
+    "type": "single",
+    "q": "Mit jelent az a kifejezés hogy proliferativ retinopathia?",
+    "opts": [
+      "egyre rosszabbodó állapot",
+      "nagy kiterjedésű vérzésekkel kísért retinabetegség",
+      "fibrosus és/vagy érburjánzással kísért retinopathia",
+      "a cukorbetegség szemészeti megjelenése"
+    ],
+    "ans": 2
+  },
+  {
+    "id": 341,
+    "type": "single",
+    "q": "Mit jelent az ergoftalmológia kifejezés?",
+    "opts": [
+      "a szem keringési viszonyainak vizsgálómódszere",
+      "a szem belsejében uralkodó nyomás vizsgálómódszere",
+      "munkahelyek megvilágításával és szakszerű kialakításával foglalkozó tudomány",
+      "a szemizmok munkáját mérő vizsgálati módszer"
+    ],
+    "ans": 2
+  },
+  {
+    "id": 342,
+    "type": "single",
+    "q": "Mit jelent az ophthalmoplegia totalis?",
+    "opts": [
+      "a n. oculomotorius teljes működőképtelensége",
+      "a n. trigeminus minden ágának bénulása",
+      "az összes külső és belső szemizom bénulása",
+      "az összes belső szemizom bénulása",
+      "mindkét szem fényérzésnélkülisége"
+    ],
+    "ans": 2
+  },
+  {
+    "id": 343,
+    "type": "single",
+    "q": "Mit jelent más szóval az ectopia lentis?",
+    "opts": [
+      "speciális szürkehályogforma",
+      "a lencse helyhagyása",
+      "nincs ilyen betegség",
+      "az a fejlődési rendellenesség amikor a betegnek nincs lencséje"
+    ],
+    "ans": 1
+  },
+  {
+    "id": 344,
+    "type": "single",
+    "q": "Mit nevezünk leucomának?",
+    "opts": [
+      "a retrolentalis fibroplasia másik elnevezése",
+      "túlérett hályog",
+      "retinoblastomában a szürke reflexet a pupilla területében",
+      "a szaruhártya elhegesedését",
+      "amikor a magas szemnyomás teljes vaksághoz vezet"
+    ],
+    "ans": 3
+  },
+  {
+    "id": 345,
+    "type": "single",
+    "q": "Mit okoz a nervus facialis bénulás?",
+    "opts": [
+      "a szemhéj befordulását",
+      "a szemhéj görcsös záródását",
+      "ptosist",
+      "az alsó szemhéj csüngését",
+      "kettős látást"
+    ],
+    "ans": 3
+  },
+  {
+    "id": 346,
+    "type": "single",
+    "q": "Monocularis diplopiát okozhat:",
+    "opts": [
+      "glaucoma simplex",
+      "cataracta",
+      "myopia",
+      "abducens paresis"
+    ],
+    "ans": 1
+  },
+  {
+    "id": 347,
+    "type": "single",
+    "q": "Nem kíséri idegentest érzés:",
+    "opts": [
+      "erosio corneae",
+      "conjunctivitis sicca",
+      "corpus alienum corneae",
+      "occlusio vena centralis retinae"
+    ],
+    "ans": 3
+  },
+  {
+    "id": 348,
+    "type": "single",
+    "q": "Rosszindulatú kötőhártya-daganat:",
+    "opts": [
+      "haemangioma simplex",
+      "naevus conjunctivae",
+      "melanosis conjunctivae",
+      "epithelioma malignum conjunctivae"
+    ],
+    "ans": 3
+  },
+  {
+    "id": 349,
+    "type": "single",
+    "q": "Szemhéjat érintő subcutan emphysemára nem igaz:",
+    "opts": [
+      "orrfújás provokálja",
+      "gyakran trauma következtében alakul ki",
+      "feszesen duzzadt a szemkörnyék crepitatio",
+      "lamina papyraceae sérülésére utal általában",
+      "gyakran kíséri láz és fájdalom"
+    ],
+    "ans": 4
+  },
+  {
+    "id": 350,
+    "type": "single",
+    "q": "Szemnyomás csökkentő hatású szemcsepp:",
+    "opts": [
+      "Atropin",
+      "Neomycin",
+      "Viscosa",
+      "Xalatan (latanoprost)",
+      "Mannisol"
+    ],
+    "ans": 3
+  },
+  {
+    "id": 351,
+    "type": "single",
+    "q": "Szürkehályog műtét után 6 hétig nem javasolt:",
+    "opts": [
+      "televíziót nézni, számítógépezni",
+      "műkönnyet használni",
+      "uszodába, gyógyfürdőbe menni",
+      "napszemüveget viselni"
+    ],
+    "ans": 2
+  },
+  {
+    "id": 352,
+    "type": "single",
+    "q": "Szürkehályog műtét után 6 hétig nem javasolt (2. kérdés):",
+    "opts": [
+      "televíziót nézni számítógépezni",
+      "műkönnyet használni",
+      "uszodába gyógyfürdőbe menni",
+      "napszemüveget viselni"
+    ],
+    "ans": 2
+  },
+  {
+    "id": 353,
+    "type": "single",
+    "q": "Válassza ki a helyes állítást a szemsérülésekről!",
+    "opts": [
+      "a lencse luxatiójával járó tompa sérülés gyakori szövődménye a lúgsérülésnek",
+      "ha luxált lencse elsüllyed az üvegtestben a fénytörés myopiássá válik",
+      "a szem tompa sérüléskor gyakori az irisprolapsus",
+      "ha az előreesett iris zárja a perforáló nyílást akkor a szem nem válik hypotoniássá"
+    ],
+    "ans": 3
+  },
+  {
+    "id": 354,
+    "type": "single",
+    "q": "Veleszületett hályogforma:",
+    "opts": [
+      "phakosclerosis",
+      "cataracta corticalis posterior",
+      "cataracta zonularis",
+      "cataracta heterochromica"
+    ],
+    "ans": 2
+  },
+  {
+    "id": 355,
+    "type": "single",
+    "q": "Vírusfertőzés a szaruhártyán:",
+    "opts": [
+      "pinguecula",
+      "herpes simplex keratitis",
+      "phlegmone",
+      "keratokele",
+      "keratitis phlyctaenulosa"
+    ],
+    "ans": 1
+  },
+  {
+    "id": 356,
+    "type": "single",
+    "q": "Szemhéji basaliomara NEM jellemző:",
+    "opts": [
+      "leggyakoribb felnőttkori rosszindulatú szemhéji elváltozás",
+      "carcinoma basocellulare rövidített neve",
+      "rontja a látást",
+      "ritkán ad áttétet",
+      "általában nem gyógyuló seb formájával kezdődik"
+    ],
+    "ans": 2
+  },
+  {
+    "id": 357,
+    "type": "single",
+    "q": "Vírusos conjunctivitisre NEM jellemző:",
+    "opts": [
+      "belső zug duzzadt hyperaemiás",
+      "hónalji nyirokcsomók megnagyobbodnak",
+      "adenovírus okozza",
+      "serosus váladékcsorgás jellemzi",
+      "inkább a tarsalis conjunctiva érágas"
+    ],
+    "ans": 4
+  },
+  {
+    "id": 358,
+    "type": "single",
+    "q": "Bakteriális keratitis kórokozója lehet KIVÉVE:",
+    "opts": [
+      "streptococcus",
+      "staphylococcus",
+      "acanthamoeba",
+      "pseudomonas"
+    ],
+    "ans": 2
+  },
+  {
+    "id": 359,
+    "type": "single",
+    "q": "Egyszemes kettőslátást okozhat:",
+    "opts": [
+      "endocrin orbitopathia",
+      "subluxatio lentis",
+      "strabismus",
+      "exophthalmus"
+    ],
+    "ans": 1
+  },
+  {
+    "id": 360,
+    "type": "single",
+    "q": "Ablatio retinae feltétele:",
+    "opts": [
+      "üvegtesti gél elfolyósodása",
+      "tractio",
+      "retina szakadás",
+      "mindhárom"
+    ],
+    "ans": 3
+  },
+  {
+    "id": 361,
+    "type": "single",
+    "q": "Irregularis cornea oka lehet KIVÉVE:",
+    "opts": [
+      "keratoconus",
+      "keratitis punctata superficialis",
+      "cornea heg",
+      "keratoplastica utáni állapot"
+    ],
+    "ans": 1
+  },
+  {
+    "id": 362,
+    "type": "single",
+    "q": "Myopia progressziót lassíthatja KIVÉVE:",
+    "opts": [
+      "kétszemes alul korrekció",
+      "orthokeratológia",
+      "atropin szemcsepp",
+      "sok szabadban tartózkodás",
+      "multifokális lágy kontaktlencse"
+    ],
+    "ans": 0
+  },
+  {
+    "id": 363,
+    "type": "single",
+    "q": "Megromlik a látásélesség a következő látóideg betegségek már kezdetén KIVÉVE:",
+    "opts": [
+      "elülső ischemiás opticus neuropathia",
+      "agydaganat okozta papilla oedema",
+      "opticus neuritis",
+      "arteritis temporalis"
+    ],
+    "ans": 1
+  },
+  {
+    "id": 364,
+    "type": "multi",
+    "q": "Az alábbiak közül mely képletek haladnak a fissura orbitalis superioron keresztül?",
+    "opts": [
+      "III. agyideg",
+      "IV. agyideg",
+      "V/1. agyideg",
+      "VI. agyideg"
+    ],
+    "ans": [
+      0,
+      1,
+      2,
+      3
+    ]
+  },
+  {
+    "id": 365,
+    "type": "multi",
+    "q": "Az alábbiak közül melyek a maxilla nyúlványai?",
+    "opts": [
+      "processus frontalis",
+      "processus palatinus",
+      "processus alveolaris",
+      "processus articularis superior"
+    ],
+    "ans": [
+      0,
+      1,
+      2
+    ]
+  },
+  {
+    "id": 366,
+    "type": "multi",
+    "q": "Hol fordul elő a szervezetben endothel?",
+    "opts": [
+      "a vesecsatornácskákban",
+      "a Bowmann-tokban",
+      "a gyomorban",
+      "vérerek és nyirokerek falában"
+    ],
+    "ans": [
+      3
+    ]
+  },
+  {
+    "id": 367,
+    "type": "multi",
+    "q": "Mely képletek tartoznak az alábbiak közül a csigolyához?",
+    "opts": [
+      "processus spinosus",
+      "processus coracoideus",
+      "corpus vertebrae",
+      "tuberositas radii"
+    ],
+    "ans": [
+      0,
+      2
+    ]
+  },
+  {
+    "id": 368,
+    "type": "multi",
+    "q": "Mely lemezek tartoznak a csontszövet lemezrendszeréhez?",
+    "opts": [
+      "lamina fundamentalis externa",
+      "lamina fundamentalis interna",
+      "lamina intercalaris",
+      "lamina specialis"
+    ],
+    "ans": [
+      0,
+      1,
+      2
+    ]
+  },
+  {
+    "id": 369,
+    "type": "multi",
+    "q": "A monoszacharidokban gyűrűvé zárt formában megtalálható funkciós csoportok:",
+    "opts": [
+      "oxocsoport",
+      "alcoholos hidroxilcsoport",
+      "ioncsoport",
+      "étercsoport"
+    ],
+    "ans": [
+      1,
+      3
+    ]
+  },
+  {
+    "id": 370,
+    "type": "multi",
+    "q": "Az inhibítorokat jellemzi:",
+    "opts": [
+      "enzimaktivitást kompetitív gátlással csökkent",
+      "enzimaktivitást kompetitív aktiválással csökkent",
+      "inkompetitív gátlással csökkenti az enzimaktivitást",
+      "inkompetitív aktiválással csökkenti az enzimaktivitást"
+    ],
+    "ans": [
+      0,
+      2
+    ]
+  },
+  {
+    "id": 371,
+    "type": "multi",
+    "q": "Enzimekre jellemző:",
+    "opts": [
+      "B2-vitamin koenzimje a flavinenzimnek",
+      "az aszkorbinsav dehidro-aszkorbinsavvá alakítását oxigenáz enzim végzi",
+      "a proteinázok a polipeptidlánc belső kötéseit bontják",
+      "a dehidratáz C-O kötést bontó ligáz"
+    ],
+    "ans": [
+      0,
+      2
+    ]
+  },
+  {
+    "id": 372,
+    "type": "multi",
+    "q": "Mely fehérjék felelősek az izomszövet összhúzékonyságáért?",
+    "opts": [
+      "aktin",
+      "kollagén",
+      "miozin",
+      "elasztin"
+    ],
+    "ans": [
+      0,
+      2
+    ]
+  },
+  {
+    "id": 373,
+    "type": "multi",
+    "q": "Melyik sejtalkotó tartalmaz DNS-t?",
+    "opts": [
+      "riboszóma",
+      "mitokondrium",
+      "Golgi-készülék",
+      "sejtmag"
+    ],
+    "ans": [
+      1,
+      3
+    ]
+  },
+  {
+    "id": 374,
+    "type": "multi",
+    "q": "Melyik transzportfolyamat jár membránlefűződéssel?",
+    "opts": [
+      "exocitózis",
+      "endocitózis",
+      "fagocitózis",
+      "apoptózis"
+    ],
+    "ans": [
+      1,
+      2
+    ]
+  },
+  {
+    "id": 375,
+    "type": "multi",
+    "q": "Mi jellemző a lizoszómára?",
+    "opts": [
+      "a sejten belüli emésztés szervecskéje",
+      "enzimeket tartalmaz",
+      "a Golgi-készülékből fűződik le",
+      "membrán veszi körül"
+    ],
+    "ans": [
+      0,
+      1,
+      2,
+      3
+    ]
+  },
+  {
+    "id": 376,
+    "type": "multi",
+    "q": "A vér pH-ját befolyásoló tényezők:",
+    "opts": [
+      "hányás",
+      "légzésintenzitás",
+      "hasmenés",
+      "veseműködés"
+    ],
+    "ans": [
+      0,
+      1,
+      2,
+      3
+    ]
+  },
+  {
+    "id": 377,
+    "type": "multi",
+    "q": "Az ösztrogénre jellemző:",
+    "opts": [
+      "termelődését az FSH serkenti",
+      "a sárgatest termeli",
+      "az érő tüsző termeli",
+      "hatására a méhnyálkahártya proliferációs fázisba kerül"
+    ],
+    "ans": [
+      0,
+      2,
+      3
+    ]
+  },
+  {
+    "id": 378,
+    "type": "multi",
+    "q": "Fagocitózisra képes sejt:",
+    "opts": [
+      "neutrofil granulocyta",
+      "monocyta",
+      "szöveti macrophag",
+      "lymphocyta"
+    ],
+    "ans": [
+      0,
+      1,
+      2
+    ]
+  },
+  {
+    "id": 379,
+    "type": "multi",
+    "q": "Sinus tachycardiát okozhat:",
+    "opts": [
+      "anaemia",
+      "koponyaűri nyomásfokozódás",
+      "láz",
+      "a pajzsmirigy alulműködése"
+    ],
+    "ans": [
+      0,
+      2
+    ]
+  },
+  {
+    "id": 380,
+    "type": "multi",
+    "q": "Melyik eszköz esetén egyenes állású mindig a kép?",
+    "opts": [
+      "bikonvex lencse",
+      "bikonkáv lencse",
+      "homorú tükör",
+      "domború tükör"
+    ],
+    "ans": [
+      1,
+      3
+    ]
+  },
+  {
+    "id": 381,
+    "type": "multi",
+    "q": "Melyik eszköz esetén kicsinyített a látszólagos kép?",
+    "opts": [
+      "bikonvex lencse",
+      "bikonkáv lencse",
+      "homorú tükör",
+      "domború tükör"
+    ],
+    "ans": [
+      1,
+      3
+    ]
+  },
+  {
+    "id": 382,
+    "type": "multi",
+    "q": "Melyik eszköz gyűjtő hatású?",
+    "opts": [
+      "bikonvex lencse",
+      "bikonkáv lencse",
+      "homorú tükör",
+      "domború tükör"
+    ],
+    "ans": [
+      0,
+      2
+    ]
+  },
+  {
+    "id": 383,
+    "type": "multi",
+    "q": "A HIV terjedési lehetőségei:",
+    "opts": [
+      "Nemi érintkezés",
+      "Vérinokuláció",
+      "Perinatalis átvitel",
+      "Rovarok közvetítésével"
+    ],
+    "ans": [
+      0,
+      1,
+      2
+    ]
+  },
+  {
+    "id": 384,
+    "type": "multi",
+    "q": "Melyik eszköz szóró hatású?",
+    "opts": [
+      "bikonvex lencse",
+      "bikonkáv lencse",
+      "homorú tükör",
+      "domború tükör"
+    ],
+    "ans": [
+      1,
+      3
+    ]
+  },
+  {
+    "id": 385,
+    "type": "multi",
+    "q": "Melyik jelenség függ a közeg anyagától?",
+    "opts": [
+      "elhajlás",
+      "interferencia",
+      "polarizáció",
+      "elnyelés"
+    ],
+    "ans": [
+      3
+    ]
+  },
+  {
+    "id": 386,
+    "type": "multi",
+    "q": "Szekunder hypertoniát okozhat:",
+    "opts": [
+      "Veseelégtelenség",
+      "Májelégtelenség",
+      "Mellékveseelégtelenség",
+      "Cushing kór"
+    ],
+    "ans": [
+      0,
+      3
+    ]
+  },
+  {
+    "id": 387,
+    "type": "multi",
+    "q": "Melyik jelenség valósul meg monokromatikus fény esetén is?",
+    "opts": [
+      "elhajlás",
+      "interferencia",
+      "polarizáció",
+      "elnyelés"
+    ],
+    "ans": [
+      0,
+      1,
+      2,
+      3
+    ]
+  },
+  {
+    "id": 388,
+    "type": "multi",
+    "q": "Melyik leképezési hiba fordulhat elő tükrök esetén is?",
+    "opts": [
+      "astigmatismus",
+      "sphaericus aberratio",
+      "kóma",
+      "kromatikus aberratio"
+    ],
+    "ans": [
+      0,
+      1,
+      2
+    ]
+  },
+  {
+    "id": 389,
+    "type": "multi",
+    "q": "Melyik leképezési hiba frekvenciafüggő?",
+    "opts": [
+      "astigmatismus",
+      "sphaericus aberratio",
+      "kóma",
+      "kromatikus aberratio"
+    ],
+    "ans": [
+      3
+    ]
+  },
+  {
+    "id": 390,
+    "type": "multi",
+    "q": "Melyik leképezési hiba függ az optikai eszköz anyagától?",
+    "opts": [
+      "astigmatismus",
+      "sphaericus aberratio",
+      "kóma",
+      "kromatikus aberratio"
+    ],
+    "ans": [
+      3
+    ]
+  },
+  {
+    "id": 391,
+    "type": "multi",
+    "q": "Melyik leképezési hiba korrigálható lencserendszerrel?",
+    "opts": [
+      "astigmatismus",
+      "sphaericus aberratio",
+      "kóma",
+      "kromatikus aberratio"
+    ],
+    "ans": [
+      0,
+      1,
+      2,
+      3
+    ]
+  },
+  {
+    "id": 392,
+    "type": "multi",
+    "q": "Melyik leképezési hiba nem függ a fény frekvenciájától?",
+    "opts": [
+      "astigmatismus",
+      "sphaericus aberratio",
+      "kóma",
+      "kromatikus aberratio"
+    ],
+    "ans": [
+      0,
+      1,
+      2
+    ]
+  },
+  {
+    "id": 393,
+    "type": "multi",
+    "q": "Melyik leképezési hiba nem korrigálható lencserendszerrel?",
+    "opts": [
+      "astigmatismus",
+      "sphaericus aberratio",
+      "kóma",
+      "kromatikus aberratio"
+    ],
+    "ans": [
+      2
+    ]
+  },
+  {
+    "id": 394,
+    "type": "multi",
+    "q": "Az oxigéngázban előforduló kötéstípus:",
+    "opts": [
+      "a hidrogénkötés",
+      "a diszperziós kölcsönhatás",
+      "a dipólus-dipólus kölcsönhatás",
+      "a kovalens kötés"
+    ],
+    "ans": [
+      1,
+      3
+    ]
+  },
+  {
+    "id": 395,
+    "type": "multi",
+    "q": "Benne a nitrogén oxidációs száma -3:",
+    "opts": [
+      "HNO3",
+      "N2",
+      "HNO2",
+      "NH3"
+    ],
+    "ans": [
+      3
+    ]
+  },
+  {
+    "id": 396,
+    "type": "multi",
+    "q": "Fiatalkori (1-es típusú) diabetes mellitusra jellemző:",
+    "opts": [
+      "gyakoribb, mint a felnőttkori (2-es típusú) diabetes mellitus",
+      "van saját insulin termelés",
+      "insulin kezelés mellett a diéta nem fontos",
+      "insulinnal kell kezelni"
+    ],
+    "ans": [
+      3
+    ]
+  },
+  {
+    "id": 397,
+    "type": "multi",
+    "q": "Hogyan terjed a hepatitis B. vírus?",
+    "opts": [
+      "faeco-oralis úton",
+      "szexuális úton",
+      "cseppfertőzéssel",
+      "szülés közben az anya fertőzheti újszülöttjét"
+    ],
+    "ans": [
+      1,
+      3
+    ]
+  },
+  {
+    "id": 398,
+    "type": "multi",
+    "q": "Melyek a krónikus veseelégtelenség leggyakoribb okai?",
+    "opts": [
+      "TBC",
+      "diabetes mellitus",
+      "hyperthyreosis",
+      "hypertonia"
+    ],
+    "ans": [
+      1,
+      3
+    ]
+  },
+  {
+    "id": 399,
+    "type": "multi",
+    "q": "Mélyvénás thrombosis kialakulására hajlamosít:",
+    "opts": [
+      "immobilitás",
+      "malignus tumor",
+      "műtét",
+      "alacsony thrombocyta szám"
+    ],
+    "ans": [
+      0,
+      1,
+      2
+    ]
+  },
+  {
+    "id": 400,
+    "type": "multi",
+    "q": "A lencse próbaviselése során a páciens fokozódó fájdalomról és romló látásról panaszkodik. Mire gondol?",
+    "opts": [
+      "laza az illesztés",
+      "a lencse kifordulva lett felhelyezve",
+      "alacsony a lencse víztartalma",
+      "a lencse szorosan illeszkedik"
+    ],
+    "ans": [
+      3
+    ]
+  },
+  {
+    "id": 401,
+    "type": "multi",
+    "q": "Friss szaruhártya ereződés kialakulása esetén teendő:",
+    "opts": [
+      "jelenlegi lencse viselésének felfüggesztése",
+      "alacsonyabb Dk értékű lencsére váltás",
+      "lencse anyagának megváltoztatása",
+      "műkönny adása"
+    ],
+    "ans": [
+      0,
+      2
+    ]
+  },
+  {
+    "id": 402,
+    "type": "multi",
+    "q": "Kontaktlencse vizsgálatkor rutinszerűen ellenőrizzük:",
+    "opts": [
+      "a kontaktlencse illeszkedést",
+      "a szaruhártya ereződést",
+      "a lencsefelszín állapotát",
+      "a trabecularis hálózatot"
+    ],
+    "ans": [
+      0,
+      1,
+      2
+    ]
+  },
+  {
+    "id": 403,
+    "type": "multi",
+    "q": "Kontaktlencseviselés abbahagyásának leggyakoribb okai:",
+    "opts": [
+      "dioptria változások",
+      "a lencseviselés magas költsége",
+      "fájdalom",
+      "szárazság érzés"
+    ],
+    "ans": [
+      2,
+      3
+    ]
+  },
+  {
+    "id": 404,
+    "type": "multi",
+    "q": "Lágylencse dioptriája meghatározható:",
+    "opts": [
+      "felülkorrigálással",
+      "szemüveg dioptriamérőjével",
+      "keratometerrel",
+      "speciális dioptriamérővel küvettában és folyadékban"
+    ],
+    "ans": [
+      0,
+      3
+    ]
+  },
+  {
+    "id": 405,
+    "type": "multi",
+    "q": "Lencse viselése nem jön szóba:",
+    "opts": [
+      "szaruhártya gyulladás",
+      "erősen lecsökkent könnytermelés",
+      "szemhéjgyulladás",
+      "küzdő sportoknál"
+    ],
+    "ans": [
+      0,
+      1,
+      2
+    ]
+  },
+  {
+    "id": 406,
+    "type": "multi",
+    "q": "Melyek azok a műszerek-eszközök amelyeket kizárólag kontaktlencse-illesztéshez használunk?",
+    "opts": [
+      "autorefraktometer",
+      "réslámpa",
+      "szemtükör",
+      "lencseszívóka"
+    ],
+    "ans": [
+      3
+    ]
+  },
+  {
+    "id": 407,
+    "type": "multi",
+    "q": "Melyik tényezők befolyásolják legjobban a lágylencse illeszkedését?",
+    "opts": [
+      "a szem fénytörése",
+      "a szaruhártya felszíne",
+      "a lencse elülső felszínének kiképzése",
+      "a könny mennyisége"
+    ],
+    "ans": [
+      1,
+      3
+    ]
+  },
+  {
+    "id": 408,
+    "type": "multi",
+    "q": "Milyen kontaktlencsét ajánl egy 2.00 D cornealis asztigmiával rendelkező páciensnek?",
+    "opts": [
+      "tórikus lágylencsét",
+      "tórikus RGP lencsét",
+      "szférikus RGP lencsét",
+      "szférikus lágylencsét"
+    ],
+    "ans": [
+      0,
+      1,
+      2
+    ]
+  },
+  {
+    "id": 409,
+    "type": "multi",
+    "q": "A kapillárisok falán át zajló anyagkicserélődést mi fokozza?",
+    "opts": [
+      "ha a diffúziós távolság kisebb",
+      "ha a hajszálerek összfelülete kisebb",
+      "ha a membrán két oldalán a koncentrációkülönbség nagyobb",
+      "ha a véráramlási sebesség a kapillárisokban kisebb"
+    ],
+    "ans": [
+      0,
+      2
+    ]
+  },
+  {
+    "id": 410,
+    "type": "multi",
+    "q": "Prosztetikus kontaktlencsét elsősorban a következő esetekben javasolunk:",
+    "opts": [
+      "a cornea torzító hegeinek fedésére",
+      "bakteriális keratitis fájdalom csökkentésére",
+      "traumás mydriasisban pupillaképzésre",
+      "keratopathia metaherpeticában"
+    ],
+    "ans": [
+      0,
+      2,
+      3
+    ]
+  },
+  {
+    "id": 411,
+    "type": "multi",
+    "q": "Új lencseviselőnél az alábbi vizsgálatok közül melyeket végezné el?",
+    "opts": [
+      "Schrimer II. próba",
+      "Schrimer I. próba",
+      "a corneaérzékenység meghatározása",
+      "break up time"
+    ],
+    "ans": [
+      1,
+      2,
+      3
+    ]
+  },
+  {
+    "id": 412,
+    "type": "multi",
+    "q": "A fissura orbitalis superioron keresztül halad:",
+    "opts": [
+      "vena ophthalmica",
+      "nervus oculomotorius",
+      "nervus trochlearis",
+      "nervus abducens"
+    ],
+    "ans": [
+      0,
+      1,
+      2,
+      3
+    ]
+  },
+  {
+    "id": 413,
+    "type": "multi",
+    "q": "A nervus oculomotorius (n. III.) idegzi be:",
+    "opts": [
+      "musculus sphincter pupillae",
+      "musculus rectus externus",
+      "musculus ciliaris",
+      "musculus obliquus superior"
+    ],
+    "ans": [
+      0,
+      2
+    ]
+  },
+  {
+    "id": 414,
+    "type": "multi",
+    "q": "A retina ingerfelvevő elemei:",
+    "opts": [
+      "csapok és pálcikák",
+      "látóideg",
+      "neuroepithelsejtek",
+      "pigmentepithelsejtek"
+    ],
+    "ans": [
+      0,
+      2
+    ]
+  },
+  {
+    "id": 415,
+    "type": "multi",
+    "q": "A Schlemm-csatorna jellemzői:",
+    "opts": [
+      "állandóan zárt",
+      "állandóan nyitott",
+      "a lencsefüggesztő rostok között található",
+      "endothelsejtek bélelik"
+    ],
+    "ans": [
+      1,
+      3
+    ]
+  },
+  {
+    "id": 416,
+    "type": "multi",
+    "q": "Alkalmazkodás bénulást okoznak:",
+    "opts": [
+      "parasympathicusizgatók",
+      "parasympathicusbénítók",
+      "sympathicusbénítók",
+      "n.oculomotoricus bénulás"
+    ],
+    "ans": [
+      1,
+      3
+    ]
+  },
+  {
+    "id": 417,
+    "type": "multi",
+    "q": "Az ép látóidegfő szemfenéki képe:",
+    "opts": [
+      "kivehető határú",
+      "közepe elődomborodik",
+      "jellegzetes színű",
+      "decolorált"
+    ],
+    "ans": [
+      0,
+      2
+    ]
+  },
+  {
+    "id": 418,
+    "type": "multi",
+    "q": "Honnan ered a macula lutea neve?",
+    "opts": [
+      "vért nem tartalmaz ezért sápadt",
+      "rendszerint fehér színű",
+      "a jellegzetes fényreflex miatt",
+      "szemtükörrel megtekintve sárgásan reflektál"
+    ],
+    "ans": [
+      3
+    ]
+  },
+  {
+    "id": 419,
+    "type": "multi",
+    "q": "Mely állítások igazak a könnyrendszerről?",
+    "opts": [
+      "A könny secretióját kizárólag a glandula lacrimalis végzi",
+      "A könny mucirétegét a Meibom-mirigyek termelik",
+      "Az epiphora oka a könny fokozott termelődése",
+      "A Schirmer-próba a könny mennyiségének vizsgálatára szolgál"
+    ],
+    "ans": [
+      3
+    ]
+  },
+  {
+    "id": 420,
+    "type": "multi",
+    "q": "Mi lehet a rövidlátás oka?",
+    "opts": [
+      "túl hosszú a szem optikai tengelye",
+      "a szaruhártya fokozott domborúsága",
+      "a szemlencse fokozott törőereje",
+      "hemeralopia"
+    ],
+    "ans": [
+      0,
+      1,
+      2
+    ]
+  },
+  {
+    "id": 421,
+    "type": "multi",
+    "q": "Milyen következménye lehet a korrigálatlan hypermetropiának?",
+    "opts": [
+      "kancsalság",
+      "kettős látás",
+      "fejfájás",
+      "szemtekerezgés"
+    ],
+    "ans": [
+      0,
+      2
+    ]
+  },
+  {
+    "id": 422,
+    "type": "multi",
+    "q": "Mit alkotnak a retina ganglionsejtjeinek nyúlványai?",
+    "opts": [
+      "idegrostréteget",
+      "a corpus geniculatum lateralét",
+      "az opticus törzsét",
+      "a látóközpontot"
+    ],
+    "ans": [
+      0,
+      2
+    ]
+  },
+  {
+    "id": 423,
+    "type": "multi",
+    "q": "Mit mérünk skiascopéléccel?",
+    "opts": [
+      "a szem fénytörését",
+      "a szaruhártya görbületi sugarát",
+      "az astigmatizmust",
+      "a szemizombénulás mértékét"
+    ],
+    "ans": [
+      0,
+      2
+    ]
+  },
+  {
+    "id": 424,
+    "type": "multi",
+    "q": "Mivel van összeköttetésben a második neuron az ideghártyában?",
+    "opts": [
+      "csapokkal",
+      "pálcikákkal",
+      "ganglionsejtekkel",
+      "bipoláris sejtekkel"
+    ],
+    "ans": [
+      0,
+      1,
+      2
+    ]
+  },
+  {
+    "id": 425,
+    "type": "multi",
+    "q": "Orvosi szempontból vak a szem amelyiknek látóélessége megfelelő korrekcióval:",
+    "opts": [
+      "0,1 alatt van",
+      "1-2 m ujjolvasás lehetséges",
+      "csak fényérzésre és fénylokalizálásra képes",
+      "fényérzés nélküli"
+    ],
+    "ans": [
+      0,
+      1,
+      2,
+      3
+    ]
+  },
+  {
+    "id": 426,
+    "type": "multi",
+    "q": "A családi anamnézsis milyen adatai lehetnek fontosak?",
+    "opts": [
+      "Volt-e a vérrokonok között fénytörési hiba miatt gyengébben látó",
+      "Volt-e glaucomás beteg a vérrokonok között",
+      "Volt-e cukorbeteg a családban",
+      "Van-e a vérrokonok között aki gyermekbetegségben szenved"
+    ],
+    "ans": [
+      0,
+      1,
+      2
+    ]
+  },
+  {
+    "id": 427,
+    "type": "multi",
+    "q": "Az arteria centralis retinae embolia jelei:",
+    "opts": [
+      "papillavérbőség",
+      "papillaprominentia",
+      "nagy kiterjedésű vérzések a retinán",
+      "az ideghártya fehér, ischaemiás, a macula piros"
+    ],
+    "ans": [
+      3
+    ]
+  },
+  {
+    "id": 428,
+    "type": "multi",
+    "q": "Bakteriális eredetű kötőhártya-gyulladás jellemzői:",
+    "opts": [
+      "bőséges serosus váladék képződése",
+      "erőteljes könnyezés",
+      "fehéres, tejszerű váladék képződése",
+      "bőséges, sárgászöld, sűrű váladék képződése"
+    ],
+    "ans": [
+      3
+    ]
+  },
+  {
+    "id": 429,
+    "type": "multi",
+    "q": "Fokozatosan kialakuló látásromlást okoz:",
+    "opts": [
+      "rhegmatogen ablatio retinae",
+      "maculadegeneratio",
+      "cataracta senilis",
+      "arteria centralis retinae elzáródás"
+    ],
+    "ans": [
+      1,
+      2
+    ]
+  },
+  {
+    "id": 430,
+    "type": "multi",
+    "q": "Hirtelen kialakuló kettőslátás oka lehet:",
+    "opts": [
+      "agyvérzés",
+      "koponyasérülés",
+      "myasthenia gravis",
+      "amblyopia"
+    ],
+    "ans": [
+      0,
+      1,
+      2
+    ]
+  },
+  {
+    "id": 431,
+    "type": "multi",
+    "q": "Keratitisek kísérő tünetei:",
+    "opts": [
+      "fénykerülés",
+      "ciliaris izgalom",
+      "könnyezés",
+      "irisizgalom"
+    ],
+    "ans": [
+      0,
+      1,
+      2,
+      3
+    ]
+  },
+  {
+    "id": 432,
+    "type": "multi",
+    "q": "Mi jellemző az akut glaucomás rohamra?",
+    "opts": [
+      "erős szem körüli fájdalom",
+      "nystagmus",
+      "a szemgolyó tapintata kemény",
+      "atropin adása szükséges"
+    ],
+    "ans": [
+      0,
+      2
+    ]
+  },
+  {
+    "id": 433,
+    "type": "multi",
+    "q": "Mi okozhat exophthalmust?",
+    "opts": [
+      "degeneratio pigmentosa retinae",
+      "chorioretinitis inveterata",
+      "embolia arteriae centralis retinae",
+      "endocrin ophthalmopathia"
+    ],
+    "ans": [
+      3
+    ]
+  },
+  {
+    "id": 434,
+    "type": "multi",
+    "q": "Mi vezethet kancsalsághoz?",
+    "opts": [
+      "korrigálatlan hypermetropia",
+      "a szemizmok traumás sérülése",
+      "a szemizmok beidegzési zavara",
+      "endocrin ophthalmopathia"
+    ],
+    "ans": [
+      0,
+      1,
+      2,
+      3
+    ]
+  },
+  {
+    "id": 435,
+    "type": "multi",
+    "q": "Milyen betegségek jöhetnek szóba ha a kliens időszakos homályos látásról panaszkodik?",
+    "opts": [
+      "keringési zavar a nyaki gerinc meszesedésével összefüggésben",
+      "általános vérnyomás-ingadozás",
+      "vércukorszint-ingadozás",
+      "cataracta progrediens"
+    ],
+    "ans": [
+      0,
+      1,
+      2
+    ]
+  },
+  {
+    "id": 436,
+    "type": "multi",
+    "q": "Milyen szemműtétek következtében alakulhat ki leggyakrabban secunder glaucoma?",
+    "opts": [
+      "szürkehályogműtét",
+      "kancsalműtétek",
+      "vitrectomia szilikonolaj-implantatióval",
+      "xanthelasma műtét"
+    ],
+    "ans": [
+      0,
+      2
+    ]
+  },
+  {
+    "id": 437,
+    "type": "multi",
+    "q": "Mit okozhat az A-vitamin hiánya?",
+    "opts": [
+      "gyűrűs tályogot a szaruhártyán",
+      "farkasvakságot",
+      "színtévesztést",
+      "keratomalaciát"
+    ],
+    "ans": [
+      1,
+      3
+    ]
+  },
+  {
+    "id": 438,
+    "type": "multi",
+    "q": "Műlencse-beültetés után színszóródásos panaszok fellépésének okai:",
+    "opts": [
+      "a műlencse excentrikusan helyezkedik el",
+      "cataracta secundaria",
+      "a pupilla átmérője nagyobb mint a műlencse optikai részének átmérője",
+      "nagyfokú postoperatív astigmia"
+    ],
+    "ans": [
+      0,
+      1,
+      2
+    ]
+  },
+  {
+    "id": 439,
+    "type": "multi",
+    "q": "Szürkehályogműtétet kell végezni:",
+    "opts": [
+      "Ha az életvitelt zavaró látásromlást okoz",
+      "Ha a tumescens hályog szemnyomás emelkedést okoz",
+      "Ha phakogen uvetitist találunk",
+      "Ha romlani kezd a távoli visus"
+    ],
+    "ans": [
+      0,
+      1,
+      2
+    ]
+  },
+  {
+    "id": 440,
+    "type": "multi",
+    "q": "Tarkótáji fejfájással járó kórképek:",
+    "opts": [
+      "a nyaki gerinc meszesedése",
+      "akut glaucomás roham",
+      "vérnyomáskiugrás",
+      "orrmelléküreg-gyulladás"
+    ],
+    "ans": [
+      0,
+      2
+    ]
+  },
+  {
+    "id": 441,
+    "type": "truefalse",
+    "q": "Igazak, vagy hamisak az alábbi állítások?",
+    "stmts": [
+      {
+        "t": "A korhoz kötött kötelező védőoltások a szekunder prevencióhoz tartoznak",
+        "ans": "H"
+      },
+      {
+        "t": "A korai halálozás kategóriája azért jött létre, hogy meghatározható legyen az az életkor, amely felett már a nagyon drága beavatkozásokat már nem kell elvégezni",
+        "ans": "H"
+      }
+    ]
+  },
+  {
+    "id": 442,
+    "type": "truefalse",
+    "q": "Igazak vagy hamisak az alábbi állítások?",
+    "stmts": [
+      {
+        "t": "A fertőzött személy a lappangási idő alatt soha nem üríthet kórokozót.",
+        "ans": "H"
+      },
+      {
+        "t": "A légúti fertőző megbetegedések terjedését segíti a zsúfolt környezet a levegő kórokozókoncentrációja valamint a hideg idő.",
+        "ans": "I"
+      }
+    ]
+  },
+  {
+    "id": 443,
+    "type": "truefalse",
+    "q": "A belső szemnyomás szabályozásában részt vesz:",
+    "stmts": [
+      {
+        "t": "a choriocapillaris rendszer",
+        "ans": "H"
+      },
+      {
+        "t": "a corpus ciliare",
+        "ans": "I"
+      },
+      {
+        "t": "a cornea endothelrétege",
+        "ans": "H"
+      },
+      {
+        "t": "az iris pigmentlap",
+        "ans": "H"
+      }
+    ]
+  },
+  {
+    "id": 444,
+    "type": "truefalse",
+    "q": "A musculus dilatator pupillae neuronjai:",
+    "stmts": [
+      {
+        "t": "adrenerg neuronok",
+        "ans": "I"
+      },
+      {
+        "t": "cholinerg neuronok",
+        "ans": "H"
+      }
+    ]
+  },
+  {
+    "id": 445,
+    "type": "truefalse",
+    "q": "A retina felépítéséről tudjuk:",
+    "stmts": [
+      {
+        "t": "a retina 8 rétegű",
+        "ans": "H"
+      },
+      {
+        "t": "a csapok a ganglionsejtekkel kapcsolódnak",
+        "ans": "H"
+      },
+      {
+        "t": "a fotoreceptorok külső tagjában található rhodopsin",
+        "ans": "I"
+      },
+      {
+        "t": "a belső magvas rétegben csak bipoláris sejtek találhatók",
+        "ans": "H"
+      }
+    ]
+  },
+  {
+    "id": 446,
+    "type": "truefalse",
+    "q": "A retina jellemzői:",
+    "stmts": [
+      {
+        "t": "az ora serrata előtt csak a pigmenthám folytatódik",
+        "ans": "I"
+      },
+      {
+        "t": "az aequator mögött kezdődik a pars optica retinae",
+        "ans": "H"
+      },
+      {
+        "t": "a fovea centralis 3 mm átmérőjű",
+        "ans": "H"
+      },
+      {
+        "t": "a foveola centralis 0,3 mm átmérőjű árok",
+        "ans": "I"
+      }
+    ]
+  },
+  {
+    "id": 447,
+    "type": "truefalse",
+    "q": "A retina keringéséről tudjuk:",
+    "stmts": [
+      {
+        "t": "artériás vért csak az arteria centralisból kap",
+        "ans": "H"
+      },
+      {
+        "t": "a retina külső négy rétege a choriocapillarisból táplálkozik",
+        "ans": "I"
+      },
+      {
+        "t": "az arteria centralis a retinae a látóidegfőn keresztül lép be a szembe",
+        "ans": "I"
+      },
+      {
+        "t": "a macula perifovealisan érmentes",
+        "ans": "H"
+      }
+    ]
+  },
+  {
+    "id": 448,
+    "type": "truefalse",
+    "q": "A retina működéséről ismert:",
+    "stmts": [
+      {
+        "t": "a pálcikák a fényhez való adaptáció eszközei",
+        "ans": "I"
+      },
+      {
+        "t": "a rhodopsin bomlása biokémiai folyamat",
+        "ans": "I"
+      },
+      {
+        "t": "a pigmentepithel a Bruch-membránnal együtt a külső vér-retina gátat képezi",
+        "ans": "I"
+      },
+      {
+        "t": "a pigmentepithel sejteket zonula occludens köti össze",
+        "ans": "I"
+      }
+    ]
+  },
+  {
+    "id": 449,
+    "type": "truefalse",
+    "q": "Az alábbi állítások közül mi igaz és mi nem?",
+    "stmts": [
+      {
+        "t": "A reflexkör idegrendszeri központ felé vezető ágát afferens ágnak nevezzük",
+        "ans": "I"
+      },
+      {
+        "t": "A reflexkörnek az idegrendszeri központhoz vezető ágát efferens ágának nevezzük",
+        "ans": "H"
+      },
+      {
+        "t": "A külső szemizmokat beidegző idegek magja a gerincvelőben található",
+        "ans": "H"
+      },
+      {
+        "t": "A belső szemizmok beidegzésének központja az occipitalis lebenyben található",
+        "ans": "H"
+      }
+    ]
+  },
+  {
+    "id": 450,
+    "type": "truefalse",
+    "q": "Az alábbiak közül melyek a hormonok és melyek nem azok?",
+    "stmts": [
+      {
+        "t": "insulin",
+        "ans": "I"
+      },
+      {
+        "t": "cortisol",
+        "ans": "I"
+      },
+      {
+        "t": "acethylcholin",
+        "ans": "H"
+      },
+      {
+        "t": "pilocarpin",
+        "ans": "H"
+      }
+    ]
+  },
+  {
+    "id": 451,
+    "type": "truefalse",
+    "q": "Az üvegtest jellemzői:",
+    "stmts": [
+      {
+        "t": "kollagént és hialuronsavat tartalmaz",
+        "ans": "I"
+      },
+      {
+        "t": "víztartalma 50%",
+        "ans": "H"
+      },
+      {
+        "t": "kívülről a membrana hyaloidea határolja",
+        "ans": "I"
+      },
+      {
+        "t": "sehol sincs szoros kapcsolatban az ideghártyával",
+        "ans": "H"
+      }
+    ]
+  },
+  {
+    "id": 452,
+    "type": "truefalse",
+    "q": "Az üvegtestről ismeretes:",
+    "stmts": [
+      {
+        "t": "a bázisa szorosan kötődik a pars plana epitheliumához",
+        "ans": "I"
+      },
+      {
+        "t": "elülső bemélyedése a fossa patellaris",
+        "ans": "I"
+      },
+      {
+        "t": "semmilyen életkorban nincs szoros kapcsolata a lencsével",
+        "ans": "H"
+      },
+      {
+        "t": "a Cloquet-csatorna az arteria hyaloidea maradványa",
+        "ans": "I"
+      }
+    ]
+  },
+  {
+    "id": 453,
+    "type": "truefalse",
+    "q": "Belső elválasztású mirigyek-e az alábbi szervek?",
+    "stmts": [
+      {
+        "t": "pajzsmirigy",
+        "ans": "I"
+      },
+      {
+        "t": "hypophysis",
+        "ans": "I"
+      },
+      {
+        "t": "mellékvese",
+        "ans": "I"
+      },
+      {
+        "t": "hasnyálmirigy",
+        "ans": "I"
+      }
+    ]
+  },
+  {
+    "id": 454,
+    "type": "truefalse",
+    "q": "A vegetatív idegrendszerről döntse el!",
+    "stmts": [
+      {
+        "t": "A vegetatív idegenszer akaratlagos úton működteti a szervezetet",
+        "ans": "H"
+      },
+      {
+        "t": "A vegetatív idegrendszer magasabb agykérgi ellenőrzés nélkül végzi a funkcióit",
+        "ans": "I"
+      },
+      {
+        "t": "A vegetatív idegrostok ingerülete afferens ágon a sympathicus és parasympathicus sorokon éri el a KIR-t",
+        "ans": "I"
+      },
+      {
+        "t": "A vegetatív idegrendszer afferens ágait agyidegeknek nevezzük",
+        "ans": "H"
+      }
+    ]
+  },
+  {
+    "id": 455,
+    "type": "truefalse",
+    "q": "Döntse el, hogy a következő állítások igazak-e vagy nem!",
+    "stmts": [
+      {
+        "t": "A könnymirigyek sympathicus beidegzés alatt állnak",
+        "ans": "I"
+      },
+      {
+        "t": "A pupilla tágulása akkor alakul ki, amikor a sympathicus beidegzés bénul és parasympathicus tónus fokozódás jön létre",
+        "ans": "H"
+      },
+      {
+        "t": "A lencse akkor képes törőerejét növelni, ha a parasympathicus beidegzés kerül túlsúlyba",
+        "ans": "I"
+      },
+      {
+        "t": "Az acethylcholin a parasympathicus idegek és a neuromuscularis synapsisok ingerületátvivő anyaga",
+        "ans": "I"
+      }
+    ]
+  },
+  {
+    "id": 456,
+    "type": "truefalse",
+    "q": "A szemizmok beidegzéséről döntse el!",
+    "stmts": [
+      {
+        "t": "A külső egyenes izmok nagy részét a sympathicus és parasympathicus idegrostok idegzik be",
+        "ans": "H"
+      },
+      {
+        "t": "A belső szemizmokat a sympathicus és a parasympathicus idegrendszer rostjai idegzik be",
+        "ans": "I"
+      },
+      {
+        "t": "A szem izmainak beidegzéséven nem vesznek részt a vegetatív idegrendszer rostjai",
+        "ans": "H"
+      },
+      {
+        "t": "A szem külső és belső izmainak beidegzéséért kizárólag a vegetatív idegrendszer felelős",
+        "ans": "H"
+      }
+    ]
+  },
+  {
+    "id": 457,
+    "type": "truefalse",
+    "q": "A synapsisokról és idegrendszerről döntse el!",
+    "stmts": [
+      {
+        "t": "Synapsisnak nevezzük az idegsejtnek azt a speciális kapcsolódási helyét ahol az ingerület egyik neuronról egy másik neuronra tevődik át",
+        "ans": "I"
+      },
+      {
+        "t": "A vázizom esetében az ideg-izom átvivő anyag az acethylcholin",
+        "ans": "I"
+      },
+      {
+        "t": "A simaizmok myogen tónus fokozódását a vegetatív idegrendszer szabályozza",
+        "ans": "I"
+      },
+      {
+        "t": "A vegetatív idegrendszer irányítása a hypophysis feladata",
+        "ans": "H"
+      }
+    ]
+  },
+  {
+    "id": 458,
+    "type": "truefalse",
+    "q": "A belső elválasztású mirigyek hormonjairól döntse el!",
+    "stmts": [
+      {
+        "t": "a mellékvese hormonja az adrenalin",
+        "ans": "I"
+      },
+      {
+        "t": "a mellékvesekéreg hormonjai a corticosteroidok",
+        "ans": "I"
+      },
+      {
+        "t": "a pajzsmirigy hormonja az insulin",
+        "ans": "H"
+      },
+      {
+        "t": "a hypophysis irányítja a többi belső elválasztású mirigy működését",
+        "ans": "I"
+      },
+      {
+        "t": "az insulinhiányos állapot Basedow-kórt okoz",
+        "ans": "H"
+      }
+    ]
+  },
+  {
+    "id": 459,
+    "type": "truefalse",
+    "q": "Melyik állítás igaz a Purkinje-féle jelenség értelmében?",
+    "stmts": [
+      {
+        "t": "sötétadaptatióban a szem fényérzékenységi maximuma a rövid hullámhosszak irányába tolódik el",
+        "ans": "I"
+      },
+      {
+        "t": "sötétadaptatióban a szem fényérzékenységi maximuma a hosszú hullámhosszak irányába tolódik el",
+        "ans": "H"
+      }
+    ]
+  },
+  {
+    "id": 460,
+    "type": "truefalse",
+    "q": "A pupillareflexről melyik állítás igaz melyik hamis?",
+    "stmts": [
+      {
+        "t": "Ha két szem párhuzamos állású nem beszélhetünk a binokuláris látás zavaráról",
+        "ans": "H"
+      },
+      {
+        "t": "Ha egy szemen a pupilla mozgását látjuk akkor az a szem nem lehet vak",
+        "ans": "H"
+      },
+      {
+        "t": "A vak szemen azért váltható ki a direkt pupillareflex mert a n. opticus rostjai részlegesen kereszteződnek",
+        "ans": "H"
+      },
+      {
+        "t": "A vak szemen csak consensualis fényreflex váltható ki",
+        "ans": "I"
+      }
+    ]
+  },
+  {
+    "id": 461,
+    "type": "truefalse",
+    "q": "A nyirokrendszerről melyik igaz melyik nem?",
+    "stmts": [
+      {
+        "t": "A capillarisokból a szövetekbe filtrálódott folyadék egy része nem tud visszajutni a capillarisok vénás szárába ezt a nyirokcapillarisok vezetik el.",
+        "ans": "I"
+      },
+      {
+        "t": "A nyirokérrendszer a központi idegrendszer liquorterébe vezetődik el",
+        "ans": "H"
+      },
+      {
+        "t": "A központi idegrendszerben nincsenek nyirokerek az ott termelődő szövetközti folyadékot liquornak nevezzük",
+        "ans": "I"
+      },
+      {
+        "t": "A szem mint a központi idegrendszer része közvetett kapcsolatban van a liquortérrel.",
+        "ans": "I"
+      }
+    ]
+  },
+  {
+    "id": 462,
+    "type": "truefalse",
+    "q": "Az iris színéről melyik igaz melyik hamis?",
+    "stmts": [
+      {
+        "t": "Ha a két szem irise nem egyforma színű az kóros állapotnak tekinthető",
+        "ans": "H"
+      },
+      {
+        "t": "Ha a két szem irise nem egyforma színű akkor az lehet kóros állapot",
+        "ans": "I"
+      },
+      {
+        "t": "Az iris színe és a szem fénytörése kapcsolatban van egymással",
+        "ans": "H"
+      },
+      {
+        "t": "A pupillaris szegély hiánya nem fiziológiás állapot",
+        "ans": "I"
+      }
+    ]
+  },
+  {
+    "id": 463,
+    "type": "truefalse",
+    "q": "Az idegrendszerről mi igaz és mi nem?",
+    "stmts": [
+      {
+        "t": "Morfológiai és funkcionális alapegysége a neuron",
+        "ans": "I"
+      },
+      {
+        "t": "A neuron tengelyfonala a synapsisokban végződik ahol az ingerület sejtekre tevődik át",
+        "ans": "I"
+      },
+      {
+        "t": "Az idegrendszerben az ingerületátvivő anyag a glukóz",
+        "ans": "H"
+      },
+      {
+        "t": "A glukózháztartás zavarát diabetesnek nevezzük",
+        "ans": "I"
+      }
+    ]
+  },
+  {
+    "id": 464,
+    "type": "truefalse",
+    "q": "Milyen fajtái vannak az izomszövetnek?",
+    "stmts": [
+      {
+        "t": "simaizom",
+        "ans": "I"
+      },
+      {
+        "t": "harántcsíkolt izom",
+        "ans": "I"
+      },
+      {
+        "t": "ciliaris izom",
+        "ans": "H"
+      },
+      {
+        "t": "szívizom",
+        "ans": "I"
+      }
+    ]
+  },
+  {
+    "id": 465,
+    "type": "truefalse",
+    "q": "Mit nevezünk hormonoknak?",
+    "stmts": [
+      {
+        "t": "a nyirokcsomók váladékát",
+        "ans": "H"
+      },
+      {
+        "t": "a belső elválasztású mirigyek által termelt anyagokat",
+        "ans": "I"
+      },
+      {
+        "t": "az élő szervezet olyan anyagait melyek az idegrendszerrel együtt szabályozzák a szervezet működését",
+        "ans": "I"
+      },
+      {
+        "t": "olyan gyógyszereket melyek szedését étvágyjavítás céljából rendelik el",
+        "ans": "H"
+      }
+    ]
+  },
+  {
+    "id": 466,
+    "type": "truefalse",
+    "q": "Az alábbi állítások közül melyik igaz?",
+    "stmts": [
+      {
+        "t": "Embernél egy-egy szem látótere 150-160 fok",
+        "ans": "I"
+      },
+      {
+        "t": "Az egymást fedő látótérrész kb. 130 fok",
+        "ans": "I"
+      },
+      {
+        "t": "2 x 30 fokos temporális félholdat csak egy-egy szem érzékel",
+        "ans": "I"
+      },
+      {
+        "t": "Binokuláris működés az egymást fedő látótérrészben van",
+        "ans": "I"
+      },
+      {
+        "t": "A binokuláris látás alapja, hogy a rostok ne kereszteződjenek",
+        "ans": "H"
+      }
+    ]
+  },
+  {
+    "id": 467,
+    "type": "truefalse",
+    "q": "A szemmozgásokról melyik állítás helyes melyik helytelen?",
+    "stmts": [
+      {
+        "t": "Conjugált szemmozgás: mindkét szem ugyanabba az irányba mozdul el",
+        "ans": "I"
+      },
+      {
+        "t": "Közelre nézéskor divergens a szemmozgás",
+        "ans": "H"
+      },
+      {
+        "t": "A konvergencia az ellentétes irányú szemmozgások egyik formája",
+        "ans": "I"
+      },
+      {
+        "t": "Helyes izomegyensúly esetén a nem vagy rosszul látó szem is koordinált mozgást végez.",
+        "ans": "I"
+      },
+      {
+        "t": "A konvergens szemállás mindig kóros",
+        "ans": "H"
+      }
+    ]
+  },
+  {
+    "id": 468,
+    "type": "truefalse",
+    "q": "A heterophoriákról melyik állítás helyes?",
+    "stmts": [
+      {
+        "t": "a külső egyenes izom bénulása exophoriát okoz",
+        "ans": "H"
+      },
+      {
+        "t": "a leggyakoribb heterophoria a hyperphoria",
+        "ans": "H"
+      },
+      {
+        "t": "az ortophoria létrejöttében a motoros és a sensoros működésnek egyformán fontos szerepe van",
+        "ans": "I"
+      },
+      {
+        "t": "lehetetlen az hogy valaki heterophoriás és ebből eredendően semmilyen panasza nincs",
+        "ans": "H"
+      }
+    ]
+  },
+  {
+    "id": 469,
+    "type": "truefalse",
+    "q": "A heterophoriák vizsgálatáról melyik állítás helyes?",
+    "stmts": [
+      {
+        "t": "ha a vizsgáltnak olvasási nehézsége van az azt jelenti hogy exophoriás",
+        "ans": "H"
+      },
+      {
+        "t": "ha a vizsgált fejfájásra panaszkodik közeli munka mellett az azt jelenti hogy exophoriás",
+        "ans": "H"
+      },
+      {
+        "t": "ha nincs Polateszt készülékünk nem tudunk nyilatkozni a phoriákkal kapcsolatosan",
+        "ans": "H"
+      },
+      {
+        "t": "a synoptophor csak strabismus vizsgálatra szolgál",
+        "ans": "H"
+      }
+    ]
+  },
+  {
+    "id": 470,
+    "type": "truefalse",
+    "q": "A heterophoriák kezeléséről melyik állítás helyes?",
+    "stmts": [
+      {
+        "t": "minden heterophoria kezelést igényel mert amblyopia forrása lesz",
+        "ans": "H"
+      },
+      {
+        "t": "a heterophoriákat nem szabad műtéttel kezelni mert akkor megszűnik a binokuláris látás",
+        "ans": "H"
+      },
+      {
+        "t": "a heterophoria fiziológiás jelenség ezért kezelést nem igényel",
+        "ans": "H"
+      },
+      {
+        "t": "a heterophoriákat akkor kell kezelni ha panaszokat okoznak",
+        "ans": "I"
+      }
+    ]
+  },
+  {
+    "id": 471,
+    "type": "truefalse",
+    "q": "Milyen okok vezetnek kettős látáshoz?",
+    "stmts": [
+      {
+        "t": "luxatio lentis",
+        "ans": "I"
+      },
+      {
+        "t": "endocrin ophthalmopathia",
+        "ans": "I"
+      },
+      {
+        "t": "amaurosis",
+        "ans": "H"
+      },
+      {
+        "t": "anisocoria",
+        "ans": "I"
+      }
+    ]
+  },
+  {
+    "id": 472,
+    "type": "truefalse",
+    "q": "A bénulásos kancsalságra jellemző:",
+    "stmts": [
+      {
+        "t": "diplopia",
+        "ans": "I"
+      },
+      {
+        "t": "ferde fejtartás",
+        "ans": "I"
+      },
+      {
+        "t": "változó kancsalsági szög",
+        "ans": "I"
+      },
+      {
+        "t": "csak gyerekkorban alakulhat ki",
+        "ans": "H"
+      },
+      {
+        "t": "bármely életkorban kialakulhat",
+        "ans": "I"
+      }
+    ]
+  },
+  {
+    "id": 473,
+    "type": "truefalse",
+    "q": "A binokuláris látás kialakulásának feltételei:",
+    "stmts": [
+      {
+        "t": "konvergencia",
+        "ans": "H"
+      },
+      {
+        "t": "isometropia",
+        "ans": "I"
+      },
+      {
+        "t": "jó látótér",
+        "ans": "I"
+      },
+      {
+        "t": "normálisan korrespondáló ideghártya területek",
+        "ans": "I"
+      },
+      {
+        "t": "akkomodáció",
+        "ans": "H"
+      }
+    ]
+  },
+  {
+    "id": 474,
+    "type": "truefalse",
+    "q": "A binokuláris látási jelzőmozzanatra jellemző:",
+    "stmts": [
+      {
+        "t": "A két szem a tárgyakat kissé eltérő szögből szemléli ami enyhe diszparitást idéz elő",
+        "ans": "I"
+      },
+      {
+        "t": "A diszparitás teszi lehetővé a viszonylagos távolság igen finom észlelését",
+        "ans": "I"
+      },
+      {
+        "t": "Az ilyen jellegű diszparitásnak nem vagyunk tudatában",
+        "ans": "I"
+      },
+      {
+        "t": "Ezt a fajta diszparitást kísérlettel sem lehet bizonyítani",
+        "ans": "H"
+      },
+      {
+        "t": "Lehetővé teszi hogy olyan dolgokat is lássunk amelyeket egyetlen szem használata esetén lehetetlen észlelni",
+        "ans": "I"
+      }
+    ]
+  },
+  {
+    "id": 475,
+    "type": "truefalse",
+    "q": "A ductiónál a fixáló vonal iránya:",
+    "stmts": [
+      {
+        "t": "nem változik",
+        "ans": "H"
+      },
+      {
+        "t": "megváltozik",
+        "ans": "I"
+      }
+    ]
+  },
+  {
+    "id": 476,
+    "type": "truefalse",
+    "q": "A Hering-féle törvény értelmében a tekintés irányváltozáskor a szinergista szemizmok impulzusainak mértéke:",
+    "stmts": [
+      {
+        "t": "azonos",
+        "ans": "I"
+      },
+      {
+        "t": "eltérő",
+        "ans": "H"
+      }
+    ]
+  },
+  {
+    "id": 477,
+    "type": "truefalse",
+    "q": "A horizontális és vertikális heterophoriák együttes jelenléte:",
+    "stmts": [
+      {
+        "t": "ritka",
+        "ans": "H"
+      },
+      {
+        "t": "gyakori",
+        "ans": "I"
+      }
+    ]
+  },
+  {
+    "id": 478,
+    "type": "truefalse",
+    "q": "A kapocstesztnél szabad-e horizontális hasábot adni?",
+    "stmts": [
+      {
+        "t": "igen",
+        "ans": "H"
+      },
+      {
+        "t": "nem",
+        "ans": "I"
+      }
+    ]
+  },
+  {
+    "id": 479,
+    "type": "truefalse",
+    "q": "A kísérő kancsalságra jellemző:",
+    "stmts": [
+      {
+        "t": "95%-ban divergens",
+        "ans": "H"
+      },
+      {
+        "t": "Gyermekkorban alakul ki",
+        "ans": "I"
+      },
+      {
+        "t": "Diplopia kíséri",
+        "ans": "H"
+      },
+      {
+        "t": "A kancsalító szem amblyopiás lesz",
+        "ans": "I"
+      },
+      {
+        "t": "A kancsalsági szög állandó",
+        "ans": "I"
+      }
+    ]
+  },
+  {
+    "id": 480,
+    "type": "truefalse",
+    "q": "A progresszív szemüveglencse korridorjában:",
+    "stmts": [
+      {
+        "t": "az astigmaticus lencsehiba zéró értékű",
+        "ans": "H"
+      },
+      {
+        "t": "az astigmaticus lencsehiba nem lép túl egy megengedett értéket",
+        "ans": "I"
+      }
+    ]
+  },
+  {
+    "id": 481,
+    "type": "truefalse",
+    "q": "A rezultáns hasábfelírás:",
+    "stmts": [
+      {
+        "t": "csak esztétikai jelentőségű",
+        "ans": "H"
+      },
+      {
+        "t": "szimmetrikus súlyelosztást tesz lehetővé",
+        "ans": "I"
+      },
+      {
+        "t": "a Pithagorasz tételen alapul",
+        "ans": "I"
+      },
+      {
+        "t": "összességében könnyebbé teszi a szemüveg súlyát",
+        "ans": "I"
+      },
+      {
+        "t": "esetén tiszta horizontális hasábértékről beszélünk",
+        "ans": "H"
+      }
+    ]
+  },
+  {
+    "id": 482,
+    "type": "truefalse",
+    "q": "A szemizmok beidegzésében résztvevő agyidegek:",
+    "stmts": [
+      {
+        "t": "III. agyideg",
+        "ans": "I"
+      },
+      {
+        "t": "IV. agyideg",
+        "ans": "I"
+      },
+      {
+        "t": "VI. agyideg",
+        "ans": "I"
+      },
+      {
+        "t": "VIII. agyideg",
+        "ans": "H"
+      },
+      {
+        "t": "V. agyideg",
+        "ans": "H"
+      }
+    ]
+  },
+  {
+    "id": 483,
+    "type": "truefalse",
+    "q": "A színkontrasztfokozó szemüveglencsék erősítik a színek közötti kontrasztot mert:",
+    "stmts": [
+      {
+        "t": "viszonylag több fényt engednek át az emberi szem által rosszabbul érzékelt szélső színtartományokban",
+        "ans": "I"
+      },
+      {
+        "t": "a színkép sárga tartományát erősítik",
+        "ans": "H"
+      }
+    ]
+  },
+  {
+    "id": 484,
+    "type": "truefalse",
+    "q": "A sztereopszis élettani alakulására jellemző:",
+    "stmts": [
+      {
+        "t": "A sztereopszis kialakulása 13-31 hetes korban kezdődik",
+        "ans": "H"
+      },
+      {
+        "t": "6-12 hónapos korban a sztereopszis kialakulása nagymértékben fokozódik",
+        "ans": "I"
+      },
+      {
+        "t": "A sztereopszis 7-9 éves korban csaknem megegyezik a felnőttkorival",
+        "ans": "I"
+      },
+      {
+        "t": "A sztereopszis kialakulását mesterséges körülmények között meg lehet akadályozni",
+        "ans": "I"
+      },
+      {
+        "t": "60 éves korig relatíve stabil a sztereopszis",
+        "ans": "I"
+      }
+    ]
+  },
+  {
+    "id": 485,
+    "type": "truefalse",
+    "q": "A torsiónál a fixáló vonal iránya:",
+    "stmts": [
+      {
+        "t": "változatlan marad",
+        "ans": "I"
+      },
+      {
+        "t": "megváltozik",
+        "ans": "H"
+      }
+    ]
+  },
+  {
+    "id": 486,
+    "type": "truefalse",
+    "q": "A vergentián mindkét szemnek azonos nagyságú és:",
+    "stmts": [
+      {
+        "t": "azonos irányú elmozdulását értjük",
+        "ans": "H"
+      },
+      {
+        "t": "ellentétes irányú elmozdulását értjük",
+        "ans": "I"
+      }
+    ]
+  },
+  {
+    "id": 487,
+    "type": "truefalse",
+    "q": "Az alábbiak közül a horoptert jellemzi:",
+    "stmts": [
+      {
+        "t": "A tárgy fixált képe a retina identikus területére esik",
+        "ans": "I"
+      },
+      {
+        "t": "Diszparitás van",
+        "ans": "H"
+      },
+      {
+        "t": "A centrumban identikus pontok vannak",
+        "ans": "I"
+      },
+      {
+        "t": "A periférián identikus mezők vannak",
+        "ans": "I"
+      },
+      {
+        "t": "A horopteren kívüli tárgyak képe a retina korrespondáló területeire esik",
+        "ans": "H"
+      }
+    ]
+  },
+  {
+    "id": 488,
+    "type": "truefalse",
+    "q": "Bagolini teszt alkalmas arra:",
+    "stmts": [
+      {
+        "t": "Kideritsük van-e szimultán percepcio fúzió és hogy melyik a vezérszem",
+        "ans": "I"
+      },
+      {
+        "t": "A mélységlátást lehet vele vizsgálni",
+        "ans": "H"
+      },
+      {
+        "t": "A látóteret lehet vizsgálni",
+        "ans": "H"
+      },
+      {
+        "t": "Közeli és távoli szöget mérhetjük vele",
+        "ans": "H"
+      }
+    ]
+  },
+  {
+    "id": 489,
+    "type": "truefalse",
+    "q": "Binokuláris látás vizsgálatakor a cél:",
+    "stmts": [
+      {
+        "t": "az egyes szem fixáló vonalában történő korrekció",
+        "ans": "H"
+      },
+      {
+        "t": "oldal és magassági irányban történő korrekció",
+        "ans": "I"
+      },
+      {
+        "t": "a vergencia optometriailag nyugalmi állapotának elérése",
+        "ans": "I"
+      }
+    ]
+  },
+  {
+    "id": 490,
+    "type": "truefalse",
+    "q": "Convergencia esetében:",
+    "stmts": [
+      {
+        "t": "a szem adductiójáról beszélünk",
+        "ans": "I"
+      },
+      {
+        "t": "a szem abductiójáról beszélünk",
+        "ans": "H"
+      },
+      {
+        "t": "alap ki hatású hasábot alkalmazunk",
+        "ans": "I"
+      },
+      {
+        "t": "él ki hatású hasábot alkalmazunk",
+        "ans": "H"
+      }
+    ]
+  },
+  {
+    "id": 491,
+    "type": "truefalse",
+    "q": "Egy 65 mm-es átmérőjű optikai felület rádiusza nem lehet kisebb mint:",
+    "stmts": [
+      {
+        "t": "32,5 mm",
+        "ans": "I"
+      },
+      {
+        "t": "65 mm",
+        "ans": "H"
+      }
+    ]
+  },
+  {
+    "id": 492,
+    "type": "truefalse",
+    "q": "Ha a térlátás váltópróbájánál valamelyik irányba lassúbb a térélmény észlelése:",
+    "stmts": [
+      {
+        "t": "visszatér a kereszt- és az FD-tesztekre",
+        "ans": "H"
+      },
+      {
+        "t": "a zavarnak megfelelően megváltoztatja az addigi hasábos korrekciót",
+        "ans": "I"
+      }
+    ]
+  },
+  {
+    "id": 493,
+    "type": "truefalse",
+    "q": "Heterophoriáról beszélünk:",
+    "stmts": [
+      {
+        "t": "ha csak szimultán percepciója van a vizsgáltnak",
+        "ans": "H"
+      },
+      {
+        "t": "ha a vizsgáltnak nincs három fokozatú binokuláris látása",
+        "ans": "H"
+      },
+      {
+        "t": "ha van teljesértékű binokuláris látás de az csak a fusiós készség fokozott igénybevételével tartható fenn",
+        "ans": "I"
+      },
+      {
+        "t": "ha a két szem különböző képet lát és így nincs binokuláris látás",
+        "ans": "H"
+      }
+    ]
+  },
+  {
+    "id": 494,
+    "type": "truefalse",
+    "q": "A heterophoriák kezeléséről melyik állítás helyes?",
+    "stmts": [
+      {
+        "t": "ha valakinek fénytörési hibája van nem lehet tökéletes binokuláris látása",
+        "ans": "H"
+      },
+      {
+        "t": "a heterophoriák kezelésének első lépése a fénytörési hibák korrigálása",
+        "ans": "I"
+      },
+      {
+        "t": "ha valakinek nincs fénytörési hibája nem lehet javítani a heterophoriáján",
+        "ans": "H"
+      },
+      {
+        "t": "ha nem kezeljük a heterophoriát idővel strabismus alakul ki belőle",
+        "ans": "H"
+      }
+    ]
+  },
+  {
+    "id": 495,
+    "type": "truefalse",
+    "q": "A bénulásos kancsalságról melyik állítás helyes?",
+    "stmts": [
+      {
+        "t": "kettős látás esetén mindig a peripheriás kép tartozik a bénult szemhez",
+        "ans": "I"
+      },
+      {
+        "t": "a hibás kép ott keletkezik ahová a bénult izom vitte volna a szemet",
+        "ans": "I"
+      },
+      {
+        "t": "a beidegzési eredetű izombénulások mindig együtt járnak a pupillareflex zavaraival",
+        "ans": "H"
+      },
+      {
+        "t": "a szemgolyó a sérült izom antagonista izma irányába térített",
+        "ans": "I"
+      }
+    ]
+  },
+  {
+    "id": 496,
+    "type": "truefalse",
+    "q": "Milyen helyzetben vannak a szemek keresztezetlen észlelés esetében?",
+    "stmts": [
+      {
+        "t": "eso",
+        "ans": "I"
+      },
+      {
+        "t": "exo",
+        "ans": "H"
+      },
+      {
+        "t": "orto",
+        "ans": "H"
+      }
+    ]
+  },
+  {
+    "id": 497,
+    "type": "truefalse",
+    "q": "Milyen okok hozhatnak létre szemizombénulást?",
+    "stmts": [
+      {
+        "t": "retinaleválás",
+        "ans": "H"
+      },
+      {
+        "t": "n. oculomotorius bénulás",
+        "ans": "I"
+      },
+      {
+        "t": "myasthenia ocularis",
+        "ans": "I"
+      },
+      {
+        "t": "agyvérzés",
+        "ans": "I"
+      }
+    ]
+  },
+  {
+    "id": 498,
+    "type": "truefalse",
+    "q": "Milyen panaszok kísérhetnek heterophoriát?",
+    "stmts": [
+      {
+        "t": "fejfájás",
+        "ans": "I"
+      },
+      {
+        "t": "gyorsan változó látáskorrekciós értékek",
+        "ans": "H"
+      },
+      {
+        "t": "száraz szem érzése",
+        "ans": "H"
+      },
+      {
+        "t": "időszakos olvasási nehézség",
+        "ans": "I"
+      }
+    ]
+  },
+  {
+    "id": 499,
+    "type": "truefalse",
+    "q": "Mit nevezünk supressiónak?",
+    "stmts": [
+      {
+        "t": "az egyik szem képének agykéregbeli teljes kikapcsolódását",
+        "ans": "H"
+      },
+      {
+        "t": "az egyik szem képének szürkébb voltát",
+        "ans": "I"
+      }
+    ]
+  },
+  {
+    "id": 500,
+    "type": "truefalse",
+    "q": "Mit tesz ha az egyik szem képe szürkébb:",
+    "stmts": [
+      {
+        "t": "betakarja a másik szemet ha feketébb lesz a kép nem foglalkozik tovább vele",
+        "ans": "I"
+      },
+      {
+        "t": "betakarja a másik szemet ha nem lesz feketébb a Polateszt ábránál próbálkozik a dioptria változtatásával",
+        "ans": "H"
+      },
+      {
+        "t": "visszatér a vízus táblához és ott korrigálja a hibát",
+        "ans": "I"
+      },
+      {
+        "t": "supresszióról van szó",
+        "ans": "I"
+      }
+    ]
+  },
+  {
+    "id": 501,
+    "type": "truefalse",
+    "q": "Ortophoriáról beszélünk:",
+    "stmts": [
+      {
+        "t": "ha nincs kettős látás",
+        "ans": "H"
+      },
+      {
+        "t": "ha a két szem párhuzamos szemállása megmarad a fusiós kényszer megbontása után is",
+        "ans": "I"
+      },
+      {
+        "t": "ha a fusió kizárásával végzett takarásos teszttel nem találunk beállító mozgást",
+        "ans": "I"
+      },
+      {
+        "t": "ha mindkét szem szemmozgásai szabadok minden tekintési irányban",
+        "ans": "H"
+      }
+    ]
+  },
+  {
+    "id": 502,
+    "type": "truefalse",
+    "q": "Randot teszt alkalmas arra hogy megállapítsuk:",
+    "stmts": [
+      {
+        "t": "a szemmozgások irányát",
+        "ans": "H"
+      },
+      {
+        "t": "a szimultán percepcó vizsgálatára alkalmas",
+        "ans": "H"
+      },
+      {
+        "t": "mélységlátást vizsgáljuk polárszűrős szemüveggel 40 cm-ről",
+        "ans": "I"
+      },
+      {
+        "t": "távoli sztereo látás vizsgálatét végezzük vele",
+        "ans": "H"
+      }
+    ]
+  },
+  {
+    "id": 503,
+    "type": "truefalse",
+    "q": "Versiók akkor következnek be ha:",
+    "stmts": [
+      {
+        "t": "egymás után azonos távolságú de oldalirányban különböző tárgyakat tekintünk meg",
+        "ans": "I"
+      },
+      {
+        "t": "eltérő tárgyakat nézünk meg",
+        "ans": "H"
+      }
+    ]
+  },
+  {
+    "id": 504,
+    "type": "truefalse",
+    "q": "Vörös-zöld szemüveggel vizsgálhatjuk meg:",
+    "stmts": [
+      {
+        "t": "Schober tesztet és a Worth tesztet",
+        "ans": "I"
+      },
+      {
+        "t": "Sztereolátást",
+        "ans": "H"
+      },
+      {
+        "t": "Látóteret",
+        "ans": "H"
+      },
+      {
+        "t": "A fixációt",
+        "ans": "H"
+      }
+    ]
+  },
+  {
+    "id": 505,
+    "type": "truefalse",
+    "q": "Határozza meg a polarizáció jellemzőit!",
+    "stmts": [
+      {
+        "t": "a polariszkópban elhelyezett 2 polárszűrő polarizációs síkja párhuzamos egymással",
+        "ans": "H"
+      },
+      {
+        "t": "az anizotróp anyagok kettősen törik a fényt",
+        "ans": "I"
+      },
+      {
+        "t": "a közegek határáról visszaverődő fénysugarak teljesen polárosak",
+        "ans": "H"
+      },
+      {
+        "t": "ha a másik polarizátor polarizációs síkja merőleges az elsőre akkor a másikon áthalad a fény",
+        "ans": "H"
+      }
+    ]
+  },
+  {
+    "id": 506,
+    "type": "truefalse",
+    "q": "Határozza meg a polarizáció jellemzőit 2!",
+    "stmts": [
+      {
+        "t": "az emberi szem nem érzékeli a fény polárosságát",
+        "ans": "I"
+      },
+      {
+        "t": "vízszintes felületről függőlegesen polarizált fénysugarak verődnek vissza",
+        "ans": "H"
+      },
+      {
+        "t": "az anizotróp anyagoknál keletkező ordinális és extraordinális fénysugarak polárosak",
+        "ans": "I"
+      }
+    ]
+  },
+  {
+    "id": 507,
+    "type": "truefalse",
+    "q": "Határozza meg a polarizáció jellemzőit 3!",
+    "stmts": [
+      {
+        "t": "az optikai anyagok feszültség hatására kettősen törik a fényt",
+        "ans": "I"
+      },
+      {
+        "t": "ha két polarizátor polarizációs síkja párhuzamos egymással akkor a második polarizátor teljesen átengedi a fényt",
+        "ans": "I"
+      },
+      {
+        "t": "a poláros fénysugarak koherensek",
+        "ans": "H"
+      }
+    ]
+  },
+  {
+    "id": 508,
+    "type": "truefalse",
+    "q": "Határozza meg a prizmák működését!",
+    "stmts": [
+      {
+        "t": "a prizmák feladata a fénysugár eltolása",
+        "ans": "H"
+      },
+      {
+        "t": "mindig az alapjuk felé forgatják el a fénysugarakat",
+        "ans": "I"
+      },
+      {
+        "t": "a prizmák a sárga fényt jobban megtörik mint a kéket",
+        "ans": "H"
+      },
+      {
+        "t": "a reflexiós prizmák mindig a teljes visszaverődést használják fel",
+        "ans": "H"
+      }
+    ]
+  },
+  {
+    "id": 509,
+    "type": "truefalse",
+    "q": "Határozza meg a prizmák működését 2!",
+    "stmts": [
+      {
+        "t": "a színbontás alapja hogy a különböző színű fénysugaraknak eltérerő a terjedési sebességük",
+        "ans": "I"
+      },
+      {
+        "t": "akromatizáláskor egy korona- és egy flintüvegpárból készítünk prizmát",
+        "ans": "I"
+      },
+      {
+        "t": "ékek esetén az elforgatás mértéke a beesési szögtől és a törésmutatóktól függ",
+        "ans": "H"
+      }
+    ]
+  },
+  {
+    "id": 510,
+    "type": "truefalse",
+    "q": "Határozza meg a prizmák működését 3!",
+    "stmts": [
+      {
+        "t": "reflexiós prizmák segítségével hozunk létre egyenes állású képet a Kepler típusú távcsövekben",
+        "ans": "I"
+      },
+      {
+        "t": "a prizma a kék színű fényt jobban megtöri mint a vöröset",
+        "ans": "I"
+      },
+      {
+        "t": "a közeghatáron mindig megvalósul a színbontás",
+        "ans": "H"
+      }
+    ]
+  },
+  {
+    "id": 511,
+    "type": "truefalse",
+    "q": "Határozza meg a rekeszek jellemzőit!",
+    "stmts": [
+      {
+        "t": "a rekeszek nem befolyásolják a leképezési hibákat",
+        "ans": "H"
+      },
+      {
+        "t": "a felbontóképességet és a mélységélességet egymással ellentétesen befolyásolják a rekeszek",
+        "ans": "I"
+      },
+      {
+        "t": "a rekeszek a lencserendszer lencséi között helyezkednek el",
+        "ans": "H"
+      }
+    ]
+  },
+  {
+    "id": 512,
+    "type": "truefalse",
+    "q": "Határozza meg a rekeszek jellemzőit 2!",
+    "stmts": [
+      {
+        "t": "ha növeljük a rekesz méretét akkor növekszik a szóródási körök mérete is",
+        "ans": "I"
+      },
+      {
+        "t": "rekeszek segítségével a sphaericus aberratio és a képtorzítás is korrigálható",
+        "ans": "I"
+      },
+      {
+        "t": "a rekesz méretének növekedésével csökken a felbontóképesség",
+        "ans": "H"
+      }
+    ]
+  },
+  {
+    "id": 513,
+    "type": "truefalse",
+    "q": "Határozza meg a rekeszek jellemzőit 3!",
+    "stmts": [
+      {
+        "t": "rekesznek tekintjük a lencsék foglalatát is",
+        "ans": "H"
+      },
+      {
+        "t": "a legtöbb optikai eszköznél ugyanaz a rekesz határozza meg a fényerősséget és a képmezőt",
+        "ans": "H"
+      },
+      {
+        "t": "ha növeljük a fényerőt csökken a felbontóképesség",
+        "ans": "H"
+      },
+      {
+        "t": "a mélységélességet a szóródási körök mérete határozza meg",
+        "ans": "I"
+      }
+    ]
+  },
+  {
+    "id": 514,
+    "type": "truefalse",
+    "q": "Határozza meg a tükör viselkedését!",
+    "stmts": [
+      {
+        "t": "a síktükör nagyítása 1",
+        "ans": "I"
+      },
+      {
+        "t": "sphaericus tükröknél a nagyított kép fordított állású",
+        "ans": "H"
+      },
+      {
+        "t": "sphaericus tükröknél a geometriai középpont ugyanolyan messze van a fókuszponttól mint a fókuszpont az optikai középponttól",
+        "ans": "I"
+      }
+    ]
+  },
+  {
+    "id": 515,
+    "type": "truefalse",
+    "q": "Határozza meg a tükör viselkedését 2!",
+    "stmts": [
+      {
+        "t": "homorú tükör esetén a látszólagos kép mindig nagyított",
+        "ans": "I"
+      },
+      {
+        "t": "sphaericus tükörnél a lineáris nagyítás a tárgyvergencia és a képvergencia hányadosával egyenlő",
+        "ans": "I"
+      },
+      {
+        "t": "homorú tükörnél a geometriai középponton kívül levő tárgyról nagyított kép keletkezik",
+        "ans": "I"
+      }
+    ]
+  },
+  {
+    "id": 516,
+    "type": "truefalse",
+    "q": "Határozza meg a vastag lencsék jellemzőit!",
+    "stmts": [
+      {
+        "t": "a fókusztávolság a fókuszpont és a főpont közötti távolság",
+        "ans": "I"
+      },
+      {
+        "t": "a bikonvex lencsénél a lencse vastagsága a vékony lencséhez képest növeli a törőerőt",
+        "ans": "H"
+      },
+      {
+        "t": "a meniscuslencséknél az első és a hátsó csúcsdioptria értéke nem egyforma",
+        "ans": "I"
+      }
+    ]
+  },
+  {
+    "id": 517,
+    "type": "truefalse",
+    "q": "Határozza meg a vastag lencsék jellemzőit 2!",
+    "stmts": [
+      {
+        "t": "a gyűjtő hatású meniscuslencsék fősíkjai a homorú oldalon találhatók",
+        "ans": "H"
+      },
+      {
+        "t": "a csúcsdioptriát a lencse főpontjától mérjük",
+        "ans": "H"
+      },
+      {
+        "t": "a bikonkáv lencse fősíkjai a lencsén belül vannak",
+        "ans": "I"
+      }
+    ]
+  },
+  {
+    "id": 518,
+    "type": "truefalse",
+    "q": "Határozza meg a vastag lencsék jellemzőit 3!",
+    "stmts": [
+      {
+        "t": "a vastag lencséknek mindig két fő síkja van",
+        "ans": "I"
+      },
+      {
+        "t": "a plánkonvex lencse fősíkjai a lencsén belül vannak",
+        "ans": "H"
+      },
+      {
+        "t": "a fősík a lencseere érkező és a lencse után továbbhaladó fénysugarak metszéspontjai által meghatározott sík",
+        "ans": "I"
+      },
+      {
+        "t": "a látszerészetben az első csúcsdioptriát mérjük",
+        "ans": "H"
+      }
+    ]
+  },
+  {
+    "id": 519,
+    "type": "truefalse",
+    "q": "Határozza meg az elektromágneses sugárzás jellemzőit!",
+    "stmts": [
+      {
+        "t": "az elektromágneses hullám terjedési sebessége csak a közeg elektromágneses jellemzőitől függ",
+        "ans": "I"
+      },
+      {
+        "t": "az UV-hullámok frekvenciája nagyobb mint az infravörös hullámoké",
+        "ans": "I"
+      },
+      {
+        "t": "elektromos erőteret mozgó töltés hoz létre",
+        "ans": "H"
+      }
+    ]
+  },
+  {
+    "id": 520,
+    "type": "truefalse",
+    "q": "Határozza meg az elektromágneses sugárzás jellemzőit 2!",
+    "stmts": [
+      {
+        "t": "az elektromágneses hullámoknál az elektromos és mágneses erőtér változása azonos fázisban van",
+        "ans": "I"
+      },
+      {
+        "t": "az UV-tartományban a legrövidebb hullámhosszú az UV-A tartomány",
+        "ans": "H"
+      },
+      {
+        "t": "a váltóáram nem elektromágneses hullám",
+        "ans": "H"
+      }
+    ]
+  },
+  {
+    "id": 521,
+    "type": "truefalse",
+    "q": "Határozza meg az elektromágneses sugárzás jellemzőit 3!",
+    "stmts": [
+      {
+        "t": "mágneses erőteret álló töltés hoz létre",
+        "ans": "H"
+      },
+      {
+        "t": "a kék színű fény hullámhossza a legnagyobb a látható tartományban",
+        "ans": "H"
+      },
+      {
+        "t": "a változó elektromos és mágneses terek egymást gerjeszthetik",
+        "ans": "I"
+      },
+      {
+        "t": "a látható fénynél a mágneses tér 300-szor erősebb mint az elektromos erőtér",
+        "ans": "H"
+      }
+    ]
+  },
+  {
+    "id": 522,
+    "type": "truefalse",
+    "q": "Határozza meg hogy az alapvető fényjelenségek hogyan játszódnak le!",
+    "stmts": [
+      {
+        "t": "a beeső fénysugár és a visszaverődő fénysugár egy síkban van",
+        "ans": "I"
+      },
+      {
+        "t": "ha a fény sűrűbb közegből megy ritkábba akkor a relatív törésmutató nagyobb egynél",
+        "ans": "H"
+      },
+      {
+        "t": "a visszaverődés a törés és az elnyelés mindig egyszerre játszódik le a közeghatáron",
+        "ans": "H"
+      },
+      {
+        "t": "teljes visszaverődés akkor játszódik le ha a fénysugár sűrűbb közeg felől halad a ritkábba",
+        "ans": "I"
+      }
+    ]
+  },
+  {
+    "id": 523,
+    "type": "truefalse",
+    "q": "Határozza meg hogy az alapvető fényjelenségek hogyan játszódnak le 2!",
+    "stmts": [
+      {
+        "t": "egy közeg sűrűbb ha benne a terjedési sebesség nagyobb",
+        "ans": "H"
+      },
+      {
+        "t": "ha a fénysugár ritkább közegből halad sűrűbb közegbe akkor a fénysugár a beesési merőlegestől törik",
+        "ans": "H"
+      },
+      {
+        "t": "görbe felületek esetén a beesési pontban az érintőre állított merőlegeshez képest mérjük a szögeket",
+        "ans": "I"
+      }
+    ]
+  },
+  {
+    "id": 524,
+    "type": "truefalse",
+    "q": "Határozza meg hogy az alapvető fényjelenségek hogyan játszódnak le 3!",
+    "stmts": [
+      {
+        "t": "sűrűbb közegben kisebb elemi hullám keletkezik azonos idő alatt",
+        "ans": "I"
+      },
+      {
+        "t": "a határszög értékét a relatív törésmutató határozza meg",
+        "ans": "I"
+      },
+      {
+        "t": "a fényvisszaverődés csak átlátszatlan anyagokról történik",
+        "ans": "H"
+      }
+    ]
+  },
+  {
+    "id": 525,
+    "type": "truefalse",
+    "q": "Ismertesse az optometriai vizsgálatok működését!",
+    "stmts": [
+      {
+        "t": "a Helmholtz-féle ophthalmometernél a kép mérete függ a mérőműszer szemtől mért távolságától",
+        "ans": "H"
+      },
+      {
+        "t": "a szaruhártya elülső felszíne egyenes állású Purkinje-féle képet állít elő",
+        "ans": "I"
+      },
+      {
+        "t": "a Helmholtz-féle ophthalmometer a képkettőzés segítségével határozza meg a kép méretét",
+        "ans": "I"
+      },
+      {
+        "t": "a szemlencse két felszínén egyenes állású Purkinje-féle képek keletkeznek",
+        "ans": "H"
+      }
+    ]
+  },
+  {
+    "id": 526,
+    "type": "truefalse",
+    "q": "Ismertesse az optometriai vizsgálatok működését 2!",
+    "stmts": [
+      {
+        "t": "a Javal-Schiötz-féle ophthalmometernél a képméret nem függ a műszer szemtől mért távolságától",
+        "ans": "H"
+      },
+      {
+        "t": "skiascopia esetén a szem távolpontját határozzuk meg",
+        "ans": "I"
+      },
+      {
+        "t": "síktükörrel végzett skiascopiánál hypermetropiás szem esetén egyenes állású kép keletkezik",
+        "ans": "H"
+      }
+    ]
+  },
+  {
+    "id": 527,
+    "type": "truefalse",
+    "q": "Ismertesse az optometriai vizsgálatok működését 3!",
+    "stmts": [
+      {
+        "t": "egyenes tükrözés esetén nem kell a vizsgáló szemét emmetropiássá korrigálni",
+        "ans": "H"
+      },
+      {
+        "t": "fordított tükrözés esetén kisebb nagyítású szemről nagyobb látóterű kép keletkezik mint az egyenes tükrözésnél",
+        "ans": "I"
+      },
+      {
+        "t": "egyenes tükrözés esetén hypermetropiás szemről nagyobb nagyítású kép keletkezik mint az emmetrópiás szemről",
+        "ans": "H"
+      }
+    ]
+  },
+  {
+    "id": 528,
+    "type": "truefalse",
+    "q": "Mi jellemzi a leképezési hibákat?",
+    "stmts": [
+      {
+        "t": "a gyűjtőlencsék túlkorrigáltak a szórólencsék alulkorrigáltak",
+        "ans": "I"
+      },
+      {
+        "t": "a kromatikus aberratio monokromatikus fény esetén is megvalósul",
+        "ans": "H"
+      },
+      {
+        "t": "a képtorzítást a rekesz megfelelő elhelyezésével lehet korrigálni",
+        "ans": "I"
+      }
+    ]
+  },
+  {
+    "id": 529,
+    "type": "truefalse",
+    "q": "Mi jellemzi a leképezési hibákat 2?",
+    "stmts": [
+      {
+        "t": "a meridionális és a sagittalis sík merőleges egymásra",
+        "ans": "I"
+      },
+      {
+        "t": "ha a rekesz a lencse mögött van akkor a kép párnaszerűen torzul",
+        "ans": "I"
+      },
+      {
+        "t": "Fresnel-lencsével korrigálható a sphaericus aberratio",
+        "ans": "I"
+      }
+    ]
+  },
+  {
+    "id": 530,
+    "type": "truefalse",
+    "q": "Mi jellemzi a leképezési hibákat 3?",
+    "stmts": [
+      {
+        "t": "a sphaericus aberratio lencserendszerrel korrigálható",
+        "ans": "I"
+      },
+      {
+        "t": "a kromatikus aberratio a lencsékre és a tükrökre is jellemző",
+        "ans": "H"
+      },
+      {
+        "t": "képmezőhajlás rekeszek alkalmazásakor valósul meg",
+        "ans": "H"
+      },
+      {
+        "t": "az astigmatismus az optikai tengelytől távolabb lévő tárgypontok esetén valósul meg",
+        "ans": "I"
+      }
+    ]
+  },
+  {
+    "id": 531,
+    "type": "truefalse",
+    "q": "Mi jellemzi az interferenciajelenséget?",
+    "stmts": [
+      {
+        "t": "a reflexcsökkentő réteg törésmutatójának elméletileg az alaplencse törésmutatójának négyzetgyökével kell egyenlőnek lennie",
+        "ans": "I"
+      },
+      {
+        "t": "teljes kioltás csak azonos amplitúdójú hullámok esetén jön létre",
+        "ans": "I"
+      },
+      {
+        "t": "a fényinterferenciát nehéz létrehozni a koherencia feltételei miatt",
+        "ans": "I"
+      }
+    ]
+  },
+  {
+    "id": 532,
+    "type": "truefalse",
+    "q": "Mi jellemzi az interferenciajelenséget 2?",
+    "stmts": [
+      {
+        "t": "teljes erősítés esetén a hullámok energiája összeadódik",
+        "ans": "I"
+      },
+      {
+        "t": "két hullám koherens ha azonos a hullámhossza az amplitúdója és a rezgési síkja",
+        "ans": "H"
+      },
+      {
+        "t": "fényinterferencia esetén színbontás történik",
+        "ans": "I"
+      },
+      {
+        "t": "minden hullámtalálkozás interferenciát okoz",
+        "ans": "H"
+      }
+    ]
+  },
+  {
+    "id": 533,
+    "type": "truefalse",
+    "q": "Mi jellemzi az interferenciajelenséget 3?",
+    "stmts": [
+      {
+        "t": "teljes kioltás történik ha a találkozó hullámok úthosszkülönbsége a félhullámhossz páros számú többszöröse",
+        "ans": "H"
+      },
+      {
+        "t": "teljes erősítés csak azonos amplitúdójú hullámok esetén történik",
+        "ans": "H"
+      },
+      {
+        "t": "a lencsék alakjának ellenőrzésénél a fényinterferencia eredményei az ún. Newton-gyűrűk lesznek",
+        "ans": "I"
+      }
+    ]
+  },
+  {
+    "id": 534,
+    "type": "truefalse",
+    "q": "A szaruhártyára igaz:",
+    "stmts": [
+      {
+        "t": "legkülső rétege több sejtsorból áll",
+        "ans": "I"
+      },
+      {
+        "t": "legvastagabb rétege az endothel réteg",
+        "ans": "H"
+      },
+      {
+        "t": "az endotheliumnak jelentős szerepe van a transzparencia megőrzésében",
+        "ans": "I"
+      },
+      {
+        "t": "a stromában szabálytalan kollagénrostok vannak",
+        "ans": "H"
+      },
+      {
+        "t": "az endothel sejtek nem tudnak szaporodni",
+        "ans": "I"
+      },
+      {
+        "t": "a fekély homály hátra hagyásával gyógyul",
+        "ans": "I"
+      },
+      {
+        "t": "az epitheliális réteg a centrumban elvékonyodik ortokeratológiás lencse rendszeres viselésével",
+        "ans": "I"
+      }
+    ]
+  },
+  {
+    "id": 535,
+    "type": "truefalse",
+    "q": "A szilikon-hidrogél alapanyagú kontaktlencsékre jellemző:",
+    "stmts": [
+      {
+        "t": "alapanyagtól függően alvás közben is viselhetők",
+        "ans": "I"
+      },
+      {
+        "t": "igen jó az oxigénáteresztő képességük",
+        "ans": "I"
+      },
+      {
+        "t": "lipid depozitumok előfordulhatnak rajtuk",
+        "ans": "I"
+      },
+      {
+        "t": "fehérje depozitumok gyakoriak",
+        "ans": "H"
+      },
+      {
+        "t": "nincs víztartalmuk",
+        "ans": "H"
+      },
+      {
+        "t": "a keménylencsékhez tartoznak",
+        "ans": "H"
+      },
+      {
+        "t": "rossz a biokompatibilitásuk",
+        "ans": "H"
+      }
+    ]
+  },
+  {
+    "id": 536,
+    "type": "truefalse",
+    "q": "Az orthokeratológia jellemzői:",
+    "stmts": [
+      {
+        "t": "reverzibilis szaruhártya elváltozást okoz",
+        "ans": "I"
+      },
+      {
+        "t": "speciális lágylencsék alkalmasak erre a célra",
+        "ans": "H"
+      },
+      {
+        "t": "bármilyen hypermetropia korrigálására alkalmazható",
+        "ans": "H"
+      },
+      {
+        "t": "éjszaka nem lehet viselni",
+        "ans": "H"
+      },
+      {
+        "t": "nincs komplikáció a viselése során",
+        "ans": "H"
+      },
+      {
+        "t": "ápolószerek használatát nem igényli",
+        "ans": "H"
+      },
+      {
+        "t": "a szaruhártya alakját nem befolyásolja",
+        "ans": "H"
+      }
+    ]
+  },
+  {
+    "id": 537,
+    "type": "truefalse",
+    "q": "Betanításkor milyen utasításokkal látná el a lágy kontaktlencse viselőjét?",
+    "stmts": [
+      {
+        "t": "A kontaktlencse felhelyezése és levétele előtt mosson kezet!",
+        "ans": "I"
+      },
+      {
+        "t": "A lencse tároló dobozának folyadékát kétnaponta cserélje ki",
+        "ans": "H"
+      },
+      {
+        "t": "Csak panasz esetén kell ellenőrző vizsgálatra mennie.",
+        "ans": "H"
+      },
+      {
+        "t": "Hölgyek a sminkjüket a kontaktlencse felhelyezése előtt készítsék el",
+        "ans": "H"
+      },
+      {
+        "t": "Lágylencse kis darabjának kiszakadása esetén viselje tovább a lencsét",
+        "ans": "H"
+      },
+      {
+        "t": "Egyhónapos cserélési idejű lágylencsét biztosan viselhet 3 hónapig.",
+        "ans": "H"
+      },
+      {
+        "t": "Nem baj ha kifordul a lencse",
+        "ans": "H"
+      }
+    ]
+  },
+  {
+    "id": 538,
+    "type": "truefalse",
+    "q": "Kit tart Ön jó kontaktlencsét viselőnek? Azt aki:",
+    "stmts": [
+      {
+        "t": "a kontaktológus utasításait gondosan betartja",
+        "ans": "I"
+      },
+      {
+        "t": "rendszeresen jár ellenőrző vizsgálatokra",
+        "ans": "I"
+      },
+      {
+        "t": "éjszakánként alváskor ritkán de viseli a napi lencséjét",
+        "ans": "H"
+      },
+      {
+        "t": "más lencseviselő minden tanácsát megfogadja",
+        "ans": "H"
+      },
+      {
+        "t": "mindig a legújabb lencsetípust vásárolja meg",
+        "ans": "H"
+      },
+      {
+        "t": "sohasem panaszkodik nem elégedetlen",
+        "ans": "H"
+      },
+      {
+        "t": "csak akkor jár ellenőrzésre ha problémája van",
+        "ans": "H"
+      }
+    ]
+  },
+  {
+    "id": 539,
+    "type": "truefalse",
+    "q": "Melyek a jó kontaktlencse ismérvei?",
+    "stmts": [
+      {
+        "t": "alapanyaga legyen biokompatibilis a szemhez",
+        "ans": "I"
+      },
+      {
+        "t": "paraméterei jól reprodukálhatók legyenek",
+        "ans": "I"
+      },
+      {
+        "t": "paraméterei a viselés és ápolás során ne változzanak",
+        "ans": "I"
+      },
+      {
+        "t": "viselése kényelmes legyen",
+        "ans": "I"
+      },
+      {
+        "t": "rendelkezzen a viselés módnak megfelelő oxigén áteresztéssel",
+        "ans": "I"
+      },
+      {
+        "t": "jó optikai tulajdonságokkal rendelkezzen",
+        "ans": "I"
+      },
+      {
+        "t": "legyen könnyen kezelhető",
+        "ans": "I"
+      }
+    ]
+  },
+  {
+    "id": 540,
+    "type": "truefalse",
+    "q": "Melyek a kontaktlencse viselésének előnyei a szemüveggel szemben?",
+    "stmts": [
+      {
+        "t": "magas törőértékeket is könnyen lehet vele korrigálni",
+        "ans": "I"
+      },
+      {
+        "t": "magas törőértékek korrigálása kozmetikai problémát nem okoz",
+        "ans": "I"
+      },
+      {
+        "t": "myopia korrekciójánál a tárgyak kisebbnek tűnnek",
+        "ans": "H"
+      },
+      {
+        "t": "könnyebb a gondozása",
+        "ans": "H"
+      },
+      {
+        "t": "hypermetropia korrekciójánál a tárgyak nagyobbnak tűnnek",
+        "ans": "H"
+      },
+      {
+        "t": "beszűkíti a látóteret",
+        "ans": "H"
+      },
+      {
+        "t": "több hónapig is a szemen maradhat",
+        "ans": "H"
+      }
+    ]
+  },
+  {
+    "id": 541,
+    "type": "truefalse",
+    "q": "Mi a jellemzője a szorosan illesztett RGP lencsének?",
+    "stmts": [
+      {
+        "t": "a fluoresceinnel festett könnyfilm megvastagodása látszik a lencse peripheriája alatt",
+        "ans": "H"
+      },
+      {
+        "t": "a lencse alatt a centrális részen levegőbuborék lehet",
+        "ans": "I"
+      },
+      {
+        "t": "a lencse könnyen kiesik a szemrésből",
+        "ans": "H"
+      },
+      {
+        "t": "a lencse lenyomatot hagyhat alul a limbusban",
+        "ans": "I"
+      },
+      {
+        "t": "a lencse lefelé decentrálódik",
+        "ans": "I"
+      },
+      {
+        "t": "a látás a pislogásra javul",
+        "ans": "I"
+      },
+      {
+        "t": "a lencseszél a szaruhártyán lenyomatot hagyhat",
+        "ans": "I"
+      }
+    ]
+  },
+  {
+    "id": 542,
+    "type": "truefalse",
+    "q": "Miért szükséges a lencseviselők rendszeres ellenőrző vizsgálata?",
+    "stmts": [
+      {
+        "t": "A lencseviselés okozta esetleges szemészeti tünetek ellenőrzése",
+        "ans": "I"
+      },
+      {
+        "t": "A látásélesség esetleges változásának ellenőrzése",
+        "ans": "I"
+      },
+      {
+        "t": "Esetlegesen más lencsetípus viselése javasolt",
+        "ans": "I"
+      },
+      {
+        "t": "Így érhető el hogy a szövődményeket a minimálisra csökkentsük",
+        "ans": "I"
+      },
+      {
+        "t": "Időnként meg kell beszélni a lencseviseléssel kapcsolatban felmerülő problémákat",
+        "ans": "I"
+      },
+      {
+        "t": "Nem szükséges",
+        "ans": "H"
+      },
+      {
+        "t": "A lencseviselés rendszeres ellenőrzés nélkül veszélyes",
+        "ans": "I"
+      }
+    ]
+  },
+  {
+    "id": 543,
+    "type": "truefalse",
+    "q": "Mire gondol ha egy páciens 1 hónapos cserélésű lencséjén számos felrakódást észlel?",
+    "stmts": [
+      {
+        "t": "a lencse anyagában történt változás",
+        "ans": "H"
+      },
+      {
+        "t": "megváltozott a lencseviselő könnyének pH-értéke",
+        "ans": "I"
+      },
+      {
+        "t": "az előírtnál tovább hordta a kontaktlencséjét",
+        "ans": "I"
+      },
+      {
+        "t": "a páciens titkolja allergiás hajlamát",
+        "ans": "H"
+      },
+      {
+        "t": "a páciens gyakran kifordítva tette fel a kontaktlencséjét",
+        "ans": "H"
+      },
+      {
+        "t": "a páciens nem rendszeresen ápolta a kontaktlencséjét",
+        "ans": "I"
+      },
+      {
+        "t": "a páciens gyakran fordult meg poros piszkos helyeken",
+        "ans": "I"
+      }
+    ]
+  },
+  {
+    "id": 544,
+    "type": "truefalse",
+    "q": "Mit tesz olyankor ha a lencsét viselő páciens szemei pirosabbak a megszokottnál?",
+    "stmts": [
+      {
+        "t": "fertőzésre való gyanú vagy a tünetek rosszabbodásakor szemész szakorvoshoz küldi",
+        "ans": "I"
+      },
+      {
+        "t": "a vizsgálatok után leveteti vele a kontaktlencséjét",
+        "ans": "I"
+      },
+      {
+        "t": "nem foglalkozik vele mert máskor is előfordult már ilyen",
+        "ans": "H"
+      },
+      {
+        "t": "végleg eltiltja a kontaktlencse viselésétől",
+        "ans": "H"
+      },
+      {
+        "t": "megpróbálja kideríteni az okot",
+        "ans": "I"
+      },
+      {
+        "t": "vár a döntéssel",
+        "ans": "H"
+      },
+      {
+        "t": "részletesen kikérdezi a pácienst a lencseviselési szokásairól",
+        "ans": "I"
+      }
+    ]
+  },
+  {
+    "id": 545,
+    "type": "truefalse",
+    "q": "Mit tesz ha az új lencseviselő kötőhártyáján sötét barna pigmentált területet észlel?",
+    "stmts": [
+      {
+        "t": "elküldi szemész-kontaktológushoz",
+        "ans": "I"
+      },
+      {
+        "t": "tájékoztatja arról hogy lágylencsét nem viselhet",
+        "ans": "I"
+      },
+      {
+        "t": "lágylencsét illeszt a páciensnek",
+        "ans": "H"
+      },
+      {
+        "t": "a kartonon feltünteti az elváltozást de a páciensnek nem tesz róla említést",
+        "ans": "H"
+      },
+      {
+        "t": "tájékoztatja arról hogy kemény gázáteresztő lencsét valószínűleg viselhet",
+        "ans": "I"
+      },
+      {
+        "t": "kiterjesztett viselési idejű lágylencsét javasol a páciensnek",
+        "ans": "H"
+      },
+      {
+        "t": "a lencse ápolásához hidrogénperoxidos fertőtlenítést javasol",
+        "ans": "H"
+      }
+    ]
+  },
+  {
+    "id": 546,
+    "type": "truefalse",
+    "q": "Páciensének szemüvegértéke -1.0 D sph -2.0 D cyl 180 fok k1 41D k2 43D",
+    "stmts": [
+      {
+        "t": "A legoptimálisabban tórikus elülső felszínű lágy kontaktlencsével tudja kikorrigálni",
+        "ans": "H"
+      },
+      {
+        "t": "RGP lencsével való korrekció jó eredményt adhat",
+        "ans": "I"
+      },
+      {
+        "t": "Tórikus lágylencse illesztéskor figyelembe kell venni a próbalencse elfordulásának mértékét és irányát",
+        "ans": "I"
+      },
+      {
+        "t": "RGP lencse megfelelő illeszkedése esetén fluoreszcein festéssel alul és felül látná a könnyfilm megvastagodását",
+        "ans": "I"
+      },
+      {
+        "t": "Nem javasolja kontaktlencse viselését a nagyfokú asztigmia miatt",
+        "ans": "H"
+      },
+      {
+        "t": "RGP lencse nem illeszthető ilyen szaruhártyára",
+        "ans": "H"
+      },
+      {
+        "t": "Egyszerű szférikus lágylencse is adhat jó megoldást",
+        "ans": "H"
+      }
+    ]
+  },
+  {
+    "id": 547,
+    "type": "truefalse",
+    "q": "Szárazszem panaszok melletti kontaktlencse viselésre jellemző:",
+    "stmts": [
+      {
+        "t": "gyakran a nap végére válik kényelmetlenné lencseviselés",
+        "ans": "I"
+      },
+      {
+        "t": "antibiotikum adása indokolt",
+        "ans": "H"
+      },
+      {
+        "t": "műkönny cseppentése javasolt",
+        "ans": "I"
+      },
+      {
+        "t": "magasabb víztartalmú lencse viselése javasolt",
+        "ans": "H"
+      },
+      {
+        "t": "3 és 9 h-nál pontszerű festődés alakulhat ki az epitheliumon RGP lencseviselőknél",
+        "ans": "I"
+      },
+      {
+        "t": "páradúsabb levegő rontja a lencseviselési komfortot",
+        "ans": "H"
+      },
+      {
+        "t": "száraz meleg levegő könnyíti a viselést",
+        "ans": "H"
+      }
+    ]
+  },
+  {
+    "id": 548,
+    "type": "truefalse",
+    "q": "Szükséges-e módosítás ha kezdődő neovascularizációt látunk a limbusban?",
+    "stmts": [
+      {
+        "t": "nem mert ez még nem befolyásolja a cornea átlátszóságát",
+        "ans": "H"
+      },
+      {
+        "t": "nem mert valójában az itt látható erek alkati sajátosságainak tekinthetők",
+        "ans": "H"
+      },
+      {
+        "t": "nem ha fájdalommal nem jár",
+        "ans": "H"
+      },
+      {
+        "t": "rögtön áttérünk magasabb oxigén áteresztő képességű lencsére",
+        "ans": "I"
+      },
+      {
+        "t": "bármit is teszünk ez az elváltozás magától visszafejlődik",
+        "ans": "H"
+      },
+      {
+        "t": "abbahagyatjuk a jelenlegi lencse viselését",
+        "ans": "I"
+      },
+      {
+        "t": "véglegesen abbahagyatjuk a lencseviselést",
+        "ans": "H"
+      }
+    ]
+  },
+  {
+    "id": 549,
+    "type": "truefalse",
+    "q": "A látópálya lefutása mentén az alábbi helyen az alábbi típusú látótérkiesés keletkezik:",
+    "stmts": [
+      {
+        "t": "occipitalis lebeny hátsó pólusa közelében: homonym hemianopiás centralis scotoma",
+        "ans": "I"
+      },
+      {
+        "t": "chiasma közepén: bitemporalis hemianopia",
+        "ans": "H"
+      },
+      {
+        "t": "chiasma két oldalán: homonym hemianopia",
+        "ans": "H"
+      },
+      {
+        "t": "tractus opticus: homonym hemianopia",
+        "ans": "I"
+      }
+    ]
+  },
+  {
+    "id": 550,
+    "type": "truefalse",
+    "q": "A látótérkiesés típusa szerint az alábbi helyeken kell keresni az elváltozást:",
+    "stmts": [
+      {
+        "t": "nervus opticus: amaurosis",
+        "ans": "I"
+      },
+      {
+        "t": "radiatio optica felső része: homonym quadrantanopia",
+        "ans": "I"
+      },
+      {
+        "t": "papillaatrophia: centralis abszolút scotoma",
+        "ans": "H"
+      },
+      {
+        "t": "retinaleválás: szabályos csigavonalszerű látótérkiesés",
+        "ans": "H"
+      }
+    ]
+  },
+  {
+    "id": 551,
+    "type": "truefalse",
+    "q": "A retinitis pigmentosa jellemzői:",
+    "stmts": [
+      {
+        "t": "Az autoszomális recesszív öröklésmenetű forma nem szokott vaksághoz vezetni",
+        "ans": "I"
+      },
+      {
+        "t": "a legjobb kimenetelű esetek a domináns öröklődésűek",
+        "ans": "I"
+      },
+      {
+        "t": "Szemtükörrel jellemző az aequatortájon látható csontsejt alakú pigmentrögök jelenléte halvány éles határú papilla szűk arteriák.",
+        "ans": "I"
+      },
+      {
+        "t": "A betegség első tünete farkasvakság",
+        "ans": "I"
+      }
+    ]
+  },
+  {
+    "id": 552,
+    "type": "truefalse",
+    "q": "A szemnyomás csökkentése javasolt:",
+    "stmts": [
+      {
+        "t": "glaucoma simplexben",
+        "ans": "I"
+      },
+      {
+        "t": "normotensiv glaucomában",
+        "ans": "I"
+      },
+      {
+        "t": "egy alkalommal mért 22 Hgmm-es szemnyomás esetén",
+        "ans": "H"
+      },
+      {
+        "t": "ha a beteg a szemkörnyéki nyomásérzésről számol be",
+        "ans": "H"
+      },
+      {
+        "t": "preventív jelleggel minden bulbus megnyitó műtét után",
+        "ans": "H"
+      }
+    ]
+  },
+  {
+    "id": 553,
+    "type": "truefalse",
+    "q": "Acut primer zártzugú glaucoma:",
+    "stmts": [
+      {
+        "t": "pupillatágítás ellenjavallt",
+        "ans": "I"
+      },
+      {
+        "t": "Pilocarpint cseppentünk",
+        "ans": "I"
+      },
+      {
+        "t": "néhány napos késlekedés a megfelelő kezeléssel nem okoz maradandó látáskárosodást",
+        "ans": "H"
+      },
+      {
+        "t": "csak idősebb korban 60-70 év körül jelentkezik",
+        "ans": "H"
+      },
+      {
+        "t": "általában egyszerre mindkét szemet érinti",
+        "ans": "H"
+      }
+    ]
+  },
+  {
+    "id": 554,
+    "type": "truefalse",
+    "q": "Antibiotikum tartalmú szemcsepp használata javasolt:",
+    "stmts": [
+      {
+        "t": "szürkehályog esetén",
+        "ans": "H"
+      },
+      {
+        "t": "szürkehályog műtétet követően átmenetileg",
+        "ans": "I"
+      },
+      {
+        "t": "bakterialis keratitis kezelésére",
+        "ans": "I"
+      },
+      {
+        "t": "szemszárazság kezelésére",
+        "ans": "H"
+      }
+    ]
+  },
+  {
+    "id": 555,
+    "type": "truefalse",
+    "q": "Asztigmia teljes korrigálására mikor kell törekedni?",
+    "stmts": [
+      {
+        "t": "semmilyen esetben",
+        "ans": "H"
+      },
+      {
+        "t": "gyermek- és fiatal korban",
+        "ans": "I"
+      },
+      {
+        "t": "idős korban",
+        "ans": "H"
+      },
+      {
+        "t": "ha a két szem között az asztigmia foka nagyban különbözik",
+        "ans": "H"
+      }
+    ]
+  },
+  {
+    "id": 556,
+    "type": "truefalse",
+    "q": "Az allergiás kötőhártya-gyulladás legjellemzőbb tünetei:",
+    "stmts": [
+      {
+        "t": "erőteljes viszkető érzés",
+        "ans": "I"
+      },
+      {
+        "t": "bőséges gennyes váladék a szemrésben",
+        "ans": "H"
+      },
+      {
+        "t": "suffusio conjunctivae",
+        "ans": "H"
+      },
+      {
+        "t": "kifejezett conjunctivaoedema",
+        "ans": "I"
+      },
+      {
+        "t": "erőteljes könnyezés",
+        "ans": "I"
+      }
+    ]
+  },
+  {
+    "id": 557,
+    "type": "truefalse",
+    "q": "Csecsemőkorban:",
+    "stmts": [
+      {
+        "t": "a bulbushossz a felnőtthöz képest hosszabb",
+        "ans": "H"
+      },
+      {
+        "t": "epicanthus miatt sok gyermek vizsgálatát kérik kancsalság kizárására",
+        "ans": "I"
+      },
+      {
+        "t": "leukocoria esetén azonnal szemorvoshoz kell fordulni",
+        "ans": "I"
+      },
+      {
+        "t": "a könnycsatorna átfecskendezésével érdemes akár 1 éves korig is várni mert addig spontán megoldódhat az elzáródás",
+        "ans": "H"
+      }
+    ]
+  },
+  {
+    "id": 558,
+    "type": "truefalse",
+    "q": "Diabetes mellitus esetében kialakulhatnak-e az alábbi szemészeti elváltozások?",
+    "stmts": [
+      {
+        "t": "szürkehályog",
+        "ans": "I"
+      },
+      {
+        "t": "rubeosis iridis",
+        "ans": "I"
+      },
+      {
+        "t": "tractiós ablatio retinae",
+        "ans": "I"
+      },
+      {
+        "t": "Haab-Dimmer-féle degeneratio",
+        "ans": "H"
+      }
+    ]
+  },
+  {
+    "id": 559,
+    "type": "truefalse",
+    "q": "Diabetes mellitus szövődményeként kialakulhatnak-e az alábbi szemészeti elváltozások?",
+    "stmts": [
+      {
+        "t": "Horner-triász",
+        "ans": "H"
+      },
+      {
+        "t": "üvegtesti vérzés",
+        "ans": "I"
+      },
+      {
+        "t": "hypermetropia irányába tolódó fénytörés",
+        "ans": "H"
+      },
+      {
+        "t": "másodlagos glaucoma",
+        "ans": "I"
+      }
+    ]
+  },
+  {
+    "id": 560,
+    "type": "truefalse",
+    "q": "Felnőttkorban mitől változhat myopia irányába a korrekció?",
+    "stmts": [
+      {
+        "t": "thrombosis venae centralis retinae",
+        "ans": "H"
+      },
+      {
+        "t": "degeneratio pigmentosa retinae",
+        "ans": "H"
+      },
+      {
+        "t": "diabetes mellitus",
+        "ans": "I"
+      },
+      {
+        "t": "accomodatiós görcs",
+        "ans": "I"
+      }
+    ]
+  },
+  {
+    "id": 561,
+    "type": "truefalse",
+    "q": "A korrekciós stratégia hypermetrópia esetén:",
+    "stmts": [
+      {
+        "t": "kis dioptriáktól haladunk egyre nagyobbak felé",
+        "ans": "H"
+      },
+      {
+        "t": "miópizálás útján állapítjuk meg a legjobb sph értéket",
+        "ans": "I"
+      },
+      {
+        "t": "fiatal szemüveget viselő hypermetrópiás egyént is szükséges miópizálni",
+        "ans": "I"
+      },
+      {
+        "t": "a korrekció nélküli látóélességig szükséges korrigálnunk",
+        "ans": "H"
+      }
+    ]
+  },
+  {
+    "id": 562,
+    "type": "truefalse",
+    "q": "Fiatal felnőttkorban jelentkező látászavar háttere:",
+    "stmts": [
+      {
+        "t": "hipermetrópia",
+        "ans": "I"
+      },
+      {
+        "t": "presbiópia",
+        "ans": "H"
+      },
+      {
+        "t": "egyszerű miópia",
+        "ans": "H"
+      },
+      {
+        "t": "akut keratokónusz",
+        "ans": "I"
+      }
+    ]
+  },
+  {
+    "id": 563,
+    "type": "truefalse",
+    "q": "Gyermek- és fiatalkori szembetegségek:",
+    "stmts": [
+      {
+        "t": "glaucoma simplex",
+        "ans": "H"
+      },
+      {
+        "t": "Best-féle vitelliform maculadystrophia",
+        "ans": "I"
+      },
+      {
+        "t": "phakosclerosis",
+        "ans": "H"
+      },
+      {
+        "t": "accomodációs görcs",
+        "ans": "I"
+      }
+    ]
+  },
+  {
+    "id": 564,
+    "type": "truefalse",
+    "q": "Gyorsan változó mértékű asztigmia oka lehet:",
+    "stmts": [
+      {
+        "t": "keratokónusz",
+        "ans": "I"
+      },
+      {
+        "t": "6 héten belül végzett szürkehályog műtét",
+        "ans": "I"
+      },
+      {
+        "t": "presbiópia",
+        "ans": "H"
+      },
+      {
+        "t": "keratoglobusz",
+        "ans": "I"
+      }
+    ]
+  },
+  {
+    "id": 565,
+    "type": "truefalse",
+    "q": "Hirtelen látásromlást okozhatnak:",
+    "stmts": [
+      {
+        "t": "neuritis retrobulbaris",
+        "ans": "I"
+      },
+      {
+        "t": "cataracta progrediens",
+        "ans": "H"
+      },
+      {
+        "t": "glaucoma simplex",
+        "ans": "H"
+      },
+      {
+        "t": "embolia arteriae centralis retinae",
+        "ans": "I"
+      }
+    ]
+  },
+  {
+    "id": 566,
+    "type": "truefalse",
+    "q": "Időskori fénytörési változások oka lehet:",
+    "stmts": [
+      {
+        "t": "gerontoxon",
+        "ans": "H"
+      },
+      {
+        "t": "keratoglobus",
+        "ans": "H"
+      },
+      {
+        "t": "szürkehályog képződés",
+        "ans": "I"
+      },
+      {
+        "t": "presbyopia",
+        "ans": "I"
+      }
+    ]
+  },
+  {
+    "id": 567,
+    "type": "truefalse",
+    "q": "Időskori macula degenerációban:",
+    "stmts": [
+      {
+        "t": "a perifériás látás károsodik",
+        "ans": "H"
+      },
+      {
+        "t": "a centrális látás károsodik",
+        "ans": "I"
+      },
+      {
+        "t": "diagnosztizálására a látótér vizsgálat a legalkalmasabb",
+        "ans": "H"
+      },
+      {
+        "t": "az olvasóképesség romlik",
+        "ans": "I"
+      },
+      {
+        "t": "műtéttel általában jól gyógyítható",
+        "ans": "H"
+      }
+    ]
+  },
+  {
+    "id": 568,
+    "type": "truefalse",
+    "q": "Időskori szemészeti elváltozások:",
+    "stmts": [
+      {
+        "t": "Eales-betegség",
+        "ans": "H"
+      },
+      {
+        "t": "Kuhnt-Junius-féle maculadegeneratio",
+        "ans": "I"
+      },
+      {
+        "t": "presbyopia",
+        "ans": "I"
+      },
+      {
+        "t": "akut keratoconus",
+        "ans": "H"
+      }
+    ]
+  },
+  {
+    "id": 569,
+    "type": "truefalse",
+    "q": "Időskori szemészeti elváltozások 2:",
+    "stmts": [
+      {
+        "t": "gerontoxon",
+        "ans": "I"
+      },
+      {
+        "t": "keratoglobus",
+        "ans": "H"
+      },
+      {
+        "t": "Terrien-betegség",
+        "ans": "I"
+      },
+      {
+        "t": "retinitis centralis serosa",
+        "ans": "H"
+      }
+    ]
+  },
+  {
+    "id": 570,
+    "type": "truefalse",
+    "q": "Kisfokú látászavart okozhat:",
+    "stmts": [
+      {
+        "t": "heterophoria",
+        "ans": "I"
+      },
+      {
+        "t": "fakultatív hypermetropia",
+        "ans": "I"
+      },
+      {
+        "t": "phakosclerosis",
+        "ans": "I"
+      },
+      {
+        "t": "disciformis maculadegeneratio",
+        "ans": "H"
+      }
+    ]
+  },
+  {
+    "id": 571,
+    "type": "truefalse",
+    "q": "Kontúros látás oka lehet:",
+    "stmts": [
+      {
+        "t": "váladék a szemrésben",
+        "ans": "I"
+      },
+      {
+        "t": "atropinmérgezés",
+        "ans": "H"
+      },
+      {
+        "t": "keratoconjunctivitis sicca",
+        "ans": "I"
+      },
+      {
+        "t": "eximer lézer kezelés utáni állapot",
+        "ans": "I"
+      }
+    ]
+  },
+  {
+    "id": 572,
+    "type": "truefalse",
+    "q": "Kontúros látás oka 2:",
+    "stmts": [
+      {
+        "t": "korrigálatlan astigmia",
+        "ans": "I"
+      },
+      {
+        "t": "kezdődő szürkehályog",
+        "ans": "I"
+      },
+      {
+        "t": "index myopia",
+        "ans": "H"
+      },
+      {
+        "t": "glaucoma",
+        "ans": "H"
+      },
+      {
+        "t": "korrigálatlan presbyopia",
+        "ans": "I"
+      }
+    ]
+  },
+  {
+    "id": 573,
+    "type": "truefalse",
+    "q": "Könnyezéssel járó betegségek:",
+    "stmts": [
+      {
+        "t": "szaruhártya idegentest",
+        "ans": "I"
+      },
+      {
+        "t": "retinitis centralis serosa",
+        "ans": "H"
+      },
+      {
+        "t": "allergiás conjunctivitis",
+        "ans": "I"
+      },
+      {
+        "t": "ectropium",
+        "ans": "I"
+      }
+    ]
+  },
+  {
+    "id": 574,
+    "type": "truefalse",
+    "q": "Könnyezést okoznak általában:",
+    "stmts": [
+      {
+        "t": "cataracta",
+        "ans": "H"
+      },
+      {
+        "t": "entropium",
+        "ans": "I"
+      },
+      {
+        "t": "erosio corneae",
+        "ans": "I"
+      },
+      {
+        "t": "ablatio retinae",
+        "ans": "H"
+      },
+      {
+        "t": "chorioidea melanoma",
+        "ans": "H"
+      }
+    ]
+  },
+  {
+    "id": 575,
+    "type": "truefalse",
+    "q": "Látóélesség csökkenését okozhatják:",
+    "stmts": [
+      {
+        "t": "cataracta",
+        "ans": "I"
+      },
+      {
+        "t": "xanthelasma",
+        "ans": "H"
+      },
+      {
+        "t": "ablatio retinae",
+        "ans": "I"
+      },
+      {
+        "t": "occlusio arteriae centralis retinae",
+        "ans": "I"
+      },
+      {
+        "t": "gerontoxon",
+        "ans": "H"
+      }
+    ]
+  },
+  {
+    "id": 576,
+    "type": "truefalse",
+    "q": "Magasvérnyomás-betegség következtében kialakulhatnak-e az alábbi szemészeti elváltozások?",
+    "stmts": [
+      {
+        "t": "papillaoedema",
+        "ans": "I"
+      },
+      {
+        "t": "centralis vena elzáródás",
+        "ans": "I"
+      },
+      {
+        "t": "Stargardt-féle maculadegeneratio",
+        "ans": "H"
+      },
+      {
+        "t": "Gunn-tünet",
+        "ans": "I"
+      }
+    ]
+  },
+  {
+    "id": 577,
+    "type": "truefalse",
+    "q": "Magasvérnyomás-betegség szövődményeként kialakulhatnak-e az alábbi szemészeti elváltozások?",
+    "stmts": [
+      {
+        "t": "Graefe-tünet",
+        "ans": "H"
+      },
+      {
+        "t": "üvegtesti vérzés",
+        "ans": "I"
+      },
+      {
+        "t": "simplex glaucoma",
+        "ans": "H"
+      },
+      {
+        "t": "Salus-tünet",
+        "ans": "I"
+      }
+    ]
+  },
+  {
+    "id": 578,
+    "type": "truefalse",
+    "q": "Melyik állítás igaz melyik nem?",
+    "stmts": [
+      {
+        "t": "A disciformis maculadegeneratio másik elnevezése pseudotumor maculae luteae",
+        "ans": "I"
+      },
+      {
+        "t": "A Fuchs-folt a nagyfokú rövidlátó szemeken alakul ki",
+        "ans": "I"
+      },
+      {
+        "t": "A neuritis retrobulbaris a papilla oedemájával jár",
+        "ans": "H"
+      },
+      {
+        "t": "A papillaoedema első tünete mindig a megromló visus",
+        "ans": "H"
+      }
+    ]
+  },
+  {
+    "id": 579,
+    "type": "truefalse",
+    "q": "Melyik állítás igaz melyik nem 2?",
+    "stmts": [
+      {
+        "t": "a pilocarpin szűkíti a pupillát és hypermetropia irányába tolja el a fénytörést",
+        "ans": "H"
+      },
+      {
+        "t": "A pilocarpin szűkíti a pupillát és myopia irányába tolja el a fénytörést",
+        "ans": "I"
+      },
+      {
+        "t": "Az atropin tágítja a pupillát és fokozza az accomodatiós készséget",
+        "ans": "H"
+      },
+      {
+        "t": "Az atropin tágítja a pupillát és bénítja az alkalmazkodást",
+        "ans": "I"
+      }
+    ]
+  },
+  {
+    "id": 580,
+    "type": "truefalse",
+    "q": "Melyik állítás igaz melyik nem 3?",
+    "stmts": [
+      {
+        "t": "A retinitis centralis serosa gennyes gyulladás",
+        "ans": "H"
+      },
+      {
+        "t": "A cataracta corticalis posterior korai stádiumában is jelentős látásromlást okozhat",
+        "ans": "I"
+      },
+      {
+        "t": "A retinoschisis a retina gyulladásos betegségei közé tartozik",
+        "ans": "H"
+      },
+      {
+        "t": "jelentős látásromlást okoz a lencse helyhagyása",
+        "ans": "I"
+      }
+    ]
+  },
+  {
+    "id": 581,
+    "type": "truefalse",
+    "q": "Melyik állítás igaz melyik nem 4?",
+    "stmts": [
+      {
+        "t": "Presbyopiás korban a korrigálatlan hypermetropiás szem távolra myopizálódhat",
+        "ans": "I"
+      },
+      {
+        "t": "Ha accomodativ állapotban levő presbyopiás szemet távolra konkáv üveggel korrigálunk akkor ezzel accomodatiós görcsbe vezethetjük.",
+        "ans": "I"
+      },
+      {
+        "t": "Ha a presbyopiás korban lévő kliens távolra konkáv üveget igényel akkor eddig rejtett myopiája volt",
+        "ans": "H"
+      },
+      {
+        "t": "A myopizálódásnak csak accomodatióval összefüggő oka lehet",
+        "ans": "H"
+      }
+    ]
+  },
+  {
+    "id": 582,
+    "type": "truefalse",
+    "q": "Mi jellemző a retinopathia pigmentosa betegségre?",
+    "stmts": [
+      {
+        "t": "Első lépésben a fotoreceptorok közül a csapok betegszenek meg",
+        "ans": "H"
+      },
+      {
+        "t": "A pigmentepithel és a fotoreceptorok kétoldali progresszív öröklődő megbetegedése általában teljes vaksághoz vezet",
+        "ans": "I"
+      },
+      {
+        "t": "gyógyszerekkel jól gyógyítható betegség",
+        "ans": "H"
+      },
+      {
+        "t": "A recesszív nemhez kötött öröklésmenetű betegség férfiakon általában teljes vaksághoz vezet",
+        "ans": "I"
+      }
+    ]
+  },
+  {
+    "id": 583,
+    "type": "truefalse",
+    "q": "Mi okozhat lagophthalmust?",
+    "stmts": [
+      {
+        "t": "retinaleválás",
+        "ans": "H"
+      },
+      {
+        "t": "korrigálatlan presbyopia",
+        "ans": "H"
+      },
+      {
+        "t": "glaucoma",
+        "ans": "H"
+      },
+      {
+        "t": "sérülés utáni hegesedés",
+        "ans": "I"
+      }
+    ]
+  },
+  {
+    "id": 584,
+    "type": "truefalse",
+    "q": "Mi okozhat lagophthalmust 2?",
+    "stmts": [
+      {
+        "t": "buphthalmus",
+        "ans": "I"
+      },
+      {
+        "t": "exophthalmus",
+        "ans": "I"
+      },
+      {
+        "t": "facialis paresis",
+        "ans": "I"
+      },
+      {
+        "t": "index myopia",
+        "ans": "H"
+      }
+    ]
+  },
+  {
+    "id": 585,
+    "type": "truefalse",
+    "q": "Miópia helyes korrekciós stratégiája:",
+    "stmts": [
+      {
+        "t": "csak 1.0 látóélességig szükséges korrigálnunk",
+        "ans": "H"
+      },
+      {
+        "t": "nem szükséges a sugárizmot ellazítani",
+        "ans": "I"
+      },
+      {
+        "t": "az alulkorrekció gátolja a miópia progresszióját",
+        "ans": "H"
+      },
+      {
+        "t": "miópiás egyénnek nem kell a szemüvegét közelre viselnie",
+        "ans": "I"
+      }
+    ]
+  },
+  {
+    "id": 586,
+    "type": "truefalse",
+    "q": "Milyen panaszokkal jelentkezik a korrigálatlan relatív hipermetrópiás beteg?",
+    "stmts": [
+      {
+        "t": "reggeli átmeneti homályos látás",
+        "ans": "H"
+      },
+      {
+        "t": "este fáradtan homályosan lát különösen közelre",
+        "ans": "I"
+      },
+      {
+        "t": "szivárványkarika látás a fényforrás körül",
+        "ans": "H"
+      },
+      {
+        "t": "időszakos fej- és szemfájdalom",
+        "ans": "I"
+      },
+      {
+        "t": "panaszmentes",
+        "ans": "H"
+      }
+    ]
+  },
+  {
+    "id": 587,
+    "type": "truefalse",
+    "q": "Miópia esetén V: 0,5 látóélesség mellett a fénytörési hiba mértéke dioptriában:",
+    "stmts": [
+      {
+        "t": "0,5",
+        "ans": "H"
+      },
+      {
+        "t": "1",
+        "ans": "H"
+      },
+      {
+        "t": "1,5",
+        "ans": "I"
+      },
+      {
+        "t": "2",
+        "ans": "H"
+      }
+    ]
+  },
+  {
+    "id": 588,
+    "type": "truefalse",
+    "q": "Mitől változhat miópia irányában a távoli látáskorrekció felnőtt korban?",
+    "stmts": [
+      {
+        "t": "jelentős akkomodációs túlterhelés",
+        "ans": "I"
+      },
+      {
+        "t": "keringés zavar az éleslátás helyén",
+        "ans": "H"
+      },
+      {
+        "t": "szürkehályog képződés",
+        "ans": "I"
+      },
+      {
+        "t": "perifériás retina degeneráció",
+        "ans": "H"
+      }
+    ]
+  },
+  {
+    "id": 589,
+    "type": "truefalse",
+    "q": "Mitől változhat myopia irányába a távoli látás korrekció felnőttkorban 2?",
+    "stmts": [
+      {
+        "t": "conjunctivitis chronica",
+        "ans": "H"
+      },
+      {
+        "t": "oedema maculae luteae",
+        "ans": "H"
+      },
+      {
+        "t": "phakosclerosis",
+        "ans": "I"
+      },
+      {
+        "t": "ablatio retinae",
+        "ans": "H"
+      }
+    ]
+  },
+  {
+    "id": 590,
+    "type": "truefalse",
+    "q": "Panaszmentes szemeken diagnosztizálható betegségek:",
+    "stmts": [
+      {
+        "t": "heterophoriák",
+        "ans": "I"
+      },
+      {
+        "t": "retinitis centralis serosa",
+        "ans": "H"
+      },
+      {
+        "t": "glaucoma simplex",
+        "ans": "I"
+      },
+      {
+        "t": "centralis eredetű pangásos papilla",
+        "ans": "I"
+      }
+    ]
+  },
+  {
+    "id": 591,
+    "type": "truefalse",
+    "q": "Panaszmentes szemeken diagnosztizálható betegségek 2:",
+    "stmts": [
+      {
+        "t": "peripheriás helyzetű macula corneae",
+        "ans": "I"
+      },
+      {
+        "t": "peripheriás retinadegeneratio",
+        "ans": "I"
+      },
+      {
+        "t": "amaurosis fugax",
+        "ans": "H"
+      },
+      {
+        "t": "naevus iridis",
+        "ans": "I"
+      }
+    ]
+  },
+  {
+    "id": 592,
+    "type": "truefalse",
+    "q": "Astigmia korrekciós stratégiája:",
+    "stmts": [
+      {
+        "t": "először a legjobb sph értéket keressük meg",
+        "ans": "I"
+      },
+      {
+        "t": "mindig a kisebb cilinder értéket igyekszünk felírni",
+        "ans": "H"
+      },
+      {
+        "t": "a legjobb tengelyálláshoz képest 5 fok eltérést általában nem érez meg a páciens",
+        "ans": "H"
+      },
+      {
+        "t": "a sph értéket már nem kell módosítani ha a vizsgálat elején jól beállítottuk",
+        "ans": "H"
+      }
+    ]
+  },
+  {
+    "id": 593,
+    "type": "truefalse",
+    "q": "Sürgős műtéti indikációt képez:",
+    "stmts": [
+      {
+        "t": "komplikációmentes időskori szürkehályog",
+        "ans": "H"
+      },
+      {
+        "t": "macula luteat elérő ideghártya leválás",
+        "ans": "I"
+      },
+      {
+        "t": "sclera penetráló sérülése",
+        "ans": "I"
+      },
+      {
+        "t": "pterygium internum",
+        "ans": "H"
+      },
+      {
+        "t": "száraz típusú időskori macula degeneráció",
+        "ans": "H"
+      }
+    ]
+  },
+  {
+    "id": 594,
+    "type": "truefalse",
+    "q": "Szemszárazságra gyakrabban panaszkodnak:",
+    "stmts": [
+      {
+        "t": "számítógéppel dolgozók",
+        "ans": "I"
+      },
+      {
+        "t": "gyermekek",
+        "ans": "H"
+      },
+      {
+        "t": "idősek",
+        "ans": "I"
+      },
+      {
+        "t": "autoimmun betegségben szenvedők",
+        "ans": "I"
+      },
+      {
+        "t": "acut iridocyclitisben",
+        "ans": "H"
+      }
+    ]
+  },
+  {
+    "id": 595,
+    "type": "truefalse",
+    "q": "Vaksághoz vezető szemészeti elváltozás:",
+    "stmts": [
+      {
+        "t": "abszolút glaucoma",
+        "ans": "I"
+      },
+      {
+        "t": "Leber-féle atrophia nervi optici",
+        "ans": "I"
+      },
+      {
+        "t": "recesszív nemhez kötött öröklésmenetű retinopathia pigmentosa",
+        "ans": "I"
+      },
+      {
+        "t": "nagyfokú anisometropia",
+        "ans": "H"
+      }
+    ]
+  },
+  {
+    "id": 596,
+    "type": "truefalse",
+    "q": "Vezethetnek-e vaksághoz az alábbi szemészeti elváltozások?",
+    "stmts": [
+      {
+        "t": "keratoconjunctivitis epidemica",
+        "ans": "H"
+      },
+      {
+        "t": "Best-féle vitelliform maculadegeneratio",
+        "ans": "H"
+      },
+      {
+        "t": "melanosis conjunctivae",
+        "ans": "H"
+      },
+      {
+        "t": "retinoblastoma",
+        "ans": "I"
+      }
+    ]
+  },
+  {
+    "id": 597,
+    "type": "analysis",
+    "q": "Elemezze az állításokat!",
+    "stmt1": "-3,0 D-ás szemeket nem terheli a presbyopia",
+    "stmt2": "az ilyen személyek időskorban korrekció nélkül jól olvasnak.",
+    "ans": "A"
+  },
+  {
+    "id": 598,
+    "type": "analysis",
+    "q": "Elemezze az állításokat!",
+    "stmt1": "A cornea gyors regeneratióra képes hámsejtekkel rendelkezik",
+    "stmt2": "ritka betegség a szaruhártya-gyulladás.",
+    "ans": "C"
+  },
+  {
+    "id": 599,
+    "type": "analysis",
+    "q": "Elemezze az állításokat!",
+    "stmt1": "A csapok jelentik a fovea centralis színlátó elemeit",
+    "stmt2": "a fovea pusztulásakor sérül a színlátás.",
+    "ans": "A"
+  },
+  {
+    "id": 600,
+    "type": "analysis",
+    "q": "Elemezze az állításokat!",
+    "stmt1": "A fundus fluorescein-angiographia vizsgálata a szem keringési állapotáról ad felvilágosítást",
+    "stmt2": "alkalmas a retina ereiben a vérnyomás mérésére.",
+    "ans": "C"
+  },
+  {
+    "id": 601,
+    "type": "analysis",
+    "q": "Elemezze az állításokat!",
+    "stmt1": "A konvergens kancsalság befelé térő kancsalságot jelent",
+    "stmt2": "oka az orbita falai által bezárt szög.",
+    "ans": "C"
+  },
+  {
+    "id": 602,
+    "type": "analysis",
+    "q": "Elemezze az állításokat!",
+    "stmt1": "A koponyaüreg zárt teret képez",
+    "stmt2": "a bármely okból kialakult agynyomásfokozódás életveszélyes állapot.",
+    "ans": "A"
+  },
+  {
+    "id": 603,
+    "type": "analysis",
+    "q": "Elemezze az állításokat!",
+    "stmt1": "A látásélesség Snellen szerint a látott tárgy szélső pontjairól a szem optikai csomópontján áthaladó sugarak által közrefogott szög mértékével határozható meg",
+    "stmt2": "az egészséges szem 1,0-es látásának egysége 1 szögperc.",
+    "ans": "B"
+  },
+  {
+    "id": 604,
+    "type": "analysis",
+    "q": "Elemezze az állításokat!",
+    "stmt1": "A lencse függesztőszalagjai a sugártestrőlindul",
+    "stmt2": "helyén tartják a lencsét.",
+    "ans": "B"
+  },
+  {
+    "id": 605,
+    "type": "analysis",
+    "q": "Elemezze az állításokat!",
+    "stmt1": "A nagyfokú myopia gyermek- vagy serdülőkorban nem fejlődik ki",
+    "stmt2": "kifejlődés felnőttkorban jellemző.",
+    "ans": "E"
+  },
+  {
+    "id": 606,
+    "type": "analysis",
+    "q": "Elemezze az állításokat!",
+    "stmt1": "A nasalis retinafélből származó rostok kereszteződnek a chiasma opticumban",
+    "stmt2": "a sérülésük kétoldali temporalis látótérkiesést okoz.",
+    "ans": "A"
+  },
+  {
+    "id": 607,
+    "type": "analysis",
+    "q": "Elemezze az állításokat!",
+    "stmt1": "A nervus trochlearis idegzi be a felső ferde szemizmot",
+    "stmt2": "bénulása kifelétekintési képtelenséget idéz elő.",
+    "ans": "C"
+  },
+  {
+    "id": 608,
+    "type": "analysis",
+    "q": "Elemezze az állításokat!",
+    "stmt1": "A pálcikák a peripherián helyezkednek el",
+    "stmt2": "ablatio retinae esetében elvész a színlátás.",
+    "ans": "C"
+  },
+  {
+    "id": 609,
+    "type": "analysis",
+    "q": "Elemezze az állításokat!",
+    "stmt1": "A pálcikák pusztulása hemeralopiára vezet",
+    "stmt2": "melyet nyctalopia kísérhet.",
+    "ans": "C"
+  },
+  {
+    "id": 610,
+    "type": "analysis",
+    "q": "Elemezze az állításokat!",
+    "stmt1": "A parasympathicus izgatók a corpus ciliaere görcsét okozzák",
+    "stmt2": "a pilocarpin szemcsepp myopizálódást válthat ki.",
+    "ans": "A"
+  },
+  {
+    "id": 611,
+    "type": "analysis",
+    "q": "Elemezze az állításokat!",
+    "stmt1": "A pupillareflex afferens és efferens rostjai együtt futnak a látópálya rostjaival",
+    "stmt2": "a látópálya károsodása együtt jár a pupillareflex zavaraival.",
+    "ans": "E"
+  },
+  {
+    "id": 612,
+    "type": "analysis",
+    "q": "Elemezze az állításokat!",
+    "stmt1": "A retina capillarisaiban a középnyomás 30-40 Hgmm",
+    "stmt2": "simplex glaucomában könnyen károsodik a papilla keringése, és atrophia alakul ki.",
+    "ans": "A"
+  },
+  {
+    "id": 613,
+    "type": "analysis",
+    "q": "Elemezze az állításokat!",
+    "stmt1": "A retina pigmentepithel-rétege a Bruch-membrán basalis membránján helyezkedik el",
+    "stmt2": "a chorioideacapillarisok felől a külső vér-retina gát alkotásában vesz részt.",
+    "ans": "A"
+  },
+  {
+    "id": 614,
+    "type": "analysis",
+    "q": "Elemezze az állításokat!",
+    "stmt1": "A retina receptorsejtjei érzékelőelemek",
+    "stmt2": "a retina minden sérülése éles fájdalommal jár.",
+    "ans": "C"
+  },
+  {
+    "id": 615,
+    "type": "analysis",
+    "q": "Elemezze az állításokat!",
+    "stmt1": "A rövidlátók konkáv üveget igényelnek",
+    "stmt2": "jól látnak közelre.",
+    "ans": "B"
+  },
+  {
+    "id": 616,
+    "type": "analysis",
+    "q": "Elemezze az állításokat!",
+    "stmt1": "A sciascopia lényege távolpontkeresés",
+    "stmt2": "használjuk a vizsgálatot a fénytörés meghatározására.",
+    "ans": "B"
+  },
+  {
+    "id": 617,
+    "type": "analysis",
+    "q": "Elemezze az állításokat!",
+    "stmt1": "A szem változatlan convergentia mellett bizonyos mértékig változtathatja az alkalmazkodást",
+    "stmt2": "ezt nevezzük relatív alkalmazkodási szélességnek.",
+    "ans": "A"
+  },
+  {
+    "id": 618,
+    "type": "analysis",
+    "q": "Elemezze az állításokat!",
+    "stmt1": "A szemhéjak gyakori mozgása a pislogás",
+    "stmt2": "a cornea érintése során érzett fájdalomérzet is kiválthatja.",
+    "ans": "B"
+  },
+  {
+    "id": 619,
+    "type": "analysis",
+    "q": "Elemezze az állításokat!",
+    "stmt1": "A színvakság örökölhető betegség",
+    "stmt2": "minden színlátászavar kétszemes.",
+    "ans": "C"
+  },
+  {
+    "id": 620,
+    "type": "analysis",
+    "q": "Elemezze az állításokat!",
+    "stmt1": "A vena centralis retinae középnyomása 15-20 Hgmm",
+    "stmt2": "emelkedett szemnyomás mellett a venaelzáródás veszélye megnő.",
+    "ans": "A"
+  },
+  {
+    "id": 621,
+    "type": "analysis",
+    "q": "Elemezze az állításokat!",
+    "stmt1": "Az accomodatio hiánya mindig együtt jár a convergentia zavarával",
+    "stmt2": "a presbyopia exophoriával együtt jár.",
+    "ans": "E"
+  },
+  {
+    "id": 622,
+    "type": "analysis",
+    "q": "Elemezze az állításokat!",
+    "stmt1": "Az alkalmazkodásbénulás az oculomotorius-bénulás egyik tünete",
+    "stmt2": "a pupilla tág, a beteg nem tud olvasni.",
+    "ans": "A"
+  },
+  {
+    "id": 623,
+    "type": "analysis",
+    "q": "Elemezze az állításokat!",
+    "stmt1": "Az arteria centralis retinae középnyomása 70-80 Hgmm",
+    "stmt2": "igen nagy fájdalommal jár az akut glaucomás roham.",
+    "ans": "B"
+  },
+  {
+    "id": 624,
+    "type": "analysis",
+    "q": "Elemezze az állításokat!",
+    "stmt1": "Az astigmiának két fajtája a fiziológiás és a szabályos astigmia",
+    "stmt2": "nem kell korrigálni.",
+    "ans": "E"
+  },
+  {
+    "id": 625,
+    "type": "analysis",
+    "q": "Elemezze az állításokat!",
+    "stmt1": "Az ép szemfenék képe egyenletes narancsvörös",
+    "stmt2": "felette sötétebb vonalak formájában rajzolódnak ki a chorioidea nagy erei.",
+    "ans": "C"
+  },
+  {
+    "id": 626,
+    "type": "analysis",
+    "q": "Elemezze az állításokat!",
+    "stmt1": "Az orbita külső és belső fala 60 fokos szöget zár be",
+    "stmt2": "ritka a divergens kancsalság.",
+    "ans": "E"
+  },
+  {
+    "id": 627,
+    "type": "analysis",
+    "q": "Elemezze az állításokat!",
+    "stmt1": "Az öregszeműséget presbyopiának nevezzük",
+    "stmt2": "idővel a szemlencse részleges elszürkülését eredményezi.",
+    "ans": "C"
+  },
+  {
+    "id": 628,
+    "type": "analysis",
+    "q": "Elemezze az állításokat!",
+    "stmt1": "Az üvegtest fossa patellarisában a lencse helyezkedik el",
+    "stmt2": "a corpus ciliare is ide illeszkedik.",
+    "ans": "C"
+  },
+  {
+    "id": 629,
+    "type": "analysis",
+    "q": "Elemezze az állításokat!",
+    "stmt1": "Csapok legnagyobb számban a fovea centralisban találhatók",
+    "stmt2": "a pálcikák pusztulása látótérszűkületet eredményez.",
+    "ans": "B"
+  },
+  {
+    "id": 630,
+    "type": "analysis",
+    "q": "Elemezze az állításokat!",
+    "stmt1": "Fotoreceptorok csak a fovea centralisban találhatók",
+    "stmt2": "a pálcikák pusztulása farkasvakságot okoz.",
+    "ans": "D"
+  },
+  {
+    "id": 631,
+    "type": "analysis",
+    "q": "Elemezze az állításokat!",
+    "stmt1": "Jellegzetes látótérkiesés a centrocoecalis scotoma",
+    "stmt2": "a beteg mindkét szemén féloldali látótérkiesés van.",
+    "ans": "C"
+  },
+  {
+    "id": 632,
+    "type": "analysis",
+    "q": "Elemezze az állításokat!",
+    "stmt1": "Közelre alkalmazkodó szem optikai rendszere myopia irányába tolódik el",
+    "stmt2": "alkalmazkodási görcsben lévő szem távolra konkáv lencsét igényel.",
+    "ans": "A"
+  },
+  {
+    "id": 633,
+    "type": "analysis",
+    "q": "Elemezze az állításokat!",
+    "stmt1": "Manapság a színlátás színszűrőkkel javítható",
+    "stmt2": "csapok veleszületett elváltozásai gyógyíthatók.",
+    "ans": "C"
+  },
+  {
+    "id": 634,
+    "type": "analysis",
+    "q": "Elemezze az állításokat!",
+    "stmt1": "Mindkét látóterünk centrumát a vakfolt képezi",
+    "stmt2": "a papillának megfelelő helyben nem látunk.",
+    "ans": "D"
+  },
+  {
+    "id": 635,
+    "type": "analysis",
+    "q": "Elemezze az állításokat!",
+    "stmt1": "A DNS molekula kettős hélix szerkezetű",
+    "stmt2": "a szálak balmenetes feltekeredését a két lánc közti hidrogénkötések stabilizálják.",
+    "ans": "C"
+  },
+  {
+    "id": 636,
+    "type": "analysis",
+    "q": "Elemezze az állításokat!",
+    "stmt1": "A béta-keto-zsírsavacil-CoA hasítását ligáz enzim katalizálja",
+    "stmt2": "a ligázok különféle atomok közötti kötések felszakítását végzik.",
+    "ans": "E"
+  },
+  {
+    "id": 637,
+    "type": "analysis",
+    "q": "Elemezze az állításokat!",
+    "stmt1": "D-glükonsav oxidációjával D-glükóz keletkezik",
+    "stmt2": "aldonsav oxidációjával aldársav jön létre.",
+    "ans": "D"
+  },
+  {
+    "id": 638,
+    "type": "analysis",
+    "q": "Elemezze az állításokat!",
+    "stmt1": "D-glükóz redukciójával D-szorbitol keletkezik",
+    "stmt2": "a glükóz cukoralkohol.",
+    "ans": "B"
+  },
+  {
+    "id": 639,
+    "type": "analysis",
+    "q": "Elemezze az állításokat!",
+    "stmt1": "Transzaminálás során aminosavból ketosav ketosavból aminosav keletkezik",
+    "stmt2": "az oxokarbonsavak és aminosavak funkciós csoportjai kicserélődnek.",
+    "ans": "A"
+  },
+  {
+    "id": 640,
+    "type": "analysis",
+    "q": "Elemezze az állításokat!",
+    "stmt1": "A csontszövet szilárdabb mint a porcszövet",
+    "stmt2": "a csontszövet nem tartalmaz sejteket.",
+    "ans": "C"
+  },
+  {
+    "id": 641,
+    "type": "analysis",
+    "q": "Elemezze az állításokat!",
+    "stmt1": "A hámszövetben a többi szövettől eltérően nincsenek vérerek",
+    "stmt2": "a hámszövet sejtjei tápanyagaikat és az oxigént az alattuk levő szövetrétegekből veszik fel.",
+    "ans": "A"
+  },
+  {
+    "id": 642,
+    "type": "analysis",
+    "q": "Elemezze az állításokat!",
+    "stmt1": "A kötőszövetekben sohasem találunk az érpályáról kivándorolt sejteket",
+    "stmt2": "az érfal minden sejt számára átjárhatatlan.",
+    "ans": "E"
+  },
+  {
+    "id": 643,
+    "type": "analysis",
+    "q": "Elemezze az állításokat!",
+    "stmt1": "Az idegszövet könnyen regenerálódik",
+    "stmt2": "a központi idegrendszerben számos a neuronokat tápláló gliasejtet találunk.",
+    "ans": "D"
+  },
+  {
+    "id": 644,
+    "type": "analysis",
+    "q": "Elemezze az állításokat!",
+    "stmt1": "A szaruhártya első fősíkja messzebb van a szaruhártyától mint a hátsó",
+    "stmt2": "az első felszín törőereje nagyobb mint a hátsó felületé.",
+    "ans": "D"
+  },
+  {
+    "id": 645,
+    "type": "analysis",
+    "q": "Elemezze az állításokat!",
+    "stmt1": "A szaruhártya fiziológiásan astigmiás",
+    "stmt2": "a vízszintes és a függőleges meridiánban különbözőek a görbületi sugarak.",
+    "ans": "A"
+  },
+  {
+    "id": 646,
+    "type": "analysis",
+    "q": "Elemezze az állításokat!",
+    "stmt1": "A szaruhártya gyűjtőlencseként viselkedik",
+    "stmt2": "a két felszíne pozitív törőerejű.",
+    "ans": "C"
+  },
+  {
+    "id": 647,
+    "type": "analysis",
+    "q": "Elemezze az állításokat!",
+    "stmt1": "A szaruhártya gyűjtőlencseként viselkedik",
+    "stmt2": "az első felszín görbületi sugara rövidebb mint a hátsó felszíné.",
+    "ans": "C"
+  },
+  {
+    "id": 648,
+    "type": "analysis",
+    "q": "Elemezze az állításokat!",
+    "stmt1": "A szaruhártya hátsó felszínének negatív a törőereje",
+    "stmt2": "a csarnokvíz törésmutatója kisebb, mint a szaruhártya törésmutatója.",
+    "ans": "B"
+  },
+  {
+    "id": 649,
+    "type": "analysis",
+    "q": "Elemezze az állításokat!",
+    "stmt1": "A szaruhártya képezi a szem törőerejének 2/3-át",
+    "stmt2": "a mögötte lévő csarnokvíz csökkenti a homorú felszín törőerejét.",
+    "ans": "A"
+  },
+  {
+    "id": 650,
+    "type": "analysis",
+    "q": "Elemezze az állításokat!",
+    "stmt1": "A szaruhártya törőereje a függőleges meridiánban kb. 0,5 dioptriával nagyobb mint a vízszintesben",
+    "stmt2": "a görbületi sugár kisebb a függőleges meridiánban.",
+    "ans": "A"
+  },
+  {
+    "id": 651,
+    "type": "analysis",
+    "q": "Elemezze az állításokat!",
+    "stmt1": "A szemlencse bikonvex lencse",
+    "stmt2": "hátsó felszíne erősebben görbült mint az első.",
+    "ans": "B"
+  },
+  {
+    "id": 652,
+    "type": "analysis",
+    "q": "Elemezze az állításokat!",
+    "stmt1": "A szemlencse fősíkjai alkalmazkodáskor az első felszín felé tolódnak el",
+    "stmt2": "ilyenkor megnövekszik a törőerő.",
+    "ans": "B"
+  },
+  {
+    "id": 653,
+    "type": "analysis",
+    "q": "Elemezze az állításokat!",
+    "stmt1": "A szemlencse széli részének kisebb a törésmutatója",
+    "stmt2": "a lencse anyagának optikai sűrűsége a magból kiindulva a szélek felé csökken.",
+    "ans": "A"
+  },
+  {
+    "id": 654,
+    "type": "analysis",
+    "q": "Elemezze az állításokat!",
+    "stmt1": "Alkalmazkodáskor az első felszín törőereje nagyobb mértékben változik meg",
+    "stmt2": "a hátsó felszín az üvegtest miatt kevésbé tud megváltozni mint az első.",
+    "ans": "A"
+  },
+  {
+    "id": 655,
+    "type": "analysis",
+    "q": "Elemezze az állításokat!",
+    "stmt1": "A fakultatív hypermetropiás szem távolpontja valódi",
+    "stmt2": "az akkomodáció igénybevételével a szem távolora jól lát.",
+    "ans": "D"
+  },
+  {
+    "id": 656,
+    "type": "analysis",
+    "q": "Elemezze az állításokat!",
+    "stmt1": "A fényinterferenciának mindig színbontás a következménye",
+    "stmt2": "a különböző színekre más-más helyen teljesül az erősítés feltétele.",
+    "ans": "A"
+  },
+  {
+    "id": 657,
+    "type": "analysis",
+    "q": "Elemezze az állításokat!",
+    "stmt1": "A gyűjtő hatású szemüveglencse segíti a konvergenciát",
+    "stmt2": "a lencsének az optikai tengely felé álló alapú prizmához hasonló a hatása.",
+    "ans": "D"
+  },
+  {
+    "id": 658,
+    "type": "analysis",
+    "q": "Elemezze az állításokat!",
+    "stmt1": "A hypermetropiás szem esetén az ametropia foka pozitív",
+    "stmt2": "gyűjtőlencsével korrigáljuk.",
+    "ans": "D"
+  },
+  {
+    "id": 659,
+    "type": "analysis",
+    "q": "Elemezze az állításokat!",
+    "stmt1": "A hypermetropiás szemet gyűjtőlencsével korrigáljuk",
+    "stmt2": "korrekció nélkül csak a divergens fénysugarakat képes a retinára gyűjteni.",
+    "ans": "C"
+  },
+  {
+    "id": 660,
+    "type": "analysis",
+    "q": "Elemezze az állításokat!",
+    "stmt1": "A Javal-Schiötz-féle ophthalmometernél a műszer helyzete befolyásolja a mérés pontosságát",
+    "stmt2": "a tárgy és a műszer egybe van építve.",
+    "ans": "A"
+  },
+  {
+    "id": 661,
+    "type": "analysis",
+    "q": "Elemezze az állításokat!",
+    "stmt1": "A kromatikus aberratiót achromatizálással korrigálhatjuk",
+    "stmt2": "a flintüveg szórólencse újraegyesíti a koronaüveg-gyűjtőlencse által felbontott fénysugarakat.",
+    "ans": "A"
+  },
+  {
+    "id": 662,
+    "type": "analysis",
+    "q": "Elemezze az állításokat!",
+    "stmt1": "A látóélesség alapja az 1' látószög",
+    "stmt2": "az 1' látószög szemfenéki képe megfelel a fovea centralisban elhelyezkedő csapok méretének.",
+    "ans": "A"
+  },
+  {
+    "id": 663,
+    "type": "analysis",
+    "q": "Elemezze az állításokat!",
+    "stmt1": "A lencsék a kék színű fénysugarakat jobban megtörik mint a vöröset",
+    "stmt2": "a kék színű fényhez tartozó törésmutató a legkisebb.",
+    "ans": "C"
+  },
+  {
+    "id": 664,
+    "type": "analysis",
+    "q": "Elemezze az állításokat!",
+    "stmt1": "A myopiás szem közelpontja virtuális",
+    "stmt2": "csak a konvergens fénysugarakat képes a retinára összegyűjteni.",
+    "ans": "E"
+  },
+  {
+    "id": 665,
+    "type": "analysis",
+    "q": "Elemezze az állításokat!",
+    "stmt1": "A myopiások könnyebben konvergálnak kontaktlencsével",
+    "stmt2": "a szórólencséből készült szemüveglencse prizmatikus hatása nehezíti a konvergenciát.",
+    "ans": "E"
+  },
+  {
+    "id": 666,
+    "type": "analysis",
+    "q": "Elemezze az állításokat!",
+    "stmt1": "A myopiásoknál általában jobb látóélesség érhető el a kontaktlencsével",
+    "stmt2": "a szemüveglencse kicsinyít a kontaktlencséhez képest.",
+    "ans": "A"
+  },
+  {
+    "id": 667,
+    "type": "analysis",
+    "q": "Elemezze az állításokat!",
+    "stmt1": "A myopiát szórólencsével korrigáljuk",
+    "stmt2": "az ametropia foka pozitív.",
+    "ans": "A"
+  },
+  {
+    "id": 668,
+    "type": "analysis",
+    "q": "Elemezze az állításokat!",
+    "stmt1": "A prizma vörös színű fényt töri meg legkevésbé",
+    "stmt2": "a vörös színű fény törésmutatója a legkisebb.",
+    "ans": "A"
+  },
+  {
+    "id": 669,
+    "type": "analysis",
+    "q": "Elemezze az állításokat!",
+    "stmt1": "A prizmák az él felé forgatják el a fénysugarakat",
+    "stmt2": "a törőszög nem befolyásolja az elforgatás mértékét.",
+    "ans": "E"
+  },
+  {
+    "id": 670,
+    "type": "analysis",
+    "q": "Elemezze az állításokat!",
+    "stmt1": "A relatív hypermetropiás szem távolpontja virtuális",
+    "stmt2": "az alkalmazkodóképesség igénybevétele távolba nézéskor együtt jár a konvergenciával.",
+    "ans": "B"
+  },
+  {
+    "id": 671,
+    "type": "analysis",
+    "q": "Elemezze az állításokat!",
+    "stmt1": "A sphaericus aberratio mértéke csökkenthetőrekesz alkalmazásával",
+    "stmt2": "a rekesz szűkítése javíthatja a mélységélességet.",
+    "ans": "B"
+  },
+  {
+    "id": 672,
+    "type": "analysis",
+    "q": "Elemezze az állításokat!",
+    "stmt1": "A szem főpontjai az elülső csarnokban helyezkednek el",
+    "stmt2": "a szaruhártya adja a szem törőerejének 2/3-át.",
+    "ans": "B"
+  },
+  {
+    "id": 673,
+    "type": "analysis",
+    "q": "Elemezze az állításokat!",
+    "stmt1": "A szemüveglencsét a szem első fókuszpontjában kell elhelyezni",
+    "stmt2": "így nem módosítja a retinalis képméretet.",
+    "ans": "C"
+  },
+  {
+    "id": 674,
+    "type": "analysis",
+    "q": "Elemezze az állításokat!",
+    "stmt1": "Alkalmazkodáskor a szem fénytörése a hypermetropia irányába tolódik el",
+    "stmt2": "ilyenkor növekszik a lencse törőereje.",
+    "ans": "D"
+  },
+  {
+    "id": 675,
+    "type": "analysis",
+    "q": "Elemezze az állításokat!",
+    "stmt1": "Alkalmazkodáskor a szemlencse törésmutatója nem változik",
+    "stmt2": "a törőerő növekedése csak a görbületi sugarak változása miatt következik be.",
+    "ans": "E"
+  },
+  {
+    "id": 676,
+    "type": "analysis",
+    "q": "Elemezze az állításokat!",
+    "stmt1": "Az Abbe-szám a prizmák fénytörését jellemzi",
+    "stmt2": "a prizma a különböző színű fénysugarakat különböző mértékben töri meg.",
+    "ans": "D"
+  },
+  {
+    "id": 677,
+    "type": "analysis",
+    "q": "Elemezze az állításokat!",
+    "stmt1": "Az emberi szem érzékeny az astigmatizmusra",
+    "stmt2": "a keletkező Sturm-féle konoid jelentősen rontja a tárgy felismerhetőségét.",
+    "ans": "A"
+  },
+  {
+    "id": 678,
+    "type": "analysis",
+    "q": "Elemezze az állításokat!",
+    "stmt1": "Az emberi szem nem érzékeli a fény polarizáltságát",
+    "stmt2": "a poláros fénysugarak rezgési síkjai párhuzamosak.",
+    "ans": "B"
+  },
+  {
+    "id": 679,
+    "type": "analysis",
+    "q": "Elemezze az állításokat!",
+    "stmt1": "Az emmetropiás szem alkalmazkodásmentes esetben a párhuzamos fénysugarakat a retinán gyűjti össze",
+    "stmt2": "a szem hátsó fókuszpontja a retinára esik.",
+    "ans": "A"
+  },
+  {
+    "id": 680,
+    "type": "analysis",
+    "q": "Elemezze az állításokat!",
+    "stmt1": "Az emmetropiás szem nem vizsgálható skiascopiával",
+    "stmt2": "távolpontja a vizsgálati távolságban van.",
+    "ans": "E"
+  },
+  {
+    "id": 681,
+    "type": "analysis",
+    "q": "Elemezze az állításokat!",
+    "stmt1": "Az emmetropiás szemnél az ametropia foka nulla",
+    "stmt2": "a szem mérete és törőereje egymással összhangban van.",
+    "ans": "A"
+  },
+  {
+    "id": 682,
+    "type": "analysis",
+    "q": "Elemezze az állításokat!",
+    "stmt1": "Az interferencia hullámok találkozása esetén valósul meg",
+    "stmt2": "a koherens hullámok erősíthetik, vagy gyengíthetik egymást.",
+    "ans": "B"
+  },
+  {
+    "id": 683,
+    "type": "analysis",
+    "q": "Elemezze az állításokat!",
+    "stmt1": "Az optikai tengelytől távol levő tárgypontról a lencse különböző meridiánjai különböző képet hoznak létre",
+    "stmt2": "a meridionális és a sagittális síkban különböző a törőerő.",
+    "ans": "A"
+  },
+  {
+    "id": 684,
+    "type": "analysis",
+    "q": "Elemezze az állításokat!",
+    "stmt1": "Skiascopia esetén a vizsgált szem távolpontját határozzuk meg",
+    "stmt2": "az árnyék haladási iránya jellemző az ametropiára.",
+    "ans": "B"
+  },
+  {
+    "id": 685,
+    "type": "analysis",
+    "q": "Elemezze az állításokat!",
+    "stmt1": "A fémrács kialakulásának feltétele a fémrácsot alkotó atomok kis elektronegativitási különbsége",
+    "stmt2": "a fémes kötés lényege az ellentétes kötésű ionok között lévő delokalizált elektronrendszer.",
+    "ans": "C"
+  },
+  {
+    "id": 686,
+    "type": "analysis",
+    "q": "Elemezze az állításokat!",
+    "stmt1": "A nátrium-klorid vizes oldata semleges kémhatású",
+    "stmt2": "a nátrium- és kloridionokat hidrátburok veszi körül.",
+    "ans": "B"
+  },
+  {
+    "id": 687,
+    "type": "analysis",
+    "q": "Elemezze az állításokat!",
+    "stmt1": "A periódusos rendszer egy-egy főcsoportjába tartozó elemek tulajdonságai teljesen azonosak",
+    "stmt2": "alapállapotú atomjaik vegyértékhéján azonos számú elektron tartózkodik.",
+    "ans": "D"
+  },
+  {
+    "id": 688,
+    "type": "analysis",
+    "q": "Elemezze az állításokat!",
+    "stmt1": "A reagáló anyagok koncentrációjának növelésével nő az átalakulás reakciósebessége",
+    "stmt2": "a koncentráció növelésével a molekulák ionok többször ütköznek és az ütközések nagyobb százaléka vezet kémiai átalakuláshoz.",
+    "ans": "C"
+  },
+  {
+    "id": 689,
+    "type": "analysis",
+    "q": "Elemezze az állításokat!",
+    "stmt1": "Az a fém képes vizes oldatból redukálni a másik fém ionjait amelyiknek kisebb a potenciálja az adott oldatban lévő féménél",
+    "stmt2": "a redukció elektronfelvételt jelent.",
+    "ans": "B"
+  },
+  {
+    "id": 690,
+    "type": "analysis",
+    "q": "Elemezze az állításokat!",
+    "stmt1": "Azonos spinű elektront tartalmazó két hidrogénatomból nem képződhet hidrogénmolekula",
+    "stmt2": "a Pauli-elv a molekulapályákra is érvényes.",
+    "ans": "A"
+  },
+  {
+    "id": 691,
+    "type": "analysis",
+    "q": "Elemezze az állításokat!",
+    "stmt1": "A gombák okozta conjunctivisek mindig bőséges sűrű váladékozással járnak",
+    "stmt2": "felismerésük nem nehéz.",
+    "ans": "E"
+  },
+  {
+    "id": 692,
+    "type": "analysis",
+    "q": "Elemezze az állításokat!",
+    "stmt1": "A kötőhártya gyulladásai közül a gombás fertőzések könnyen felismerhetők",
+    "stmt2": "erős vérbőséggel járnak.",
+    "ans": "E"
+  },
+  {
+    "id": 693,
+    "type": "analysis",
+    "q": "Elemezze az állításokat!",
+    "stmt1": "A binoculáris látás ép körülmények között tág határok között biztosítva van",
+    "stmt2": "a szervezet megterhelése orthophoriás embernél nem váltja ki a binokuláris látás zavarát.",
+    "ans": "A"
+  },
+  {
+    "id": 694,
+    "type": "analysis",
+    "q": "Elemezze az állításokat!",
+    "stmt1": "A blow out törés kettős látással jár",
+    "stmt2": "az alsó egyenes és a ferde szemizom becsípődik az os sphenoidale traumás repedésébe.",
+    "ans": "C"
+  },
+  {
+    "id": 695,
+    "type": "analysis",
+    "q": "Elemezze az állításokat!",
+    "stmt1": "A buphthalmus felnőttkorban jelentkező abszolút glaucoma mely kezelést igényel",
+    "stmt2": "mindenképpen vaksághoz vezet.",
+    "ans": "E"
+  },
+  {
+    "id": 696,
+    "type": "analysis",
+    "q": "Elemezze az állításokat!",
+    "stmt1": "A chorioretinitisek gyógyulása pigmentkicsapódással jár",
+    "stmt2": "a retinalis pigmentepithelium a corpus ciliare pigmentepitheliumában folytatódik.",
+    "ans": "B"
+  },
+  {
+    "id": 697,
+    "type": "analysis",
+    "q": "Elemezze az állításokat!",
+    "stmt1": "A cornea dystrophiái és gyulladása is a cornea homályait okozzák",
+    "stmt2": "kezelésüket egyformán antibiotikumos cseppekkel végezzük.",
+    "ans": "C"
+  },
+  {
+    "id": 698,
+    "type": "analysis",
+    "q": "Elemezze az állításokat!",
+    "stmt1": "A csapok döntő többsége a foveolában van",
+    "stmt2": "ennek épsége fotopikus és az ép színlátás legfontosabb feltétele.",
+    "ans": "A"
+  },
+  {
+    "id": 699,
+    "type": "analysis",
+    "q": "Elemezze az állításokat!",
+    "stmt1": "A csarnokvíz termelődése az irisben történik",
+    "stmt2": "az iritis hypotoniával jár.",
+    "ans": "E"
+  },
+  {
+    "id": 700,
+    "type": "analysis",
+    "q": "Elemezze az állításokat!",
+    "stmt1": "A csarnokzugi rubeosis ischaemiás jel",
+    "stmt2": "ezért emelkedik meg ilyenkor a szemnyomás.",
+    "ans": "B"
+  },
+  {
+    "id": 701,
+    "type": "analysis",
+    "q": "Elemezze az állításokat!",
+    "stmt1": "A glaucoma betegség a látóidegfő károsodását okozza",
+    "stmt2": "ilyenkor papillaoedemát látunk a szemfenéken.",
+    "ans": "C"
+  },
+  {
+    "id": 702,
+    "type": "analysis",
+    "q": "Elemezze az állításokat!",
+    "stmt1": "A glaucoma betegség látótérkieséssel jár",
+    "stmt2": "a szemnyomás akut glaucomás rohamban eléri a 60Hgmm-t is.",
+    "ans": "B"
+  },
+  {
+    "id": 703,
+    "type": "analysis",
+    "q": "Elemezze az állításokat!",
+    "stmt1": "A glaucoma simplex korai időszaka nem jár panasszal",
+    "stmt2": "ilyenkor csak szűrővizsgálatokkal lehet diagnosztizálni.",
+    "ans": "A"
+  },
+  {
+    "id": 704,
+    "type": "analysis",
+    "q": "Elemezze az állításokat!",
+    "stmt1": "A hypertonia betegségnek több stádiuma is megkülönböztethető a szemfenéken",
+    "stmt2": "a fundus vizsgálatával meg lehet mondani hogy valakinek mennyi a vérnyomása.",
+    "ans": "C"
+  },
+  {
+    "id": 705,
+    "type": "analysis",
+    "q": "Elemezze az állításokat!",
+    "stmt1": "A hypopion a csarnok alján leülepedett szilikonolaj",
+    "stmt2": "a hypopion secunder glaucomához vezethet.",
+    "ans": "D"
+  },
+  {
+    "id": 706,
+    "type": "analysis",
+    "q": "Elemezze az állításokat!",
+    "stmt1": "A kisfokú anisometropia általában nem okoz panaszt",
+    "stmt2": "sohasem kell ilyen típusú fénytörési hibát korrigálni.",
+    "ans": "C"
+  },
+  {
+    "id": 707,
+    "type": "analysis",
+    "q": "Elemezze az állításokat!",
+    "stmt1": "A koponyaűri nyomásfokozódás pangásos vérbőséget okoz a papillán",
+    "stmt2": "gyors látásromláshoz vezet.",
+    "ans": "C"
+  },
+  {
+    "id": 708,
+    "type": "analysis",
+    "q": "Elemezze az állításokat!",
+    "stmt1": "A látóélesség akkor csökken ha az elváltozások a szemben nem érik el a papillát vagy a maculát",
+    "stmt2": "diabeteses és hypertoniás retinopathiában elég a visust vizsgálni.",
+    "ans": "E"
+  },
+  {
+    "id": 709,
+    "type": "analysis",
+    "q": "Elemezze az állításokat!",
+    "stmt1": "A látóélesség csak akkor csökken, ha a macula és a papilla külön-külön vagy együttesen érintett",
+    "stmt2": "pusztán a látásélesség vizsgálata nem ad kielégítő képet a szem állapotáról.",
+    "ans": "A"
+  },
+  {
+    "id": 710,
+    "type": "analysis",
+    "q": "Elemezze az állításokat!",
+    "stmt1": "A Lyme-borreliosist kullancsok terjesztik",
+    "stmt2": "ebben a betegségben chorioretinitis előfordul.",
+    "ans": "B"
+  },
+  {
+    "id": 711,
+    "type": "analysis",
+    "q": "Elemezze az állításokat!",
+    "stmt1": "A maculadegeneratióban pusztulnak a pálcikák mint az éleslátásért felelős receptorok",
+    "stmt2": "maculadegenerációban romlik a centralis látás és a színlátás is.",
+    "ans": "D"
+  },
+  {
+    "id": 712,
+    "type": "analysis",
+    "q": "Elemezze az állításokat!",
+    "stmt1": "A magas szemnyomás a látóidegfő atrophiáját okozza",
+    "stmt2": "belső szemnyomás magasabb, mint a papilla capillarisaiban uralkodó vérnyomás.",
+    "ans": "A"
+  },
+  {
+    "id": 713,
+    "type": "analysis",
+    "q": "Elemezze az állításokat!",
+    "stmt1": "A mészsérülés colliquatiós necrosist okoz",
+    "stmt2": "a szaruhártya sérülése felszínes ereződéssel gyógyul.",
+    "ans": "B"
+  },
+  {
+    "id": 714,
+    "type": "analysis",
+    "q": "Elemezze az állításokat!",
+    "stmt1": "A nagyfokú rövidlátás mindig retinaleválással jár",
+    "stmt2": "kék sclera betegséget okoz.",
+    "ans": "E"
+  },
+  {
+    "id": 715,
+    "type": "analysis",
+    "q": "Elemezze az állításokat!",
+    "stmt1": "A papilla elváltozásai a szemtükri vizsgálattal általában jól látszanak és a látótérben és a CFF-ben is jellegzetes elváltozásokat okoz",
+    "stmt2": "teljes diagnózishoz többféle vizsgálat is szükséges.",
+    "ans": "A"
+  },
+  {
+    "id": 716,
+    "type": "analysis",
+    "q": "Elemezze az állításokat!",
+    "stmt1": "A parasympathicomimeticumok a pupilla kitágulását okozzák",
+    "stmt2": "az ilyen típusú gyógyszerek hatása alatt a látásélesség változhat a becseppentéstől eltelt idő függvényében.",
+    "ans": "D"
+  },
+  {
+    "id": 717,
+    "type": "analysis",
+    "q": "Elemezze az állításokat!",
+    "stmt1": "A retina betegségei jelentősen rontják a látást",
+    "stmt2": "a látásromlás mindig a retina érintettségére utal.",
+    "ans": "E"
+  },
+  {
+    "id": 718,
+    "type": "analysis",
+    "q": "Elemezze az állításokat!",
+    "stmt1": "A retinablastoma a gyermekeknél amauroticus macskaszemet okoz",
+    "stmt2": "a szülők figyelik meg hogy gyermekük távolra nézéskor is konvergál.",
+    "ans": "C"
+  },
+  {
+    "id": 719,
+    "type": "analysis",
+    "q": "Elemezze az állításokat!",
+    "stmt1": "A retinaleválás kettős látást okoz",
+    "stmt2": "a subretinalis folyadék elemeli az érzékelő retinát a pigmentepithelből.",
+    "ans": "D"
+  },
+  {
+    "id": 720,
+    "type": "analysis",
+    "q": "Elemezze az állításokat!",
+    "stmt1": "A rövidlátó szem peripheriáján gyakran találunk degeneratív elfajulásokat amelyek retinaleváláshoz vezethetnek",
+    "stmt2": "rövidlátó nők nem szülhetnek természetes úton csak császármetszéssel.",
+    "ans": "C"
+  },
+  {
+    "id": 721,
+    "type": "analysis",
+    "q": "Elemezze az állításokat!",
+    "stmt1": "A simplex glaucomában átlagosan 30-40 Hgmm körüli a szemnyomás ami akadályozza az arteriás keringést",
+    "stmt2": "gyakran okozza az arteria centralis retinae emboliáját.",
+    "ans": "C"
+  },
+  {
+    "id": 722,
+    "type": "analysis",
+    "q": "Elemezze az állításokat!",
+    "stmt1": "A Sjögren-syndroma kétoldali vörös szemmel és szúró szemfájdalommal jár",
+    "stmt2": "összetéveszthető a kétoldali conjunctivitisszel amely ugyancsak idegentestérzéssel szúró fájdalommal jár.",
+    "ans": "A"
+  },
+  {
+    "id": 723,
+    "type": "analysis",
+    "q": "Elemezze az állításokat!",
+    "stmt1": "A szaruhártya a propria-rétegének betegsége maradandó homályokat okoz",
+    "stmt2": "a mély keratitisek mindig maradandó látásromlással járnak.",
+    "ans": "C"
+  },
+  {
+    "id": 724,
+    "type": "analysis",
+    "q": "Elemezze az állításokat!",
+    "stmt1": "A szaruhártya mély gyulladása a keratitis disciformis",
+    "stmt2": "herpesvírus által kiváltott immunológiai történés következménye.",
+    "ans": "A"
+  },
+  {
+    "id": 725,
+    "type": "analysis",
+    "q": "Elemezze az állításokat!",
+    "stmt1": "A szaruhártya véglegesen elveszítheti átlátszóságát",
+    "stmt2": "a sérült endothelrétegen keresztül csarnokvíz jut a rostjai közé.",
+    "ans": "A"
+  },
+  {
+    "id": 726,
+    "type": "analysis",
+    "q": "Elemezze az állításokat!",
+    "stmt1": "A szivárványhártya akut gyulladása tág fénymerev pupillával jár",
+    "stmt2": "ha a pupilla tágan lenő a lencsetokhoz az másodlagos glaucomát okoz.",
+    "ans": "D"
+  },
+  {
+    "id": 727,
+    "type": "analysis",
+    "q": "Elemezze az állításokat!",
+    "stmt1": "A szivárványhártya gyulladása kapcsán sejtek kerülnek a csarnokvízbe",
+    "stmt2": "ilyen módon jön létre az iritisre jellemző Tyndall-jelenség.",
+    "ans": "A"
+  },
+  {
+    "id": 728,
+    "type": "analysis",
+    "q": "Elemezze az állításokat!",
+    "stmt1": "A szivárványhártya gyulladása legtöbbször endogén eredetű",
+    "stmt2": "a fertőzések pedig gondos kézfertőtlenítéssel elkerülhetők.",
+    "ans": "B"
+  },
+  {
+    "id": 729,
+    "type": "analysis",
+    "q": "Elemezze az állításokat!",
+    "stmt1": "A szürkehályog kezdeti időszakában emeli a szemnyomást",
+    "stmt2": "az üvegtest ilyenkor vizet vesz fel.",
+    "ans": "E"
+  },
+  {
+    "id": 730,
+    "type": "analysis",
+    "q": "Elemezze az állításokat!",
+    "stmt1": "Alternáló kancsalság esetében kettős látás alakul ki",
+    "stmt2": "ilyen betegségeknél veleszületett az izombénulás.",
+    "ans": "E"
+  },
+  {
+    "id": 731,
+    "type": "analysis",
+    "q": "Elemezze az állításokat!",
+    "stmt1": "Amikor a csarnokzugi képletek a fejlődés során nem alakulnak ki magas szemnyomást fogunk találni",
+    "stmt2": "gyógyítására a pupillát kell szűkíteni.",
+    "ans": "C"
+  },
+  {
+    "id": 732,
+    "type": "analysis",
+    "q": "Elemezze az állításokat!",
+    "stmt1": "Az akut catarrhalis conjunctivitis fertőző",
+    "stmt2": "kórokozója cseppfertőzéssel terjed.",
+    "ans": "C"
+  },
+  {
+    "id": 733,
+    "type": "analysis",
+    "q": "Elemezze az állításokat!",
+    "stmt1": "Az amaurosis fugax végleges vakságot okoz",
+    "stmt2": "ebben a betegségben rövid időre leáll a keringés retinalis embolisatio miatt.",
+    "ans": "D"
+  },
+  {
+    "id": 734,
+    "type": "analysis",
+    "q": "Elemezze az állításokat!",
+    "stmt1": "Az applanatiós tonometriát nem befolyásolja a sclera rigiditasa",
+    "stmt2": "ezzel a módszerrel lehet a legpontosabban mérni a szemnyomásértékeket.",
+    "ans": "A"
+  },
+  {
+    "id": 735,
+    "type": "analysis",
+    "q": "Elemezze az állításokat!",
+    "stmt1": "Az arteria centralis retinae elzáródás azt eredményezi",
+    "stmt2": "retinában nincs keringés, azért azonnali fényérzés-nélküliséget okoz.",
+    "ans": "A"
+  },
+  {
+    "id": 736,
+    "type": "analysis",
+    "q": "Elemezze az állításokat!",
+    "stmt1": "Az intraretinalis neovascularisatio az a jelenség amikor a retina ép viszonyok között üres capillarisai vérrel telnek meg",
+    "stmt2": "körülöttük gyakran találunk oedemát és vérzéseket.",
+    "ans": "D"
+  },
+  {
+    "id": 737,
+    "type": "analysis",
+    "q": "Elemezze az állításokat!",
+    "stmt1": "Az optokineticus nystagmus rontja a visust",
+    "stmt2": "a szem minden helyzetében észlelhető a szemtekerezgés.",
+    "ans": "E"
+  },
+  {
+    "id": 738,
+    "type": "analysis",
+    "q": "Elemezze az állításokat!",
+    "stmt1": "Az üvegtest a szem optikai törőrendszerének egyik legfontosabb része",
+    "stmt2": "a hátsó üvegtesti leválás a szem fénytörését jelentősen megváltoztatja.",
+    "ans": "E"
+  },
+  {
+    "id": 739,
+    "type": "analysis",
+    "q": "Elemezze az állításokat!",
+    "stmt1": "Előfordul kancsalság mellett kialakult amblyopia",
+    "stmt2": "gyermekeknél a kezelés első lépése az amblyopia megszüntetése.",
+    "ans": "A"
+  },
+  {
+    "id": 740,
+    "type": "analysis",
+    "q": "Elemezze az állításokat!",
+    "stmt1": "Ha a retina levált, de a leválás nem érinti a maculát, a látásélesség teljes is lehet",
+    "stmt2": "nem elég csak a látásélesség vizsgálatra hagyatkozni.",
+    "ans": "A"
+  },
+  {
+    "id": 741,
+    "type": "analysis",
+    "q": "Elemezze az állításokat!",
+    "stmt1": "Ha a szemnyomás eléri a 24 Hgmm-t az azt jelenti hogy glaucoma betegséggel állunk szemben",
+    "stmt2": "a szemnyomás fiziológiás átlagértéke 15 és 20 Hgmm között van.",
+    "ans": "D"
+  },
+  {
+    "id": 742,
+    "type": "analysis",
+    "q": "Elemezze az állításokat!",
+    "stmt1": "Ha valakinek a látást szemüveggel nem tudjuk feljavítani az csökkentlátó",
+    "stmt2": "ami azt jelenti hogy nem találtuk meg a rossz látás okát.",
+    "ans": "C"
+  },
+  {
+    "id": 743,
+    "type": "analysis",
+    "q": "Elemezze az állításokat!",
+    "stmt1": "Ha valakinek Kettesy-féle táblával vizsgálva 5 méterről korrekció nélkül teljes látása van mindkét szemén az azt jelenti hogy mindkét szeme emmetropiás fénytörésű",
+    "stmt2": "a szemére vonatkoztatott panaszairól el lehet mondani hogy nem fénytörési eredetűek.",
+    "ans": "E"
+  },
+  {
+    "id": 744,
+    "type": "analysis",
+    "q": "Elemezze az állításokat!",
+    "stmt1": "Ischaemiát és ezzel kapcsolatos rubeosis iridist okoz a neuritis retrobulbaris",
+    "stmt2": "ez a betegség hirtelen látásromlást okoz.",
+    "ans": "D"
+  },
+  {
+    "id": 745,
+    "type": "analysis",
+    "q": "Elemezze az állításokat!",
+    "stmt1": "Kettős látás esetén a bénult szemizmú szemben a valóságos helyzettől eltérő térbeli képzet keletkezik",
+    "stmt2": "a fixált tárgy képe nem a foveolában keletkezik.",
+    "ans": "A"
+  },
+  {
+    "id": 746,
+    "type": "analysis",
+    "q": "Elemezze az állításokat!",
+    "stmt1": "Korrigálatlan fénytörési hibából accomodativ kancsalság alakulhat ki",
+    "stmt2": "kezelésének első lépése a párhuzamos szemállás elérése műtéti úton.",
+    "ans": "C"
+  },
+  {
+    "id": 747,
+    "type": "analysis",
+    "q": "Elemezze az állításokat!",
+    "stmt1": "Minden daganat a szem belsejében szemnyomás pangást okoz",
+    "stmt2": "magas szemnyomás a melanoma malignum chorioideae első tünete.",
+    "ans": "E"
+  },
+  {
+    "id": 748,
+    "type": "analysis",
+    "q": "Elemezze az állításokat!",
+    "stmt1": "Minden gyulladás vérbőséggel jár",
+    "stmt2": "a gyulladásos terület vörös.",
+    "ans": "A"
+  },
+  {
+    "id": 749,
+    "type": "analysis",
+    "q": "Elemezze az állításokat!",
+    "stmt1": "Perforáló sérülések nem tartoznak az optometristák hatáskörébe",
+    "stmt2": "ilyen sérültekkel kapcsolatban az optometristának nincs semmi kötelessége.",
+    "ans": "C"
+  },
+  {
+    "id": 750,
+    "type": "analysis",
+    "q": "Elemezze az állításokat!",
+    "stmt1": "Szemizombénulás esetén a bénult izom azon a szemen van, ahol kettőskép-vizsgálat során a peripheriásan elhelyezkedő kép van",
+    "stmt2": "a bénult izmú szemben a keletkezett kép a látótérben ott helyezkedik el, ahová a bénult izom vitte volna a szem nézővonalát.",
+    "ans": "A"
+  },
+  {
+    "id": 751,
+    "type": "analysis",
+    "q": "Elemezze az állításokat!",
+    "stmt1": "Tapintással lehet tájékozódni a szem feszüléséről",
+    "stmt2": "ezzel a módszerrel jól meg lehet állapítani hogy a szemnyomás eltér-e a fiziológiás értéktől.",
+    "ans": "C"
+  },
+  {
+    "id": 752,
+    "type": "analysis",
+    "q": "Elemezze az állításokat!",
+    "stmt1": "A kórokozók terjedés a környezetben fertőtlenítéssel ill. rovar- és rágcsálóirtással gátolható",
+    "stmt2": "e tevékenységekkel teljes csíramentesség érhető el a környezetben.",
+    "ans": "C"
+  },
+  {
+    "id": 753,
+    "type": "analysis",
+    "q": "Elemezze az állításokat!",
+    "stmt1": "A gyógyszerkipróbálásban való részvétel önkéntes mert a kísérletben résztvevő személy bármikor felfüggesztheti az ebben való részvételét.",
+    "stmt2": "(nincs második állítás - önmagában igaz)",
+    "ans": "A"
+  },
+  {
+    "id": 754,
+    "type": "analysis",
+    "q": "Elemezze az állításokat!",
+    "stmt1": "A thalamus a III. agykamra oldalfala",
+    "stmt2": "a thalamus felett húzódik a hypothalamus.",
+    "ans": "C"
+  },
+  {
+    "id": 755,
+    "type": "analysis",
+    "q": "Elemezze az állításokat!",
+    "stmt1": "A szenzitizáció során nő a receptor ingerküszöbe",
+    "stmt2": "preszinaptikusan több neurotranszmitter szabadul fel.",
+    "ans": "D"
+  }
+];
